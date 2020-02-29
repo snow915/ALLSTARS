@@ -93,10 +93,12 @@ public class Baterias extends Fragment {
                 String nombre = list_datos.get(recycler.getChildAdapterPosition(v)).getNombre();
                 String precio = list_datos.get(recycler.getChildAdapterPosition(v)).getPrecio();
                 int imagen = list_datos.get(recycler.getChildAdapterPosition(v)).getImagen();
+                int stars = list_datos.get(recycler.getChildAdapterPosition(v)).getStars();
                 Intent infoProducto = new Intent(getActivity(), InfoProducto.class);
                 infoProducto.putExtra("nombre", nombre);
                 infoProducto.putExtra("precio", precio);
                 infoProducto.putExtra("image",imagen);
+                infoProducto.putExtra("stars", stars);
                 startActivity(infoProducto);
             }
         });
@@ -105,16 +107,16 @@ public class Baterias extends Fragment {
     }
 
     public void llenarDatos(){
-        list_datos.add(new DatosVo("Bateria Alcatel OTC550","$229",R.drawable.alcatel_otc550));
-        list_datos.add(new DatosVo("Bateria Huawei HB500","$199",R.drawable.huawei_hb500));
-        list_datos.add(new DatosVo("Bateria Lenovo Vibe K5","$219",R.drawable.lenovo_vibek5));
-        list_datos.add(new DatosVo("Bateria Motorola BR50","$349",R.drawable.motorola_br50));
-        list_datos.add(new DatosVo("Bateria Samsung B500AE","$349",R.drawable.samsung_b500ae));
-        list_datos.add(new DatosVo("Bateria Blu Studio J2","$349",R.drawable.blu_studioj2));
-        list_datos.add(new DatosVo("Bateria iPhone 5s","$349",R.drawable.iphone_5s));
-        list_datos.add(new DatosVo("Bateria LG Generica","$349",R.drawable.lg));
-        list_datos.add(new DatosVo("Bateria Nokia B1CT","$349",R.drawable.nokia_bl4ct));
-        list_datos.add(new DatosVo("Bateria Sony XPeria","$349",R.drawable.sony_xperias));
+        list_datos.add(new DatosVo("Bateria Alcatel OTC550","$229",R.drawable.alcatel_otc550,5));
+        list_datos.add(new DatosVo("Bateria Huawei HB500","$199",R.drawable.huawei_hb500,5));
+        list_datos.add(new DatosVo("Bateria Lenovo Vibe K5","$219",R.drawable.lenovo_vibek5,5));
+        list_datos.add(new DatosVo("Bateria Motorola BR50","$349",R.drawable.motorola_br50,5));
+        list_datos.add(new DatosVo("Bateria Samsung B500AE","$349",R.drawable.samsung_b500ae,5));
+        list_datos.add(new DatosVo("Bateria Blu Studio J2","$349",R.drawable.blu_studioj2,5));
+        list_datos.add(new DatosVo("Bateria iPhone 5s","$349",R.drawable.iphone_5s,5));
+        list_datos.add(new DatosVo("Bateria LG Generica","$349",R.drawable.lg,5));
+        list_datos.add(new DatosVo("Bateria Nokia B1CT","$349",R.drawable.nokia_bl4ct,5));
+        list_datos.add(new DatosVo("Bateria Sony XPeria","$349",R.drawable.sony_xperias,5));
     }
 
     // TODO: Rename method, update argument and hook method into UI event

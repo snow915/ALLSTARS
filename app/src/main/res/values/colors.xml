@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#5820BD</color>
-    <color name="colorPrimaryDark">#5820BD</color>
-    <color name="colorAccent">#4CAF50</color>
+    <color name="colorPrimary">#000000</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#000000</color>
     <color name="negro">#000000</color>
     <color name="blanco">#FFFFFF</color>
     <color name="colorWhite">#FFFFFF</color>
@@ -12,4 +12,5 @@
     <color name="colorLettersTitle">#FFFFFF</color>
     <color name="colorSuccess">#4CAF50</color>
     <color name="colorBlue">#2196F3</color>
+    <color name="colorStars">#FFC107</color>
 </resources>

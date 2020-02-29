@@ -93,10 +93,12 @@ public class Camaras extends Fragment {
                 String nombre = list_datos.get(recycler.getChildAdapterPosition(v)).getNombre();
                 String precio = list_datos.get(recycler.getChildAdapterPosition(v)).getPrecio();
                 int imagen = list_datos.get(recycler.getChildAdapterPosition(v)).getImagen();
+                int stars = list_datos.get(recycler.getChildAdapterPosition(v)).getStars();
                 Intent infoProducto = new Intent(getActivity(), InfoProducto.class);
                 infoProducto.putExtra("nombre", nombre);
                 infoProducto.putExtra("precio", precio);
                 infoProducto.putExtra("image",imagen);
+                infoProducto.putExtra("stars", stars);
                 startActivity(infoProducto);
             }
         });
@@ -105,15 +107,15 @@ public class Camaras extends Fragment {
     }
 
     public void llenarDatos(){
-        list_datos.add(new DatosVo("Camara frontal Huawei P30 Lite","$229",R.drawable.camarafrontal_huawirp30lite));
-        list_datos.add(new DatosVo("Camara frontal iPhone 7 Plus","$199",R.drawable.camara_frontal_iphone7plus));
-        list_datos.add(new DatosVo("Camara frontal ZTE Apex2","$219",R.drawable.camarafrontal_zte_blade_apex2));
-        list_datos.add(new DatosVo("Camara trasera Samsung S7","$349",R.drawable.camara_principal_trasera_samsung_galaxy_s7));
-        list_datos.add(new DatosVo("Camara trasera Moto X","$349",R.drawable.camaratrasera_motorolamotox));
-        list_datos.add(new DatosVo("Camara trasera Xiaomi N3 Pro","$349",R.drawable.camara_xiaomi_note3pro));
-        list_datos.add(new DatosVo("Camara trasera LG G3","$349",R.drawable.cama_tracera_lg));
-        list_datos.add(new DatosVo("Camara Trasera Samsung Galaxy","$349",R.drawable.flex_camara_samsung_galaxy));
-        list_datos.add(new DatosVo("Camara Trasera iPhone 7","$349",R.drawable.flex_con_camara_frontal_de_7_mpx_para_apple_iphone_7g));
+        list_datos.add(new DatosVo("Camara frontal Huawei P30 Lite","$229",R.drawable.camarafrontal_huawirp30lite,4));
+        list_datos.add(new DatosVo("Camara frontal iPhone 7 Plus","$199",R.drawable.camara_frontal_iphone7plus,4));
+        list_datos.add(new DatosVo("Camara frontal ZTE Apex2","$219",R.drawable.camarafrontal_zte_blade_apex2,4));
+        list_datos.add(new DatosVo("Camara trasera Samsung S7","$349",R.drawable.camara_principal_trasera_samsung_galaxy_s7,4));
+        list_datos.add(new DatosVo("Camara trasera Moto X","$349",R.drawable.camaratrasera_motorolamotox,4));
+        list_datos.add(new DatosVo("Camara trasera Xiaomi N3 Pro","$349",R.drawable.camara_xiaomi_note3pro,4));
+        list_datos.add(new DatosVo("Camara trasera LG G3","$349",R.drawable.cama_tracera_lg,4));
+        list_datos.add(new DatosVo("Camara Trasera Samsung Galaxy","$349",R.drawable.flex_camara_samsung_galaxy,4));
+        list_datos.add(new DatosVo("Camara Trasera iPhone 7","$349",R.drawable.flex_con_camara_frontal_de_7_mpx_para_apple_iphone_7g,4));
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -91,10 +91,12 @@ public class index extends Fragment {
                 String nombre = list_datos.get(recycler.getChildAdapterPosition(v)).getNombre();
                 String precio = list_datos.get(recycler.getChildAdapterPosition(v)).getPrecio();
                 int imagen = list_datos.get(recycler.getChildAdapterPosition(v)).getImagen();
+                int stars = list_datos.get(recycler.getChildAdapterPosition(v)).getStars();
                 Intent infoProducto = new Intent(getActivity(), InfoProducto.class);
                 infoProducto.putExtra("nombre", nombre);
                 infoProducto.putExtra("precio", precio);
                 infoProducto.putExtra("image",imagen);
+                infoProducto.putExtra("stars", stars);
                 startActivity(infoProducto);
             }
         });
@@ -102,12 +104,12 @@ public class index extends Fragment {
     }
 
     public void llenarDatos(){
-        list_datos.add(new DatosVo("Pantalla iPhone 4","$329",R.drawable.pantalla_iphone_4));
-        list_datos.add(new DatosVo("Lógica Moto G4 Plus","$245",R.drawable.motorola_g4plus));
-        list_datos.add(new DatosVo("Touch Samsung Galaxy S2","$129",R.drawable.touch_galaxys2));
-        list_datos.add(new DatosVo("Camara Huawei P30 Lite","$18,000",R.drawable.camarafrontal_huawirp30lite));
-        list_datos.add(new DatosVo("Bateria Blu Studio J2","$29",R.drawable.blu_studioj2));
-        list_datos.add(new DatosVo("Botón Home iPhone 7","$249",R.drawable.boton_home_iphone7_black));
+        list_datos.add(new DatosVo("Mia Khalifa","Actriz",R.drawable.mia,  5));
+        list_datos.add(new DatosVo("Franco Escamilla","Stand up",R.drawable.francoescamilla,  3));
+        list_datos.add(new DatosVo("Guerra de chistes","Comediante",R.drawable.guerrachistes, 3));
+        list_datos.add(new DatosVo("Daddy Yankee","Cantante",R.drawable.daddyyankee,  4));
+        list_datos.add(new DatosVo("Johny Sins","Actor",R.drawable.johnysins,  4));
+        list_datos.add(new DatosVo("Dharius","Cantante",R.drawable.dha,  3));
     }
 
     // TODO: Rename method, update argument and hook method into UI event

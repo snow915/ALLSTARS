@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,17 +23,6 @@ import com.store.CarritoCompras.AdminSQLiteOpenHelper;
 
 public class InfoProducto extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
-    Spinner cantidad;
-    String[] spinnerItems = new String[]{
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "10",
-            "20",
-            "100"
-    };
     Button moreInfo;
     Button buy;
     Button add;
@@ -41,30 +31,31 @@ public class InfoProducto extends AppCompatActivity implements AdapterView.OnIte
     ImageView imagen;
     String nombreIntent;
     String precioIntent;
+    RatingBar ratingStars;
     int image;
+    int stars;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info_producto);
-        cantidad = findViewById(R.id.cantidad);
         moreInfo = findViewById(R.id.detalles);
         buy = findViewById(R.id.comprar);
         add = findViewById(R.id.agregar);
         titulo = findViewById(R.id.titulo);
         precio = findViewById(R.id.precio);
         imagen = findViewById(R.id.imagen);
+        ratingStars = findViewById(R.id.ratingStars);
 
         nombreIntent = getIntent().getStringExtra("nombre");
         precioIntent = getIntent().getStringExtra("precio");
         image = getIntent().getIntExtra("image",0);
+        stars = getIntent().getIntExtra("stars",0);
         titulo.setText(nombreIntent);
         precio.setText(precioIntent);
         imagen.setImageResource(image);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_textview_align, spinnerItems);
-        adapter.setDropDownViewResource(R.layout.spinner_textview_align);
-        cantidad.setAdapter(adapter);
-        cantidad.setOnItemSelectedListener(this);
+        ratingStars.setRating(stars);
+
         moreInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,6 +79,7 @@ public class InfoProducto extends AppCompatActivity implements AdapterView.OnIte
         registro.put("tituloProducto",nombreIntent);
         registro.put("precioProducto",precioIntent);
         registro.put("idImagen",image);
+        registro.put("idStars", stars);
         db.insert("Carrito",null, registro);
         db.close();
         Toast.makeText(this,"Agregado al carrito",Toast.LENGTH_SHORT).show();

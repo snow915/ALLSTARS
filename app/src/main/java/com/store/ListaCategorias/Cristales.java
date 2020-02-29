@@ -93,10 +93,12 @@ public class Cristales extends Fragment {
                 String nombre = list_datos.get(recycler.getChildAdapterPosition(v)).getNombre();
                 String precio = list_datos.get(recycler.getChildAdapterPosition(v)).getPrecio();
                 int imagen = list_datos.get(recycler.getChildAdapterPosition(v)).getImagen();
+                int stars = list_datos.get(recycler.getChildAdapterPosition(v)).getStars();
                 Intent infoProducto = new Intent(getActivity(), InfoProducto.class);
                 infoProducto.putExtra("nombre", nombre);
                 infoProducto.putExtra("precio", precio);
                 infoProducto.putExtra("image",imagen);
+                infoProducto.putExtra("stars", stars);
                 startActivity(infoProducto);
             }
         });
@@ -105,11 +107,11 @@ public class Cristales extends Fragment {
     }
 
     public void llenarDatos(){
-        list_datos.add(new DatosVo("Touch Alcatel Idol mini 3","$229",R.drawable.touch_alcatel_idol_mini3));
-        list_datos.add(new DatosVo("Touch Samsung Galaxy S2 duo","$199",R.drawable.touch_galaxy_s2duos));
-        list_datos.add(new DatosVo("Touch Samsung Galaxy S2","$219",R.drawable.touch_galaxys2));
-        list_datos.add(new DatosVo("Touch Huawei P20 Lite","$349",R.drawable.touch_huawei_p20lite));
-        list_datos.add(new DatosVo("Touch Huawei Y6 2018","$349",R.drawable.touch_huawei_y6_2018));
+        list_datos.add(new DatosVo("Touch Alcatel Idol mini 3","$229",R.drawable.touch_alcatel_idol_mini3,3));
+        list_datos.add(new DatosVo("Touch Samsung Galaxy S2 duo","$199",R.drawable.touch_galaxy_s2duos,3));
+        list_datos.add(new DatosVo("Touch Samsung Galaxy S2","$219",R.drawable.touch_galaxys2,3));
+        list_datos.add(new DatosVo("Touch Huawei P20 Lite","$349",R.drawable.touch_huawei_p20lite,3));
+        list_datos.add(new DatosVo("Touch Huawei Y6 2018","$349",R.drawable.touch_huawei_y6_2018,3));
 
     }
 

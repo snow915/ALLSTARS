@@ -93,10 +93,12 @@ public class Display extends Fragment {
                 String nombre = list_datos.get(recycler.getChildAdapterPosition(v)).getNombre();
                 String precio = list_datos.get(recycler.getChildAdapterPosition(v)).getPrecio();
                 int imagen = list_datos.get(recycler.getChildAdapterPosition(v)).getImagen();
+                int stars = list_datos.get(recycler.getChildAdapterPosition(v)).getStars();
                 Intent infoProducto = new Intent(getActivity(), InfoProducto.class);
                 infoProducto.putExtra("nombre", nombre);
                 infoProducto.putExtra("precio", precio);
                 infoProducto.putExtra("image",imagen);
+                infoProducto.putExtra("stars", stars);
                 startActivity(infoProducto);
             }
         });
@@ -105,10 +107,10 @@ public class Display extends Fragment {
     }
 
     public void llenarDatos(){
-        list_datos.add(new DatosVo("Display LCD Alcatel 4034","$499",R.drawable.display_alcatel_4034));
-        list_datos.add(new DatosVo("Display Huawei Y530","$199",R.drawable.display_huawei_y530));
-        list_datos.add(new DatosVo("Display Samsung Grand Prime","$219",R.drawable.display_samsung_grand_prime));
-        list_datos.add(new DatosVo("Display ZTE L7","$349",R.drawable.display_zte_l7));
+        list_datos.add(new DatosVo("Display LCD Alcatel 4034","$499",R.drawable.display_alcatel_4034,1));
+        list_datos.add(new DatosVo("Display Huawei Y530","$199",R.drawable.display_huawei_y530,1));
+        list_datos.add(new DatosVo("Display Samsung Grand Prime","$219",R.drawable.display_samsung_grand_prime,1));
+        list_datos.add(new DatosVo("Display ZTE L7","$349",R.drawable.display_zte_l7,1));
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -93,10 +93,12 @@ public class Auriculares extends Fragment {
                 String nombre = list_datos.get(recycler.getChildAdapterPosition(v)).getNombre();
                 String precio = list_datos.get(recycler.getChildAdapterPosition(v)).getPrecio();
                 int imagen = list_datos.get(recycler.getChildAdapterPosition(v)).getImagen();
+                int stars = list_datos.get(recycler.getChildAdapterPosition(v)).getStars();
                 Intent infoProducto = new Intent(getActivity(), InfoProducto.class);
                 infoProducto.putExtra("nombre", nombre);
                 infoProducto.putExtra("precio", precio);
                 infoProducto.putExtra("image",imagen);
+                infoProducto.putExtra("stars", stars);
                 startActivity(infoProducto);
             }
         });
@@ -105,15 +107,15 @@ public class Auriculares extends Fragment {
     }
 
     public void llenarDatos(){
-        list_datos.add(new DatosVo("Auricular Galaxy Note 8","$229",R.drawable.auricular_galaxy_note8));
-        list_datos.add(new DatosVo("Auricular Galaxy S8","$199",R.drawable.auricular_galaxy_s8));
-        list_datos.add(new DatosVo("Auricular HTC ONE 2","$219",R.drawable.auricular_htc_one_2));
-        list_datos.add(new DatosVo("Auricular Huawei P30","$349",R.drawable.auricular_huaweip30));
-        list_datos.add(new DatosVo("Auricular iPhone 7 Plus","$349",R.drawable.auricular_iphone7_plus));
-        list_datos.add(new DatosVo("Auricular Samsung S7","$349",R.drawable.auricular_samsung_s7));
-        list_datos.add(new DatosVo("Auricular iPhone 8","$349",R.drawable.bocina_frontal_auricular_iphone_8));
-        list_datos.add(new DatosVo("Auricular Samsung Note 8","$349",R.drawable.note_8_auricular));
-        list_datos.add(new DatosVo("Auricular iPhone X","$349",R.drawable.xrepuesto_altavoz_auricular_iphone_x_1));
+        list_datos.add(new DatosVo("Auricular Galaxy Note 8","$229",R.drawable.auricular_galaxy_note8,5));
+        list_datos.add(new DatosVo("Auricular Galaxy S8","$199",R.drawable.auricular_galaxy_s8,5));
+        list_datos.add(new DatosVo("Auricular HTC ONE 2","$219",R.drawable.auricular_htc_one_2,5));
+        list_datos.add(new DatosVo("Auricular Huawei P30","$349",R.drawable.auricular_huaweip30,5));
+        list_datos.add(new DatosVo("Auricular iPhone 7 Plus","$349",R.drawable.auricular_iphone7_plus,5));
+        list_datos.add(new DatosVo("Auricular Samsung S7","$349",R.drawable.auricular_samsung_s7,5));
+        list_datos.add(new DatosVo("Auricular iPhone 8","$349",R.drawable.bocina_frontal_auricular_iphone_8,5));
+        list_datos.add(new DatosVo("Auricular Samsung Note 8","$349",R.drawable.note_8_auricular,5));
+        list_datos.add(new DatosVo("Auricular iPhone X","$349",R.drawable.xrepuesto_altavoz_auricular_iphone_x_1,5));
     }
 
     // TODO: Rename method, update argument and hook method into UI event

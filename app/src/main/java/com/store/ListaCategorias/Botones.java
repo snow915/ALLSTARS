@@ -93,10 +93,12 @@ public class Botones extends Fragment {
                 String nombre = list_datos.get(recycler.getChildAdapterPosition(v)).getNombre();
                 String precio = list_datos.get(recycler.getChildAdapterPosition(v)).getPrecio();
                 int imagen = list_datos.get(recycler.getChildAdapterPosition(v)).getImagen();
+                int stars = list_datos.get(recycler.getChildAdapterPosition(v)).getStars();
                 Intent infoProducto = new Intent(getActivity(), InfoProducto.class);
                 infoProducto.putExtra("nombre", nombre);
                 infoProducto.putExtra("precio", precio);
                 infoProducto.putExtra("image",imagen);
+                infoProducto.putExtra("stars", stars);
                 startActivity(infoProducto);
             }
         });
@@ -105,14 +107,14 @@ public class Botones extends Fragment {
     }
 
     public void llenarDatos(){
-        list_datos.add(new DatosVo("Botón home negro iPhone 7","$199",R.drawable.boton_home_iphone7_black));
-        list_datos.add(new DatosVo("Flez de botones Alcatel 5054","$219",R.drawable.flex_de_botones_alcatel_5054));
-        list_datos.add(new DatosVo("Botón Encendido iPhone 6","$349",R.drawable.flex_encendido_iphone6));
-        list_datos.add(new DatosVo("Flex encendido-volumen  Lanix L1120","$349",R.drawable.flex_encendido_volumen_lanix_l1120));
-        list_datos.add(new DatosVo("Botón Home Samsung Galaxy S7","$349",R.drawable.flexhome_samsungalaxys7));
-        list_datos.add(new DatosVo("Botón Home Samsung S811","$349",R.drawable.flex_home_samsung_s811));
-        list_datos.add(new DatosVo("Flex Moto E5 Plus","$349",R.drawable.flexmotoe5plus));
-        list_datos.add(new DatosVo("Flex completo iPad2","$349",R.drawable.sustitucion_flex_encendido_volumen_y_silencio_ipad_2));
+        list_datos.add(new DatosVo("Botón home negro iPhone 7","$199",R.drawable.boton_home_iphone7_black,5));
+        list_datos.add(new DatosVo("Flez de botones Alcatel 5054","$219",R.drawable.flex_de_botones_alcatel_5054,5));
+        list_datos.add(new DatosVo("Botón Encendido iPhone 6","$349",R.drawable.flex_encendido_iphone6,5));
+        list_datos.add(new DatosVo("Flex encendido-volumen  Lanix L1120","$349",R.drawable.flex_encendido_volumen_lanix_l1120,5));
+        list_datos.add(new DatosVo("Botón Home Samsung Galaxy S7","$349",R.drawable.flexhome_samsungalaxys7,5));
+        list_datos.add(new DatosVo("Botón Home Samsung S811","$349",R.drawable.flex_home_samsung_s811,5));
+        list_datos.add(new DatosVo("Flex Moto E5 Plus","$349",R.drawable.flexmotoe5plus,5));
+        list_datos.add(new DatosVo("Flex completo iPad2","$349",R.drawable.sustitucion_flex_encendido_volumen_y_silencio_ipad_2,5));
     }
 
     // TODO: Rename method, update argument and hook method into UI event

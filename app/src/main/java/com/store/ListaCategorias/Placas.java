@@ -93,10 +93,12 @@ public class Placas extends Fragment {
                 String nombre = list_datos.get(recycler.getChildAdapterPosition(v)).getNombre();
                 String precio = list_datos.get(recycler.getChildAdapterPosition(v)).getPrecio();
                 int imagen = list_datos.get(recycler.getChildAdapterPosition(v)).getImagen();
+                int stars = list_datos.get(recycler.getChildAdapterPosition(v)).getStars();
                 Intent infoProducto = new Intent(getActivity(), InfoProducto.class);
                 infoProducto.putExtra("nombre", nombre);
                 infoProducto.putExtra("precio", precio);
                 infoProducto.putExtra("image",imagen);
+                infoProducto.putExtra("stars", stars);
                 startActivity(infoProducto);
             }
         });
@@ -105,15 +107,15 @@ public class Placas extends Fragment {
     }
 
     public void llenarDatos(){
-        list_datos.add(new DatosVo("Lógica Alcatel OneTpuch","$229",R.drawable.alcatel_onetouch));
-        list_datos.add(new DatosVo("Lógica Huawei Y635121","$199",R.drawable.huawei_y635l21));
-        list_datos.add(new DatosVo("Lógica Lanix iliums 4020","$219",R.drawable.lanix_lliums4020));
-        list_datos.add(new DatosVo("Lógica Motorola G4 Plus","$349",R.drawable.motorola_g4plus));
-        list_datos.add(new DatosVo("Lógica Blu Advanced 4.2","$349",R.drawable.blu_advance4_2));
-        list_datos.add(new DatosVo("Lógica iPhone 6 plus","$349",R.drawable.iphone_6splus));
-        list_datos.add(new DatosVo("Lógica LG G3","$349",R.drawable.lg_g3));
-        list_datos.add(new DatosVo("Lógica Lumia 640","$349",R.drawable.nokia_lumia640xl));
-        list_datos.add(new DatosVo("Lógica Sony XPeria 35h","$349",R.drawable.sony_xperiam35h));
+        list_datos.add(new DatosVo("Lógica Alcatel OneTpuch","$229",R.drawable.alcatel_onetouch,4));
+        list_datos.add(new DatosVo("Lógica Huawei Y635121","$199",R.drawable.huawei_y635l21,4));
+        list_datos.add(new DatosVo("Lógica Lanix iliums 4020","$219",R.drawable.lanix_lliums4020,4));
+        list_datos.add(new DatosVo("Lógica Motorola G4 Plus","$349",R.drawable.motorola_g4plus,4));
+        list_datos.add(new DatosVo("Lógica Blu Advanced 4.2","$349",R.drawable.blu_advance4_2,4));
+        list_datos.add(new DatosVo("Lógica iPhone 6 plus","$349",R.drawable.iphone_6splus,4));
+        list_datos.add(new DatosVo("Lógica LG G3","$349",R.drawable.lg_g3,4));
+        list_datos.add(new DatosVo("Lógica Lumia 640","$349",R.drawable.nokia_lumia640xl,4));
+        list_datos.add(new DatosVo("Lógica Sony XPeria 35h","$349",R.drawable.sony_xperiam35h,4));
     }
 
     // TODO: Rename method, update argument and hook method into UI event

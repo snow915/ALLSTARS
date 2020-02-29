@@ -4,15 +4,17 @@ public class DatosVo {
     private String nombre;
     private String precio;
     private int imagen;
+    private int stars;
 
     public DatosVo(){
 
     }
 
-    public DatosVo(String nombre, String precio, int imagen) {
+    public DatosVo(String nombre, String precio, int imagen, int stars) {
         this.nombre = nombre;
         this.precio = precio;
         this.imagen = imagen;
+        this.stars = stars;
     }
 
     public String getNombre() {
@@ -37,5 +39,13 @@ public class DatosVo {
 
     public void setImagen(int imagen) {
         this.imagen = imagen;
+    }
+
+    public int getStars() {
+        return stars;
+    }
+
+    public void setStars(int stars) {
+        this.stars = imagen;
     }
 }

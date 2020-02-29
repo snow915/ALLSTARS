@@ -93,10 +93,12 @@ public class Altavoces extends Fragment {
                 String nombre = list_datos.get(recycler.getChildAdapterPosition(v)).getNombre();
                 String precio = list_datos.get(recycler.getChildAdapterPosition(v)).getPrecio();
                 int imagen = list_datos.get(recycler.getChildAdapterPosition(v)).getImagen();
+                int stars = list_datos.get(recycler.getChildAdapterPosition(v)).getStars();
                 Intent infoProducto = new Intent(getActivity(), InfoProducto.class);
                 infoProducto.putExtra("nombre", nombre);
                 infoProducto.putExtra("precio", precio);
                 infoProducto.putExtra("image",imagen);
+                infoProducto.putExtra("stars", stars);
                 startActivity(infoProducto);
             }
         });
@@ -105,14 +107,14 @@ public class Altavoces extends Fragment {
     }
 
     public void llenarDatos(){
-        list_datos.add(new DatosVo("Altavoz Alcatel OneTouch 3","$229",R.drawable.alcatel_onetouchc3));
-        list_datos.add(new DatosVo("Altavoz Huawei Ascend","$219",R.drawable.huawei_ascend));
-        list_datos.add(new DatosVo("Altavoz iPhone 4","$349",R.drawable.iphone_4));
-        list_datos.add(new DatosVo("Altavoz Lenovo K5","$349",R.drawable.lenovo_k5));
-        list_datos.add(new DatosVo("Altavoz LG XStylek200","$349",R.drawable.lg_xstylek200));
-        list_datos.add(new DatosVo("Altavoz Moto G4","$349",R.drawable.motorola_motog4));
-        list_datos.add(new DatosVo("Altavoz Nokia 5310","$349",R.drawable.nokia_5310));
-        list_datos.add(new DatosVo("Altavoz Samsung J5 Metal","$349",R.drawable.samsung_j5metal));
+        list_datos.add(new DatosVo("Altavoz Alcatel OneTouch 3","$229",R.drawable.alcatel_onetouchc3,5));
+        list_datos.add(new DatosVo("Altavoz Huawei Ascend","$219",R.drawable.huawei_ascend,5));
+        list_datos.add(new DatosVo("Altavoz iPhone 4","$349",R.drawable.iphone_4,5));
+        list_datos.add(new DatosVo("Altavoz Lenovo K5","$349",R.drawable.lenovo_k5,5));
+        list_datos.add(new DatosVo("Altavoz LG XStylek200","$349",R.drawable.lg_xstylek200,5));
+        list_datos.add(new DatosVo("Altavoz Moto G4","$349",R.drawable.motorola_motog4,5));
+        list_datos.add(new DatosVo("Altavoz Nokia 5310","$349",R.drawable.nokia_5310,5));
+        list_datos.add(new DatosVo("Altavoz Samsung J5 Metal","$349",R.drawable.samsung_j5metal,5));
    }
 
     // TODO: Rename method, update argument and hook method into UI event

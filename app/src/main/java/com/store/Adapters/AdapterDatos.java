@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -36,6 +37,7 @@ public class AdapterDatos extends RecyclerView.Adapter<AdapterDatos.ViewHolderDa
         holder.nombre.setText(list_datos.get(position).getNombre());
         holder.precio.setText(list_datos.get(position).getPrecio());
         holder.imagen.setImageResource(list_datos.get(position).getImagen());
+        holder.stars.setRating(list_datos.get(position).getStars());
     }
 
     @Override
@@ -59,12 +61,14 @@ public class AdapterDatos extends RecyclerView.Adapter<AdapterDatos.ViewHolderDa
         TextView nombre;
         TextView precio;
         ImageView imagen;
+        RatingBar stars;
 
         public ViewHolderDatos(@NonNull View itemView) {
             super(itemView);
             nombre = (TextView) itemView.findViewById(R.id.idNombre);
             precio = (TextView) itemView.findViewById(R.id.idPrecio);
             imagen = (ImageView) itemView.findViewById(R.id.idImagen);
+            stars = (RatingBar) itemView.findViewById(R.id.ratingStars);
         }
     }
 }

@@ -85,12 +85,7 @@ public class Login extends AppCompatActivity {
             }
         });
     }
-    private void addMenuItemLogOut(){
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        View header = navigationView.getHeaderView(0);
-        navigationView.getMenu().findItem(R.id.nav_signin).setVisible(false);
-        navigationView.getMenu().findItem(R.id.nav_send).setVisible(true);
-    }
+
     private boolean validate_fields(EditText user, EditText pass){
         if (user.getText().toString().equals("")){
             user.setError("Required");

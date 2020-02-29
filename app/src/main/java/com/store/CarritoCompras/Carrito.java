@@ -108,15 +108,16 @@ public class Carrito extends Fragment {
     }
 
     public void llenarDatos() {
-        AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(getActivity(), "carrito", null, 3);
+        AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(getActivity(), "carrito", null, 4);
         SQLiteDatabase db = admin.getWritableDatabase();
-        Cursor fila = db.rawQuery("SELECT tituloProducto, precioProducto, idImagen FROM Carrito", null);
+        Cursor fila = db.rawQuery("SELECT tituloProducto, precioProducto, idImagen, idStars FROM Carrito", null);
         if (fila.moveToFirst()) {
             do {
                 String nombre = fila.getString(fila.getColumnIndex("tituloProducto"));
                 String precio = fila.getString(fila.getColumnIndex("precioProducto"));
                 int imagen = fila.getInt(fila.getColumnIndex("idImagen"));
-                list_datos.add(new DatosVo(nombre, precio, imagen));
+                int stars = fila.getInt(fila.getColumnIndex("idStars"));
+                list_datos.add(new DatosVo(nombre, precio, imagen, stars));
             } while (fila.moveToNext());
         }
         db.close();

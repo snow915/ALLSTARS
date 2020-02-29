@@ -93,10 +93,12 @@ public class Pantallas extends Fragment {
                 String nombre = list_datos.get(recycler.getChildAdapterPosition(v)).getNombre();
                 String precio = list_datos.get(recycler.getChildAdapterPosition(v)).getPrecio();
                 int imagen = list_datos.get(recycler.getChildAdapterPosition(v)).getImagen();
+                int stars = list_datos.get(recycler.getChildAdapterPosition(v)).getStars();
                 Intent infoProducto = new Intent(getActivity(), InfoProducto.class);
                 infoProducto.putExtra("nombre", nombre);
                 infoProducto.putExtra("precio", precio);
                 infoProducto.putExtra("image",imagen);
+                infoProducto.putExtra("stars", stars);
                 startActivity(infoProducto);
             }
         });
@@ -105,12 +107,12 @@ public class Pantallas extends Fragment {
     }
 
     public void llenarDatos(){
-        list_datos.add(new DatosVo("Pantalla Alcatel Idol 3","$399",R.drawable.pantalla_alcatel_idol));
-        list_datos.add(new DatosVo("Pantalla Huawei P30","$1,119",R.drawable.pantalla_huaweip30));
-        list_datos.add(new DatosVo("Pantalla iPhone 4","$329",R.drawable.pantalla_iphone_4));
-        list_datos.add(new DatosVo("Pantalla LG K30 X410","$799",R.drawable.pantalla_lgk30));
-        list_datos.add(new DatosVo("Pantalla Moto G3","$299",R.drawable.pantalla_motog3));
-        list_datos.add(new DatosVo("Pantalla Samsung J7 J700","$449",R.drawable.pantalla_samsung_j7));
+        list_datos.add(new DatosVo("Pantalla Alcatel Idol 3","$399",R.drawable.pantalla_alcatel_idol,5));
+        list_datos.add(new DatosVo("Pantalla Huawei P30","$1,119",R.drawable.pantalla_huaweip30,5));
+        list_datos.add(new DatosVo("Pantalla iPhone 4","$329",R.drawable.pantalla_iphone_4,5));
+        list_datos.add(new DatosVo("Pantalla LG K30 X410","$799",R.drawable.pantalla_lgk30,5));
+        list_datos.add(new DatosVo("Pantalla Moto G3","$299",R.drawable.pantalla_motog3,5));
+        list_datos.add(new DatosVo("Pantalla Samsung J7 J700","$449",R.drawable.pantalla_samsung_j7,5));
     }
 
     // TODO: Rename method, update argument and hook method into UI event
