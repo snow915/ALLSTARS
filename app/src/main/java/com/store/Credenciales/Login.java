@@ -3,6 +3,7 @@ package com.store.Credenciales;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -15,6 +16,8 @@ import com.store.Register;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import android.widget.Button;
@@ -81,6 +84,12 @@ public class Login extends AppCompatActivity {
 
             }
         });
+    }
+    private void addMenuItemLogOut(){
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        View header = navigationView.getHeaderView(0);
+        navigationView.getMenu().findItem(R.id.nav_signin).setVisible(false);
+        navigationView.getMenu().findItem(R.id.nav_send).setVisible(true);
     }
     private boolean validate_fields(EditText user, EditText pass){
         if (user.getText().toString().equals("")){

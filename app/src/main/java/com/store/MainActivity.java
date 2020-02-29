@@ -31,6 +31,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.view.Menu;
+import android.view.View;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        String userid = getIntent().getStringExtra("user_id");
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -66,6 +68,12 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+        if(userid != null){
+            NavigationView navView = findViewById(R.id.nav_view);
+            View header = navView.getHeaderView(0);
+            navView.getMenu().findItem(R.id.nav_signin).setVisible(false);
+            navView.getMenu().findItem(R.id.nav_send).setVisible(true);
+        }
         carousel = new Carrusel();
         mi_fragment = new index();
         getSupportFragmentManager().beginTransaction().replace(R.id.content_main, mi_fragment).commit();
@@ -151,9 +159,8 @@ public class MainActivity extends AppCompatActivity
                 fragment_seleccionado = true;
             }
         } else if (id == R.id.nav_signin) {
-            Intent intent = new Intent(this, Register.class);
+            Intent intent = new Intent(this, Login.class);
             startActivity(intent);
-            finish();
         }
 
         if (fragment_seleccionado) {
