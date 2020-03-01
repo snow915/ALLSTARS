@@ -65,6 +65,10 @@
     <string name="sign_in">Sign in</string>
     <string name="sign_up">Sign up</string>
 
+    <string name="btn_bio">Biografía</string>
+    <string name="btn_favoritos">Añadir a favoritos</string>
+    <string name="btn_contratar">Contratar</string>
+
     <string name="profile_title">Profile</string>
 
     <string-array name="array_sex">

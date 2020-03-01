@@ -106,39 +106,39 @@ public class Categorias extends Fragment {
                 boolean fragment_seleccionado = false;
 
                 switch(categoriaSeleccionada){
-                    case "Pantallas":
+                    case "Musica":
                         nuevoFragment = new Pantallas();
                         fragment_seleccionado = true;
                         break;
-                    case "Display":
+                    case "Cine":
                         nuevoFragment = new Display();
                         fragment_seleccionado = true;
                         break;
-                    case "Touch":
+                    case "Stand Up":
                         nuevoFragment = new Cristales();
                         fragment_seleccionado = true;
                         break;
-                    case "Baterias":
+                    case "Youtubers":
                         nuevoFragment = new Baterias();
                         fragment_seleccionado = true;
                         break;
-                    case "Placas":
+                    case "Reality Shows":
                         nuevoFragment = new Placas();
                         fragment_seleccionado = true;
                         break;
-                    case "Altavoces":
+                    case "Deportes":
                         nuevoFragment = new Altavoces();
                         fragment_seleccionado = true;
                         break;
-                    case "Botones":
+                    case "Conductores":
                         nuevoFragment = new Botones();
                         fragment_seleccionado = true;
                         break;
-                    case "Camaras":
+                    case "Comedia":
                         nuevoFragment = new Camaras();
                         fragment_seleccionado = true;
                         break;
-                    case "Auriculares":
+                    case "Telenovelas":
                         nuevoFragment = new Auriculares();
                         fragment_seleccionado = true;
                         break;
@@ -155,15 +155,15 @@ public class Categorias extends Fragment {
     }
 
     public void llenarDatos(){
-        list_categorias.add(new CategoriasVo("Pantallas",R.drawable.pantalla));
-        list_categorias.add(new CategoriasVo("Display",R.drawable.display));
-        list_categorias.add(new CategoriasVo("Touch",R.drawable.touch));
-        list_categorias.add(new CategoriasVo("Baterias",R.drawable.pilas));
-        list_categorias.add(new CategoriasVo("Placas",R.drawable.tarjeta));
-        list_categorias.add(new CategoriasVo("Altavoces",R.drawable.altavoz));
-        list_categorias.add(new CategoriasVo("Botones",R.drawable.botones));
-        list_categorias.add(new CategoriasVo("Camaras",R.drawable.camaras));
-        list_categorias.add(new CategoriasVo("Auriculares",R.drawable.auricular));
+        list_categorias.add(new CategoriasVo("Musica",R.drawable.musica));
+        list_categorias.add(new CategoriasVo("Cine",R.drawable.cine));
+        list_categorias.add(new CategoriasVo("Stand Up",R.drawable.standup));
+        list_categorias.add(new CategoriasVo("Youtubers",R.drawable.youtube));
+        list_categorias.add(new CategoriasVo("Reality Shows",R.drawable.reallity));
+        list_categorias.add(new CategoriasVo("Deportes",R.drawable.deportes));
+        list_categorias.add(new CategoriasVo("Conductores",R.drawable.conductores));
+        list_categorias.add(new CategoriasVo("Comedia",R.drawable.comedia));
+        list_categorias.add(new CategoriasVo("Telenovelas",R.drawable.telenovelas));
     }
 
     // TODO: Rename method, update argument and hook method into UI event

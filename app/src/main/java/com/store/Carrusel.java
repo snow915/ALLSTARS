@@ -36,13 +36,13 @@ public class Carrusel extends Fragment {
     private String mParam2;
 
     private int imagenes[] = new int[]{
-            R.drawable.banner1,
-            R.drawable.banner2,
-            R.drawable.banner3
+            R.drawable.conciertocarlos,
+            R.drawable.badabun,
+            R.drawable.capi
     };
 
     private String nombres[] = new String[]{
-            "OFERTAS", "OFERTAS", "OFERTAS"
+            "Carlos Rivera", "OFERTAS", "OFERTAS"
     };
 
     private OnFragmentInteractionListener mListener;

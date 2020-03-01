@@ -104,11 +104,10 @@ public class index extends Fragment {
     }
 
     public void llenarDatos(){
-        list_datos.add(new DatosVo("Mia Khalifa","Actriz",R.drawable.mia,  5));
+        list_datos.add(new DatosVo("Yuya","Youtuber",R.drawable.yuya,  5));
         list_datos.add(new DatosVo("Franco Escamilla","Stand up",R.drawable.francoescamilla,  3));
         list_datos.add(new DatosVo("Guerra de chistes","Comediante",R.drawable.guerrachistes, 3));
-        list_datos.add(new DatosVo("Daddy Yankee","Cantante",R.drawable.daddyyankee,  4));
-        list_datos.add(new DatosVo("Johny Sins","Actor",R.drawable.johnysins,  4));
+        list_datos.add(new DatosVo("Danna Paola","Cantante, Actriz",R.drawable.danna,  4));
         list_datos.add(new DatosVo("Dharius","Cantante",R.drawable.dha,  3));
     }
 

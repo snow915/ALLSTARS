@@ -21,6 +21,8 @@ import android.os.Bundle;
 
 import com.store.CarritoCompras.AdminSQLiteOpenHelper;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class InfoProducto extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     Button moreInfo;
@@ -59,8 +61,12 @@ public class InfoProducto extends AppCompatActivity implements AdapterView.OnIte
         moreInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog dialog = makeDialog();
-                dialog.show();
+                //AlertDialog dialog = makeDialog();
+                //dialog.show();
+                new SweetAlertDialog(InfoProducto.this, SweetAlertDialog.NORMAL_TYPE)
+                        .setTitleText(nombreIntent)
+                        .setContentText("Here's a custom image.")
+                        .show();
             }
         });
 
