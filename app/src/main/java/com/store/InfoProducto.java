@@ -65,7 +65,7 @@ public class InfoProducto extends AppCompatActivity implements AdapterView.OnIte
                 //dialog.show();
                 new SweetAlertDialog(InfoProducto.this, SweetAlertDialog.NORMAL_TYPE)
                         .setTitleText(nombreIntent)
-                        .setContentText("Here's a custom image.")
+                        .setContentText("Texto de su biografía.")
                         .show();
             }
         });
@@ -79,7 +79,7 @@ public class InfoProducto extends AppCompatActivity implements AdapterView.OnIte
     }
 
     public void agregarProducto(View v){
-        AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "carrito", null, 3);
+        AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "carrito", null, 4);
         SQLiteDatabase db = admin.getWritableDatabase();
         ContentValues registro = new ContentValues();
         registro.put("tituloProducto",nombreIntent);

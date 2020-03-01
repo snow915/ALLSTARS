@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +15,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.store.Adapters.AdapterDatos;
 import com.store.Vo.DatosVo;
 
@@ -39,7 +45,7 @@ public class index extends Fragment {
     private String mParam2;
     ArrayList<DatosVo> list_datos;
     RecyclerView recycler;
-
+    //DatabaseReference reference;
     private OnFragmentInteractionListener mListener;
 
     public index() {
@@ -104,6 +110,23 @@ public class index extends Fragment {
     }
 
     public void llenarDatos(){
+        /*
+        reference = FirebaseDatabase.getInstance().getReference("data");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
+                    DatosVo datos = postSnapshot.getValue(DatosVo.class);
+                    list_datos.add(datos);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        */
         list_datos.add(new DatosVo("Yuya","Youtuber",R.drawable.yuya,  5));
         list_datos.add(new DatosVo("Franco Escamilla","Stand up",R.drawable.francoescamilla,  3));
         list_datos.add(new DatosVo("Guerra de chistes","Comediante",R.drawable.guerrachistes, 3));

@@ -96,10 +96,12 @@ public class Carrito extends Fragment {
                 String nombre = list_datos.get(recycler.getChildAdapterPosition(v)).getNombre();
                 String precio = list_datos.get(recycler.getChildAdapterPosition(v)).getPrecio();
                 int imagen = list_datos.get(recycler.getChildAdapterPosition(v)).getImagen();
+                int stars = list_datos.get(recycler.getChildAdapterPosition(v)).getStars();
                 Intent infoProducto = new Intent(getActivity(), InfoProducto.class);
                 infoProducto.putExtra("nombre", nombre);
                 infoProducto.putExtra("precio", precio);
                 infoProducto.putExtra("image", imagen);
+                infoProducto.putExtra("stars", stars);
                 startActivity(infoProducto);
             }
         });
@@ -110,7 +112,7 @@ public class Carrito extends Fragment {
     public void llenarDatos() {
         AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(getActivity(), "carrito", null, 4);
         SQLiteDatabase db = admin.getWritableDatabase();
-        Cursor fila = db.rawQuery("SELECT tituloProducto, precioProducto, idImagen, idStars FROM Carrito", null);
+        Cursor fila = db.rawQuery("SELECT * FROM Carrito", null);
         if (fila.moveToFirst()) {
             do {
                 String nombre = fila.getString(fila.getColumnIndex("tituloProducto"));
