@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <CheckBox
+        android:id="@+id/id_musica"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cat_musica" />
+
+    <CheckBox
+        android:id="@+id/id_cine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cat_cine" />
+
+    <CheckBox
+        android:id="@+id/id_standup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cat_standup" />
+
+    <CheckBox
+        android:id="@+id/id_youtubers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cat_youtubers" />
+
+    <CheckBox
+        android:id="@+id/id_reality"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cat_reality" />
+
+    <CheckBox
+        android:id="@+id/id_deportes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cat_deportes" />
+
+    <CheckBox
+        android:id="@+id/id_conductores"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cat_conductores" />
+
+    <CheckBox
+        android:id="@+id/id_comedia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cat_comedia" />
+
+    <CheckBox
+        android:id="@+id/id_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cat_tv" />
+
+</LinearLayout>

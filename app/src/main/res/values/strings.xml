@@ -81,6 +81,16 @@
     <string name="alert_success_signup">Successful registration</string>
     <string name="okay">Okay</string>
 
+    <string name="cat_musica">Musica</string>
+    <string name="cat_cine">Cine</string>
+    <string name="cat_standup">Stand Up</string>
+    <string name="cat_youtubers">Youtubers</string>
+    <string name="cat_reality">Reality Shows</string>
+    <string name="cat_deportes">Deportes</string>
+    <string name="cat_conductores">Conductores</string>
+    <string name="cat_comedia">Comedia</string>
+    <string name="cat_tv">Telenovelas</string>
+
     <!-- TODO: Remove or change this placeholder text -->
 
 </resources>

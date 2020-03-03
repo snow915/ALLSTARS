@@ -3,12 +3,14 @@ package com.store;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -62,6 +64,34 @@ public class Register extends AppCompatActivity implements AdapterView.OnItemSel
             @Override
             public void onClick(View v) {
                 if(validations()){
+                    //View chec = View.inflate(getApplicationContext(), R.layout.checkbox, null);
+                    //CheckBox checkBox = (CheckBox) chec.findViewById(R.id.);
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+                    builder.setTitle("Escoge una o varias categorias");
+
+                    //Añadimos una lista de checkbox
+                    String[] categorias = {"Hola","mundo","jajaj"};
+                    boolean[] checkeditems = {true,false,true};
+                    builder.setMultiChoiceItems(categorias, checkeditems, new DialogInterface.OnMultiChoiceClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+
+                        }
+                    });
+
+                    // Add OK and Cancel buttons
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // The user clicked OK
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", null);
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                    /*
                     u.setUid(user.getText().toString());
                     u.setNombre(nombre.getText().toString());
                     u.setApellido(apellido.getText().toString());
@@ -69,8 +99,7 @@ public class Register extends AppCompatActivity implements AdapterView.OnItemSel
                     u.setTelefono(telefono.getText().toString());
                     u.setUser(user.getText().toString());
                     u.setPass(pass.getText().toString());
-                    u.setSexo(sexo.getSelectedItem().toString());
-                    user_exist(user.getText().toString());
+                    u.setSexo(sexo.getSelectedItem().toString());*/
                 }
             }
         });
@@ -160,7 +189,7 @@ public class Register extends AppCompatActivity implements AdapterView.OnItemSel
                 if (dataSnapshot.exists()) {
                     new SweetAlertDialog(Register.this, SweetAlertDialog.ERROR_TYPE)
                             .setTitleText("Ouch!")
-                            .setContentText("TThe user already exists!")
+                            .setContentText("The user already exists!")
                             .hideConfirmButton()
                             .setCancelText("Ok")
                             .show();
