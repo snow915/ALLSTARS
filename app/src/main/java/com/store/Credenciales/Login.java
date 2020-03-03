@@ -68,9 +68,11 @@ public class Login extends AppCompatActivity {
                 if (dataSnapshot.exists()) {
                     String retrieved_password = dataSnapshot.child("pass").getValue().toString();
                     if (password.equals(retrieved_password)){
+                        String user_name = dataSnapshot.child("nombre").getValue().toString();
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         Bundle bundle =  new Bundle();
                         bundle.putString("user_id", userd);
+                        bundle.putString("user_name", user_name);
                         intent.putExtras(bundle);
                         startActivity(intent);
                     }
