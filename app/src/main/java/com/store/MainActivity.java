@@ -111,7 +111,9 @@ public class MainActivity extends AppCompatActivity
             user_text.setText( welcome_message + " " +user_name);
             go_to_profile(user_id, user_image);
         }
-        show_error_message(user_image);
+        else {
+            show_error_message(user_image);
+        }
         return true;
     }
 
@@ -230,7 +232,7 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View v) {
                 new SweetAlertDialog(MainActivity.this, SweetAlertDialog.ERROR_TYPE)
                         .setTitleText("Ouch!")
-                        .setContentText("No pudes acceder al perfil si no estás registrado!")
+                        .setContentText("No pudes acceder al perfil si no has iniciado sesión!")
                         .hideConfirmButton()
                         .setCancelText("Ok")
                         .show();
