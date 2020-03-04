@@ -70,7 +70,7 @@
     <string name="btn_favoritos">Añadir a favoritos</string>
     <string name="btn_contratar">Contratar</string>
 
-    <string name="profile_title">Profile</string>
+    <string name="profile_title">Perfil</string>
 
     <string-array name="array_sex">
         <item>Gender</item>

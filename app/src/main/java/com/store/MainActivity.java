@@ -84,8 +84,8 @@ public class MainActivity extends AppCompatActivity
         }
         carousel = new Carrusel();
         mi_fragment = new index();
-        getSupportFragmentManager().beginTransaction().replace(R.id.content_main, mi_fragment).commit();
-        getSupportFragmentManager().beginTransaction().replace(R.id.content_main_carrusel, carousel).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.content_main, mi_fragment).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.content_main_carrusel, carousel).commit();
     }
 
     @Override
@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity
             carousel = new Carrusel();
             mi_fragment = new index();
             fragment_seleccionado = true;
-            getSupportFragmentManager().beginTransaction().replace(R.id.content_main_carrusel, carousel).addToBackStack(null).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_main_carrusel, carousel).commit();
         } else if (id == R.id.nav_gallery) {
             if (carousel != null) {
                 carousel = null;
@@ -186,7 +186,7 @@ public class MainActivity extends AppCompatActivity
         if (fragment_seleccionado) {
             //getSupportFragmentManager().popBackStack();
             //getSupportFragmentManager().beginTransaction().replace(R.id.content_main, mi_fragment).addToBackStack(null).commit();
-            getSupportFragmentManager().beginTransaction().replace(R.id.content_main, mi_fragment).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_main, mi_fragment).addToBackStack(null).commit();
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
