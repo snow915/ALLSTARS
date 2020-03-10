@@ -1,5 +1,6 @@
 package com.store;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
@@ -74,6 +75,15 @@ public class InfoProducto extends AppCompatActivity implements AdapterView.OnIte
             @Override
             public void onClick(View v) {
                 agregarProducto(v);
+            }
+        });
+
+        buy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getApplicationContext(), Calendar.class);
+                startActivity(intent);
+
             }
         });
     }
