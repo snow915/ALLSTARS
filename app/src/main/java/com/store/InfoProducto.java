@@ -1,4 +1,6 @@
 package com.store;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,22 +11,31 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
 import android.os.Bundle;
 
 import com.store.CarritoCompras.AdminSQLiteOpenHelper;
 
+import java.text.DateFormat;
+import java.util.Calendar;
+
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-public class InfoProducto extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+public class InfoProducto extends AppCompatActivity implements
+        AdapterView.OnItemSelectedListener,
+        DatePickerDialog.OnDateSetListener,
+        TimePickerDialog.OnTimeSetListener {
 
     Button moreInfo;
     Button buy;
@@ -81,11 +92,28 @@ public class InfoProducto extends AppCompatActivity implements AdapterView.OnIte
         buy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getApplicationContext(), Calendar.class);
-                startActivity(intent);
+                DialogFragment datePicker = new DatePickerFragment();
+                datePicker.show(getSupportFragmentManager(), "date picker");
 
             }
         });
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.YEAR, year);
+        c.set(Calendar.MONTH, month);
+        c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        String currentDateString = DateFormat.getDateInstance(DateFormat.FULL).format(c.getTime());
+        //Iniciamos para la hora
+        DialogFragment timePicker = new TimePickerFragment();
+        timePicker.show(getSupportFragmentManager(), "time picker");
+    }
+
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
     }
 
     public void agregarProducto(View v){
