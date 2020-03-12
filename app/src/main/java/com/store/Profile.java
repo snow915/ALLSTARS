@@ -72,6 +72,8 @@ public class Profile extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        String user_id = getArguments().getString("user_id");
+        get_user_data(user_id);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -89,8 +91,6 @@ public class Profile extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        String user_id = getArguments().getString("user_id");
-        get_user_data(user_id);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -103,17 +103,12 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-        user_image = findViewById(R.id.user_image);
         String user_id = getIntent().getStringExtra("user_id");
         if (user_id != null){
             String user_name = getIntent().getStringExtra("user_name");
             String welcome_message = getString(R.string.welcome_message);
             TextView user_text = findViewById(R.id.no_logged_user_name);
             user_text.setText( welcome_message + " " +user_name);
-            go_to_profile(user_id, user_image);
-        }
-        else {
-            show_error_message(user_image);
         }
         return true;
     }
@@ -182,7 +177,26 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_signin) {
             Intent intent = new Intent(this, Login.class);
             startActivity(intent);
+        }   else if (id == R.id.nav_profile) {
+            if (carousel != null) {
+                carousel = null;
+                getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().findFragmentById(R.id.content_main_carrusel)).commit();
+                mi_fragment = new Profile();
+                String user_id = getIntent().getStringExtra("user_id");
+                Bundle b = new Bundle();
+                b.putString("user_id", user_id);
+                mi_fragment.setArguments(b);
+                fragment_seleccionado = true;
+            } else {
+                mi_fragment = new Profile();
+                String user_id = getIntent().getStringExtra("user_id");
+                Bundle b = new Bundle();
+                b.putString("user_id", user_id);
+                mi_fragment.setArguments(b);
+                fragment_seleccionado = true;
+            }
         }
+
 
         if (fragment_seleccionado) {
             //getSupportFragmentManager().popBackStack();
@@ -198,34 +212,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onFragmentInteraction(Uri uri) {
 
-    }
-    public void go_to_profile(final String user_id, ImageView user_image){
-        user_image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (carousel != null) {
-                    carousel = null;
-                    getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().findFragmentById(R.id.content_main_carrusel)).commit();
-                    mi_fragment = new Profile();
-                    Bundle b = new Bundle();
-                    b.putString("user_id", user_id);
-                    mi_fragment.setArguments(b);
-                    fragment_seleccionado = true;
-                } else {
-                    mi_fragment = new Profile();
-                    fragment_seleccionado = true;
-                }
-                if (fragment_seleccionado) {
-                    //getSupportFragmentManager().popBackStack();
-                    //getSupportFragmentManager().beginTransaction().replace(R.id.content_main, mi_fragment).addToBackStack(null).commit();
-                    getSupportFragmentManager().
-                            beginTransaction().
-                            replace(R.id.content_main, mi_fragment).
-                            addToBackStack(null).
-                            commit();
-                }
-            }
-        });
     }
     public void show_error_message(ImageView user_image){
         user_image.setOnClickListener(new View.OnClickListener() {
