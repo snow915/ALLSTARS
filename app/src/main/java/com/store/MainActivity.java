@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity
             View header = navView.getHeaderView(0);
             navView.getMenu().findItem(R.id.nav_signin).setVisible(false);
             navView.getMenu().findItem(R.id.nav_send).setVisible(true);
+            navView.getMenu().findItem(R.id.nav_profile).setVisible(true);
         }
         carousel = new Carrusel();
         mi_fragment = new index();
