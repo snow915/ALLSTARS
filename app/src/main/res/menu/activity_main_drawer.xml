@@ -9,6 +9,11 @@
             android:icon="@drawable/ic_house"
             android:title="@string/menu_home" />
         <item
+            android:id="@+id/nav_profile"
+            android:visible="false"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="@string/menu_profile" />
+        <item
             android:id="@+id/nav_gallery"
             android:icon="@drawable/ic_menu_gallery"
             android:title="@string/menu_categorias" />
