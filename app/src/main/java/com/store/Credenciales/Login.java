@@ -1,6 +1,8 @@
 package com.store.Credenciales;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.google.android.material.navigation.NavigationView;
@@ -69,6 +71,7 @@ public class Login extends AppCompatActivity {
                     String retrieved_password = dataSnapshot.child("pass").getValue().toString();
                     if (password.equals(retrieved_password)){
                         String user_name = dataSnapshot.child("nombre").getValue().toString();
+                        save_preferences(user_name);
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         Bundle bundle =  new Bundle();
                         bundle.putString("user_id", userd);
@@ -97,5 +100,14 @@ public class Login extends AppCompatActivity {
             return false;
         }
         return true;
+    }
+
+    private void save_preferences(String username){
+        SharedPreferences preferences = getSharedPreferences("credentials", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor=preferences.edit();
+        editor.putString("user",user.getText().toString());
+        editor.putString("pass",password.getText().toString());
+        editor.putString("username", username);
+        editor.commit();
     }
 }

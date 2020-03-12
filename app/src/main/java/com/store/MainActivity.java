@@ -1,4 +1,5 @@
 package com.store;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -60,15 +61,20 @@ public class MainActivity extends AppCompatActivity
     Fragment carousel = null;
     boolean fragment_seleccionado = false;
     ImageView user_image = null;
-
+    String user = null;
+    String pass = null;
+    String username = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        load_preferences();
         String userid = getIntent().getStringExtra("user_id");
-
+        if(user != null && pass != null){
+            userid = user;
+        }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -88,6 +94,22 @@ public class MainActivity extends AppCompatActivity
         getSupportFragmentManager().beginTransaction().add(R.id.content_main_carrusel, carousel).commit();
     }
 
+    private void load_preferences(){
+        SharedPreferences preferences = getSharedPreferences("credentials", Context.MODE_PRIVATE);
+        user = preferences.getString("user",null);
+        pass = preferences.getString("pass",null);
+        username = preferences.getString("username", null);
+    }
+
+    private void save_preferences(){
+        SharedPreferences preferences = getSharedPreferences("credentials", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor=preferences.edit();
+        editor.putString("user",null);
+        editor.putString("pass", null);
+        editor.putString("username", null);
+        editor.commit();
+    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -104,8 +126,13 @@ public class MainActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.main, menu);
         user_image = findViewById(R.id.user_image);
         String user_id = getIntent().getStringExtra("user_id");
+        String user_name = getIntent().getStringExtra("user_name");
+        if(user != null && pass != null){
+            user_id = user;
+            user_name = username;
+        }
         if (user_id != null){
-            String user_name = getIntent().getStringExtra("user_name");
+
             String welcome_message = getString(R.string.welcome_message);
             TextView user_text = findViewById(R.id.no_logged_user_name);
             user_text.setText( welcome_message + " " +user_name);
@@ -165,6 +192,7 @@ public class MainActivity extends AppCompatActivity
                 fragment_seleccionado = true;
             }
         } else if (id == R.id.nav_send) {
+            save_preferences();
             Intent intent = new Intent(this, Login.class);
             startActivity(intent);
             finish();
