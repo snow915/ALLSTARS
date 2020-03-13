@@ -93,6 +93,15 @@
                 android:background="@color/colorInfo2"
                 android:text="@string/btn_bio"
                 android:textColor="@color/colorWhite" />
+
+            <Button
+                android:id="@+id/precios"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="13dp"
+                android:background="@color/colorStars"
+                android:text="@string/btn_precios"
+                android:textColor="@color/colorWhite" />
         </LinearLayout>
     </ScrollView>
 

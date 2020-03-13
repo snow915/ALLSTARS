@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
+import androidx.appcompat.app.AlertDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -40,6 +41,7 @@ public class InfoProducto extends AppCompatActivity implements
     Button moreInfo;
     Button buy;
     Button add;
+    Button precios;
     TextView titulo;
     TextView precio;
     ImageView imagen;
@@ -56,6 +58,7 @@ public class InfoProducto extends AppCompatActivity implements
         moreInfo = findViewById(R.id.detalles);
         buy = findViewById(R.id.comprar);
         add = findViewById(R.id.agregar);
+        precios = findViewById(R.id.precios);
         titulo = findViewById(R.id.titulo);
         precio = findViewById(R.id.precio);
         imagen = findViewById(R.id.imagen);
@@ -97,6 +100,20 @@ public class InfoProducto extends AppCompatActivity implements
 
             }
         });
+
+        precios.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog dialog = tablePrices();
+                dialog.show();
+            }
+        });
+    }
+
+    public AlertDialog tablePrices() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(R.layout.prices);
+        return builder.create();
     }
 
     @Override
@@ -126,7 +143,7 @@ public class InfoProducto extends AppCompatActivity implements
         registro.put("idStars", stars);
         db.insert("Carrito",null, registro);
         db.close();
-        Toast.makeText(this,"Agregado al carrito",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"Agregado a favoritos",Toast.LENGTH_SHORT).show();
     }
 
     @Override
