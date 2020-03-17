@@ -69,7 +69,7 @@ public class Register extends AppCompatActivity implements AdapterView.OnItemSel
                     u.setTelefono(telefono.getText().toString());
                     u.setUser(user.getText().toString());
                     u.setPass(pass.getText().toString());
-                    u.setSexo(sexo.getSelectedItem().toString());
+                    u.setSexo(sexo.getSelectedItem().toString()+","+sexo.getSelectedItemPosition());
                     user_exist(user.getText().toString());
                 }
             }

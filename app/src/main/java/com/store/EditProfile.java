@@ -4,11 +4,25 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -19,7 +33,7 @@ import android.view.ViewGroup;
  * Use the {@link EditProfile#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EditProfile extends Fragment {
+public class EditProfile extends Fragment{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -56,6 +70,8 @@ public class EditProfile extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        String user_id = getArguments().getString("user_id");
+        get_user_data(user_id);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -106,5 +122,45 @@ public class EditProfile extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+    public void get_user_data(String userd){
+        final List user_data = new ArrayList();
+        DatabaseReference ref;
+        ref = FirebaseDatabase.getInstance().getReference().child("Usuarios").child(userd);
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    String user_name = dataSnapshot.child("nombre").getValue().toString();
+                    String user_last_name = dataSnapshot.child("apellido").getValue().toString();
+                    String user_email = dataSnapshot.child("correo").getValue().toString();
+                    String user_sex = dataSnapshot.child("sexo").getValue().toString();
+                    String user_phone = dataSnapshot.child("telefono").getValue().toString();
+                    EditText name = getView().findViewById(R.id.id_nombre);
+                    EditText last_name = getView().findViewById(R.id.id_apellido);
+                    EditText email = getView().findViewById(R.id.id_email);
+                    Spinner sex = getView().findViewById(R.id.id_sexo);
+                    EditText phone = getView().findViewById(R.id.id_telefono);
+                    name.setText(user_name);
+                    last_name.setText(user_last_name);
+                    email.setText(user_email);
+                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                            R.array.array_sex, android.R.layout.simple_spinner_item);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    sex.setAdapter(adapter);
+                    int index = user_sex.indexOf(",");
+                    int item_pos = Integer.parseInt(user_sex.substring(index+1));
+                    sex.setSelection(item_pos);
+                    phone.setText(user_phone);
+                }
+                else {
+
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }

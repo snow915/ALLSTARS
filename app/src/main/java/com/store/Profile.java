@@ -152,6 +152,8 @@ public class Profile extends Fragment {
                     name.setText(user_name);
                     last_name.setText(user_last_name);
                     email.setText(user_email);
+                    int index = user_sex.indexOf(',');
+                    user_sex = user_sex.substring(0, index);
                     sex.setText(user_sex);
                     phone.setText(user_phone);
                 }
