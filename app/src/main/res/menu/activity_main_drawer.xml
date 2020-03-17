@@ -3,16 +3,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
+    <item
+        android:id="@+id/nav_profile"
+        android:visible="false"
+        android:title="@string/menu_profile" >
+        <menu>
+            <item
+                android:visible="true"
+                android:id="@+id/see_profile"
+                android:icon="@drawable/ic_my_profile"
+                android:title="@string/see_profile" />
+            <item
+                android:visible="true"
+                android:id="@+id/edit_profile"
+                android:icon="@drawable/ic_edit_profile"
+                android:title="@string/edit_profile" />
+            <item
+                android:visible="true"
+                android:id="@+id/delete_account"
+                android:icon="@drawable/ic_delete_account"
+                android:title="@string/delete_account" />
+
+        </menu>
+
+    </item>
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_house"
             android:title="@string/menu_home" />
-        <item
-            android:id="@+id/nav_profile"
-            android:visible="false"
-            android:icon="@drawable/ic_my_profile"
-            android:title="@string/menu_profile" />
         <item
             android:id="@+id/nav_gallery"
             android:icon="@drawable/ic_menu_gallery"

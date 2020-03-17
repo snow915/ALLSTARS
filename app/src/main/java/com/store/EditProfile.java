@@ -1,41 +1,25 @@
 package com.store;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link Profile.OnFragmentInteractionListener} interface
+ * {@link EditProfile.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link Profile#newInstance} factory method to
+ * Use the {@link EditProfile#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Profile extends Fragment {
+public class EditProfile extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -47,7 +31,7 @@ public class Profile extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public Profile() {
+    public EditProfile() {
         // Required empty public constructor
     }
 
@@ -57,11 +41,11 @@ public class Profile extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment Profile.
+     * @return A new instance of fragment EditProfile.
      */
     // TODO: Rename and change types and number of parameters
-    public static Profile newInstance(String param1, String param2) {
-        Profile fragment = new Profile();
+    public static EditProfile newInstance(String param1, String param2) {
+        EditProfile fragment = new EditProfile();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -72,25 +56,17 @@ public class Profile extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String user_id = getArguments().getString("user_id");
-        get_user_data(user_id);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        return inflater.inflate(R.layout.fragment_edit_profile, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -130,39 +106,5 @@ public class Profile extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
-    }
-    public void get_user_data(String userd){
-        final List user_data = new ArrayList();
-        DatabaseReference ref;
-        ref = FirebaseDatabase.getInstance().getReference().child("Usuarios").child(userd);
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    String user_name = dataSnapshot.child("nombre").getValue().toString();
-                    String user_last_name = dataSnapshot.child("apellido").getValue().toString();
-                    String user_email = dataSnapshot.child("correo").getValue().toString();
-                    String user_sex = dataSnapshot.child("sexo").getValue().toString();
-                    String user_phone = dataSnapshot.child("telefono").getValue().toString();
-                    TextView name = getView().findViewById(R.id.id_nombre);
-                    TextView last_name = getView().findViewById(R.id.id_apellido);
-                    TextView email = getView().findViewById(R.id.id_email);
-                    TextView sex = getView().findViewById(R.id.id_sexo);
-                    TextView phone = getView().findViewById(R.id.id_telefono);
-                    name.setText(user_name);
-                    last_name.setText(user_last_name);
-                    email.setText(user_email);
-                    sex.setText(user_sex);
-                    phone.setText(user_phone);
-                }
-                else {
-
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
     }
 }

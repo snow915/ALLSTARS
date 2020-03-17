@@ -55,15 +55,16 @@ public class MainActivity extends AppCompatActivity
         Camaras.OnFragmentInteractionListener,
         Auriculares.OnFragmentInteractionListener,
         Carrito.OnFragmentInteractionListener,
-        Profile.OnFragmentInteractionListener {
+        Profile.OnFragmentInteractionListener,
+        EditProfile.OnFragmentInteractionListener{
 
     Fragment mi_fragment = null;
     Fragment carousel = null;
     boolean fragment_seleccionado = false;
-    ImageView user_image = null;
     String user = null;
     String pass = null;
     String username = null;
+    String user_id = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,9 +72,8 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         load_preferences();
-        String userid = getIntent().getStringExtra("user_id");
         if(user != null && pass != null){
-            userid = user;
+            user_id = user;
         }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-        if(userid != null){
+        if(user_id != null){
             NavigationView navView = findViewById(R.id.nav_view);
             View header = navView.getHeaderView(0);
             navView.getMenu().findItem(R.id.nav_signin).setVisible(false);
@@ -100,6 +100,7 @@ public class MainActivity extends AppCompatActivity
         user = preferences.getString("user",null);
         pass = preferences.getString("pass",null);
         username = preferences.getString("username", null);
+        user_id = preferences.getString("user_id", null);
     }
 
     private void save_preferences(){
@@ -205,19 +206,33 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_signin) {
             Intent intent = new Intent(this, Login.class);
             startActivity(intent);
-        }   else if (id == R.id.nav_profile) {
+        }   else if (id == R.id.see_profile) {
             if (carousel != null) {
                 carousel = null;
                 getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().findFragmentById(R.id.content_main_carrusel)).commit();
                 mi_fragment = new Profile();
-                String user_id = getIntent().getStringExtra("user_id");
                 Bundle b = new Bundle();
                 b.putString("user_id", user_id);
                 mi_fragment.setArguments(b);
                 fragment_seleccionado = true;
             } else {
                 mi_fragment = new Profile();
-                String user_id = getIntent().getStringExtra("user_id");
+                Bundle b = new Bundle();
+                b.putString("user_id", user_id);
+                mi_fragment.setArguments(b);
+                fragment_seleccionado = true;
+            }
+        } else if (id == R.id.edit_profile) {
+            if (carousel != null) {
+                carousel = null;
+                getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().findFragmentById(R.id.content_main_carrusel)).commit();
+                mi_fragment = new EditProfile();
+                Bundle b = new Bundle();
+                b.putString("user_id", user_id);
+                mi_fragment.setArguments(b);
+                fragment_seleccionado = true;
+            } else {
+                mi_fragment = new EditProfile();
                 Bundle b = new Bundle();
                 b.putString("user_id", user_id);
                 mi_fragment.setArguments(b);
@@ -240,18 +255,5 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onFragmentInteraction(Uri uri) {
 
-    }
-    public void show_error_message(ImageView user_image){
-        user_image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new SweetAlertDialog(MainActivity.this, SweetAlertDialog.ERROR_TYPE)
-                        .setTitleText("Ouch!")
-                        .setContentText("No pudes acceder al perfil si no has iniciado sesión!")
-                        .hideConfirmButton()
-                        .setCancelText("Ok")
-                        .show();
-            }
-        });
     }
 }

@@ -84,6 +84,10 @@
     <string name="alert_success_signup">Registro exitoso</string>
     <string name="okay">Okay</string>
 
+    <string name="see_profile">Ver perfil</string>
+    <string name="edit_profile">Editar perfil</string>
+    <string name="delete_account">Eliminar cuenta</string>
+
     <!-- TODO: Remove or change this placeholder text -->
 
 </resources>
