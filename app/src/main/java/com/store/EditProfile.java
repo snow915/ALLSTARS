@@ -11,9 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -42,7 +45,7 @@ public class EditProfile extends Fragment{
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    private Button update = null;
     private OnFragmentInteractionListener mListener;
 
     public EditProfile() {
@@ -82,7 +85,27 @@ public class EditProfile extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_edit_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_edit_profile, container, false);
+        update = view.findViewById(R.id.apply_changes);
+        update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText name = getView().findViewById(R.id.id_nombre);
+                String name_value = name.getText().toString();
+                EditText last_name = getView().findViewById(R.id.id_apellido);
+                String last_name_value = last_name.getText().toString();
+                EditText email = getView().findViewById(R.id.id_email);
+                String email_value = email.getText().toString();
+                Spinner sex = getView().findViewById(R.id.id_sexo);
+                String sex_value = sex.getSelectedItem().toString();
+                EditText phone = getView().findViewById(R.id.id_telefono);
+                String phone_value = phone.getText().toString();
+                if (validations(name_value, last_name_value, email_value, sex_value, phone_value)){
+                    updateUser(name_value, last_name_value, email_value, sex_value, phone_value);
+                }
+            }
+        });
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -162,5 +185,49 @@ public class EditProfile extends Fragment{
 
             }
         });
+    }
+    public void updateUser(String name_value, String last_name_value, String email_value, String sex_value, String phone_value){
+
+    }
+    private boolean validations(EditText nombre, EditText apellido, EditText email, String sex_value, EditText telefono){
+        if(nombre.getText().toString().equals("")){
+            nombre.setError("No puede estar vacío");
+            return false;
+        }
+        if(apellido.getText().toString().equals("")){
+            apellido.setError("No puede estar vacío");
+            return false;
+        }
+        if(email.getText().toString().equals("")){
+            email.setError("No puede estar vacío");
+            return false;
+        }
+        if(telefono.getText().toString().equals("")){
+            telefono.setError("No puede estar vacío");
+            return false;
+        }
+        if(telefono.getText().toString().length() < 10){
+            telefono.setError("Missing numbers");
+            return false;
+        }
+        if(sexo.getSelectedItem().toString().equals("Gender")){
+            TextView errorTextview = (TextView) sexo.getSelectedView();
+            errorTextview.setError("Opción inválida");
+            return false;
+        }
+        if(user.getText().toString().equals("")){
+            user.setError("No puede estar vacío");
+            return false;
+        }
+        if(user.getText().toString().length() < 4){
+            user.setError("4 characters minimum");
+            return false;
+        }
+        if(pass.getText().toString().equals("")){
+            pass.setError("No puede estar vacío");
+            return false;
+        }
+
+        return true;
     }
 }
