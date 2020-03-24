@@ -244,7 +244,7 @@ public class MainActivity extends AppCompatActivity
         if (fragment_seleccionado) {
             //getSupportFragmentManager().popBackStack();
             //getSupportFragmentManager().beginTransaction().replace(R.id.content_main, mi_fragment).addToBackStack(null).commit();
-            getSupportFragmentManager().beginTransaction().replace(R.id.content_main, mi_fragment).addToBackStack(null).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_main, mi_fragment, "Current").addToBackStack(null).commit();
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

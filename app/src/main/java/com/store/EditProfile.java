@@ -1,11 +1,16 @@
 package com.store;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
+import android.opengl.EGLDisplay;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +31,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 
 /**
@@ -91,17 +98,14 @@ public class EditProfile extends Fragment{
             @Override
             public void onClick(View v) {
                 EditText name = getView().findViewById(R.id.id_nombre);
-                String name_value = name.getText().toString();
+                EditText user = getView().findViewById(R.id.username);
+                EditText pass = getView().findViewById(R.id.password);
                 EditText last_name = getView().findViewById(R.id.id_apellido);
-                String last_name_value = last_name.getText().toString();
                 EditText email = getView().findViewById(R.id.id_email);
-                String email_value = email.getText().toString();
                 Spinner sex = getView().findViewById(R.id.id_sexo);
-                String sex_value = sex.getSelectedItem().toString();
                 EditText phone = getView().findViewById(R.id.id_telefono);
-                String phone_value = phone.getText().toString();
-                if (validations(name_value, last_name_value, email_value, sex_value, phone_value)){
-                    updateUser(name_value, last_name_value, email_value, sex_value, phone_value);
+                if (validations(name, user, pass, last_name, email, sex, phone)){
+                    updateUser(name, user, pass, last_name, email, sex, phone);
                 }
             }
         });
@@ -147,7 +151,6 @@ public class EditProfile extends Fragment{
         void onFragmentInteraction(Uri uri);
     }
     public void get_user_data(String userd){
-        final List user_data = new ArrayList();
         DatabaseReference ref;
         ref = FirebaseDatabase.getInstance().getReference().child("Usuarios").child(userd);
         ref.addValueEventListener(new ValueEventListener() {
@@ -155,16 +158,22 @@ public class EditProfile extends Fragment{
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     String user_name = dataSnapshot.child("nombre").getValue().toString();
+                    String user = dataSnapshot.child("user").getValue().toString();
+                    String pass = dataSnapshot.child("pass").getValue().toString();
                     String user_last_name = dataSnapshot.child("apellido").getValue().toString();
                     String user_email = dataSnapshot.child("correo").getValue().toString();
                     String user_sex = dataSnapshot.child("sexo").getValue().toString();
                     String user_phone = dataSnapshot.child("telefono").getValue().toString();
                     EditText name = getView().findViewById(R.id.id_nombre);
+                    EditText username = getView().findViewById(R.id.username);
+                    EditText password = getView().findViewById(R.id.password);
                     EditText last_name = getView().findViewById(R.id.id_apellido);
                     EditText email = getView().findViewById(R.id.id_email);
                     Spinner sex = getView().findViewById(R.id.id_sexo);
                     EditText phone = getView().findViewById(R.id.id_telefono);
                     name.setText(user_name);
+                    username.setText(user);
+                    password.setText(pass);
                     last_name.setText(user_last_name);
                     email.setText(user_email);
                     ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
@@ -186,10 +195,41 @@ public class EditProfile extends Fragment{
             }
         });
     }
-    public void updateUser(String name_value, String last_name_value, String email_value, String sex_value, String phone_value){
-
+    public void updateUser(EditText name, EditText user, EditText pass, EditText last_name, EditText email, Spinner sex, EditText phone){
+        String name_value = name.getText().toString();
+        String user_value = user.getText().toString();
+        String pass_value = pass.getText().toString();
+        String last_name_value = last_name.getText().toString();
+        String email_value = email.getText().toString();
+        String sex_value = sex.getSelectedItem().toString()+","+sex.getSelectedItemPosition();
+        String phone_value = phone.getText().toString();
+        String user_id = getArguments().getString("user_id");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Usuarios").child(user_id);
+        Usuarios usuario= new Usuarios();
+        usuario.setNombre(name_value);
+        usuario.setUser(user_value);
+        usuario.setApellido(last_name_value);
+        usuario.setPass(pass_value);
+        usuario.setCorreo(email_value);
+        usuario.setSexo(sex_value);
+        usuario.setTelefono(phone_value);
+        ref.setValue(usuario);
+        new SweetAlertDialog(getContext(), SweetAlertDialog.SUCCESS_TYPE)
+                .setTitleText("Congratulations!")
+                .setContentText("Data updated successfully!")
+                .setConfirmText("Ok!")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        sDialog.dismissWithAnimation();
+                        EditProfile myFragment = (EditProfile)getFragmentManager().findFragmentByTag("Current");
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        ft.detach(myFragment).attach(myFragment).commit();
+                    }
+                })
+                .show();
     }
-    private boolean validations(EditText nombre, EditText apellido, EditText email, String sex_value, EditText telefono){
+    private boolean validations(EditText nombre, EditText user, EditText pass, EditText apellido, EditText email, Spinner sexo, EditText telefono){
         if(nombre.getText().toString().equals("")){
             nombre.setError("No puede estar vacío");
             return false;
@@ -207,7 +247,7 @@ public class EditProfile extends Fragment{
             return false;
         }
         if(telefono.getText().toString().length() < 10){
-            telefono.setError("Missing numbers");
+            telefono.setError("Faltan dígitos");
             return false;
         }
         if(sexo.getSelectedItem().toString().equals("Gender")){
@@ -220,14 +260,17 @@ public class EditProfile extends Fragment{
             return false;
         }
         if(user.getText().toString().length() < 4){
-            user.setError("4 characters minimum");
+            user.setError("4 caracteres mínimo");
             return false;
         }
         if(pass.getText().toString().equals("")){
             pass.setError("No puede estar vacío");
             return false;
         }
-
+        if(pass.getText().toString().length() < 8){
+            pass.setError("8 caracteres mínimo");
+            return false;
+        }
         return true;
     }
 }
