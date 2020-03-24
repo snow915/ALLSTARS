@@ -9,17 +9,17 @@
         android:title="@string/menu_profile" >
         <menu>
             <item
-                android:visible="true"
+                android:visible="false"
                 android:id="@+id/see_profile"
                 android:icon="@drawable/ic_my_profile"
                 android:title="@string/see_profile" />
             <item
-                android:visible="true"
+                android:visible="false"
                 android:id="@+id/edit_profile"
                 android:icon="@drawable/ic_edit_profile"
                 android:title="@string/edit_profile" />
             <item
-                android:visible="true"
+                android:visible="false"
                 android:id="@+id/delete_account"
                 android:icon="@drawable/ic_delete_account"
                 android:title="@string/delete_account" />
