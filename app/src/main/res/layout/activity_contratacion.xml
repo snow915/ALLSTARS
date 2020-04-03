@@ -17,29 +17,31 @@
             android:layout_height="48dp"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="136dp"
             android:ems="10"
-            android:hint="@string/fechaInicio"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:focusable="false"
+            android:hint="@string/ingresaFecha"
             android:inputType="text"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:focusable="false"/>
+            app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
         <EditText
             android:id="@+id/fechaFin"
             android:layout_width="180dp"
             android:layout_height="48dp"
-            android:layout_marginTop="136dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             android:ems="10"
-            android:hint="@string/fechaFin"
+            android:focusable="false"
+            android:hint="@string/ingresaFecha"
+            android:textStyle="bold"
             android:inputType="text"
+            android:textSize="15dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.895"
+            app:layout_constraintHorizontal_bias="0.842"
             app:layout_constraintStart_toEndOf="@+id/fechaInicio"
-            app:layout_constraintTop_toTopOf="parent"
-            android:focusable="false"/>
+            app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
         <EditText
             android:id="@+id/horaInicio"
@@ -47,28 +49,30 @@
             android:layout_height="45dp"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="76dp"
             android:ems="10"
+            android:textSize="15dp"
+            android:focusable="false"
+            android:textStyle="bold"
             android:focusableInTouchMode="true"
-            android:hint="@string/horaInicio"
+            android:hint="@string/ingresaHora"
             android:inputType="textPersonName"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fechaInicio"
-            android:focusable="false"/>
+            app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
         <EditText
             android:id="@+id/horaFin"
             android:layout_width="180dp"
             android:layout_height="45dp"
-            android:layout_marginTop="76dp"
             android:ems="10"
-            android:hint="@string/horaFin"
+            android:focusable="false"
+            android:hint="@string/ingresaHora"
             android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="15dp"
+            android:textStyle="bold"
             app:layout_constraintHorizontal_bias="0.485"
             app:layout_constraintStart_toEndOf="@+id/horaInicio"
-            app:layout_constraintTop_toBottomOf="@+id/fechaFin"
-            android:focusable="false"/>
+            app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
         <TextView
             android:id="@+id/textView8"
@@ -78,11 +82,132 @@
             android:text="@string/titleContratacion"
             android:textColor="@color/colorPrimary"
             android:textSize="24dp"
-            app:layout_constraintBottom_toTopOf="@+id/fechaFin"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/textView13"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.125" />
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="132dp"
+            android:text="@string/fechaInicio"
+            android:textSize="18dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="84dp"
+            android:text="@string/horaInicio"
+            android:textSize="18dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fechaInicio" />
+
+        <TextView
+            android:id="@+id/textView17"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="84dp"
+            android:text="@string/tipoPublico"
+            android:textSize="18dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/horaInicio" />
+
+        <TextView
+            android:id="@+id/textView19"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="84dp"
+            android:layout_marginLeft="84dp"
+            android:layout_marginTop="48dp"
+            android:text="@string/detalles"
+            android:textSize="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/idPublico" />
+
+        <TextView
+            android:id="@+id/textView18"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="84dp"
+            android:text="@string/tipoShow"
+            android:textSize="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.474"
+            app:layout_constraintStart_toEndOf="@+id/textView17"
+            app:layout_constraintTop_toBottomOf="@+id/horaFin" />
+
+        <Spinner
+            android:id="@+id/idPublico"
+            android:layout_width="180dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView17" />
+
+        <Spinner
+            android:id="@+id/idEvento"
+            android:layout_width="180dp"
+            android:layout_height="42dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.457"
+            app:layout_constraintStart_toEndOf="@+id/idPublico"
+            app:layout_constraintTop_toBottomOf="@+id/textView17" />
+
+        <TextView
+            android:id="@+id/textView15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="84dp"
+            android:text="@string/horaFin"
+            android:textSize="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.441"
+            app:layout_constraintStart_toEndOf="@+id/textView14"
+            app:layout_constraintTop_toBottomOf="@+id/fechaFin" />
+
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="76dp"
+            android:layout_marginLeft="76dp"
+            android:layout_marginTop="132dp"
+            android:text="@string/fechaFin"
+            android:textSize="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.009"
+            app:layout_constraintStart_toEndOf="@+id/textView12"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/idDetalles"
+            android:layout_width="238dp"
+            android:layout_height="69dp"
+            android:ems="10"
+            android:gravity="start|top"
+            android:inputType="textMultiLine"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.485"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView19"
+            app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -7,16 +7,25 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TimePicker;
 
 import java.text.DateFormat;
 import java.util.Calendar;
 
-public class Contratacion extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, View.OnClickListener, TimePickerDialog.OnTimeSetListener {
-    EditText fechaInicio, fechaFin, horaInicio, horaFin;
+public class Contratacion extends AppCompatActivity implements
+        DatePickerDialog.OnDateSetListener,
+        View.OnClickListener,
+        TimePickerDialog.OnTimeSetListener,
+        AdapterView.OnItemSelectedListener{
+
+    EditText fechaInicio, fechaFin, horaInicio, horaFin, detalles;
+    Spinner tipoPublico, tipoEvento;
     private int dia, mes, anio, hora, minutos;
     boolean statusFechaInicio = false;
     boolean statusFechaFin = false;
@@ -31,12 +40,27 @@ public class Contratacion extends AppCompatActivity implements DatePickerDialog.
         fechaFin = (EditText) findViewById(R.id.fechaFin);
         horaInicio = (EditText) findViewById(R.id.horaInicio);
         horaFin = (EditText) findViewById(R.id.horaFin);
+        detalles = (EditText) findViewById(R.id.idDetalles);
+        tipoPublico = (Spinner) findViewById(R.id.idPublico);
+        tipoEvento = (Spinner) findViewById(R.id.idEvento);
 
         fechaInicio.setOnClickListener(this);
         fechaFin.setOnClickListener(this);
 
         horaInicio.setOnClickListener(this);
         horaFin.setOnClickListener(this);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.array_publico, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        tipoPublico.setAdapter(adapter);
+        tipoPublico.setOnItemSelectedListener(this);
+
+        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this,
+                R.array.array_eventos, android.R.layout.simple_spinner_item);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        tipoEvento.setAdapter(adapter2);
+        tipoEvento.setOnItemSelectedListener(this);
 
     }
 
@@ -98,5 +122,15 @@ public class Contratacion extends AppCompatActivity implements DatePickerDialog.
             statusHoraFin = true;
             statusHoraInicio = false;
         }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }

@@ -81,6 +81,24 @@
         <item>Prefiero no decirlo</item>
     </string-array>
 
+    <string-array name="array_eventos">
+        <item>Evento</item>
+        <item>Concierto grande/mediano</item>
+        <item>Concierto pequeño/Bar</item>
+        <item>Feria</item>
+        <item>Cumpleaños</item>
+        <item>Película</item>
+        <item>TV</item>
+        <item>Otro</item>
+    </string-array>
+
+    <string-array name="array_publico">
+        <item>Público</item>
+        <item>Menos de 12 años</item>
+        <item>Entre 13 y 17 años</item>
+        <item>Mayores de 18 años</item>
+    </string-array>
+
     <string name="alert_success_signup">Registro exitoso</string>
     <string name="okay">Okay</string>
 
@@ -88,7 +106,13 @@
     <string name="fechaInicio">Fecha de inicio</string>
     <string name="fechaFin">Fecha de fin</string>
     <string name="horaInicio">Hora de inicio</string>
-    <string name="horaFin">Hora de inicio</string>
+    <string name="horaFin">Hora de fin</string>
+    <string name="ingresaFecha">Ingresa la fecha</string>
+    <string name="ingresaHora">Ingresa la hora</string>
+
+    <string name="tipoPublico">Tipo de público</string>
+    <string name="tipoShow">Tipo de evento</string>
+    <string name="detalles">Detalles extras</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 
