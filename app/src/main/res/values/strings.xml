@@ -84,6 +84,12 @@
     <string name="alert_success_signup">Registro exitoso</string>
     <string name="okay">Okay</string>
 
+    <string name="titleContratacion">Datos de fecha/hora</string>
+    <string name="fechaInicio">Fecha de inicio</string>
+    <string name="fechaFin">Fecha de fin</string>
+    <string name="horaInicio">Hora de inicio</string>
+    <string name="horaFin">Hora de inicio</string>
+
     <!-- TODO: Remove or change this placeholder text -->
 
 </resources>
