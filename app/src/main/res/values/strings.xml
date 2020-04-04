@@ -114,6 +114,8 @@
     <string name="tipoShow">Tipo de evento</string>
     <string name="detalles">Detalles extras</string>
 
+    <string name="iraMapas">Elegir ubicación</string>
+
     <!-- TODO: Remove or change this placeholder text -->
 
 </resources>
