@@ -144,14 +144,16 @@ public class Profile extends Fragment {
                     String user_email = dataSnapshot.child("correo").getValue().toString();
                     String user_sex = dataSnapshot.child("sexo").getValue().toString();
                     String user_phone = dataSnapshot.child("telefono").getValue().toString();
-                    EditText name = getView().findViewById(R.id.id_nombre);
-                    EditText last_name = getView().findViewById(R.id.id_apellido);
-                    EditText email = getView().findViewById(R.id.id_email);
+                    TextView name = getView().findViewById(R.id.id_nombre);
+                    TextView last_name = getView().findViewById(R.id.id_apellido);
+                    TextView email = getView().findViewById(R.id.id_email);
                     TextView sex = getView().findViewById(R.id.id_sexo);
-                    EditText phone = getView().findViewById(R.id.id_telefono);
+                    TextView phone = getView().findViewById(R.id.id_telefono);
                     name.setText(user_name);
                     last_name.setText(user_last_name);
                     email.setText(user_email);
+                    int index = user_sex.indexOf(',');
+                    user_sex = user_sex.substring(0, index);
                     sex.setText(user_sex);
                     phone.setText(user_phone);
                 }

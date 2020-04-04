@@ -116,6 +116,10 @@
 
     <string name="iraMapas">Elegir ubicación</string>
 
+    <string name="see_profile">Ver perfil</string>
+    <string name="edit_profile">Editar perfil</string>
+    <string name="delete_account">Eliminar cuenta</string>
+
     <!-- TODO: Remove or change this placeholder text -->
 
 </resources>
