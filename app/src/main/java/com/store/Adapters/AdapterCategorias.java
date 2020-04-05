@@ -60,8 +60,8 @@ public class AdapterCategorias extends RecyclerView.Adapter<AdapterCategorias.Vi
 
         public ViewHolderCategorias(@NonNull View itemView) {
             super(itemView);
-            nombreCategorias = (TextView) itemView.findViewById(R.id.idNombreCategorias);
-            imagenCategorias = (ImageView) itemView.findViewById(R.id.idImagenCategorias);
+            nombreCategorias = itemView.findViewById(R.id.idNombreCategorias);
+            imagenCategorias = itemView.findViewById(R.id.idImagenCategorias);
         }
     }
 }

@@ -81,7 +81,7 @@ public class Display extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_display, container, false);
 
-        recycler = (RecyclerView) v.findViewById(R.id.recycler_id_display);
+        recycler = v.findViewById(R.id.recycler_id_display);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         list_datos = new ArrayList<DatosVo>();
         llenarDatos();

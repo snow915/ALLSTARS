@@ -81,7 +81,7 @@ public class Cristales extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_cristales, container, false);
 
-        recycler = (RecyclerView) v.findViewById(R.id.recycler_id_touch);
+        recycler = v.findViewById(R.id.recycler_id_touch);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         list_datos = new ArrayList<DatosVo>();
         llenarDatos();

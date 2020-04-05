@@ -81,7 +81,7 @@ public class Auriculares extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_auriculares, container, false);
 
-        recycler = (RecyclerView) v.findViewById(R.id.recycler_id_auriculares);
+        recycler = v.findViewById(R.id.recycler_id_auriculares);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         list_datos = new ArrayList<DatosVo>();
         llenarDatos();

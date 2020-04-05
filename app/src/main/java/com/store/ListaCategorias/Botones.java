@@ -81,7 +81,7 @@ public class Botones extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_botones, container, false);
 
-        recycler = (RecyclerView) v.findViewById(R.id.recycler_id_botones);
+        recycler = v.findViewById(R.id.recycler_id_botones);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         list_datos = new ArrayList<DatosVo>();
         llenarDatos();

@@ -65,10 +65,10 @@ public class AdapterDatos extends RecyclerView.Adapter<AdapterDatos.ViewHolderDa
 
         public ViewHolderDatos(@NonNull View itemView) {
             super(itemView);
-            nombre = (TextView) itemView.findViewById(R.id.idNombre);
-            precio = (TextView) itemView.findViewById(R.id.idPrecio);
-            imagen = (ImageView) itemView.findViewById(R.id.idImagen);
-            stars = (RatingBar) itemView.findViewById(R.id.ratingStars);
+            nombre = itemView.findViewById(R.id.idNombre);
+            precio = itemView.findViewById(R.id.idPrecio);
+            imagen = itemView.findViewById(R.id.idImagen);
+            stars = itemView.findViewById(R.id.ratingStars);
         }
     }
 }

@@ -81,7 +81,7 @@ public class Baterias extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_baterias, container, false);
 
-        recycler = (RecyclerView) v.findViewById(R.id.recycler_id_baterias);
+        recycler = v.findViewById(R.id.recycler_id_baterias);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         list_datos = new ArrayList<DatosVo>();
         llenarDatos();

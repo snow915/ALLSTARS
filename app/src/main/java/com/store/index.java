@@ -85,7 +85,7 @@ public class index extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_index, container, false);
-        recycler = (RecyclerView) v.findViewById(R.id.recycler_id);
+        recycler = v.findViewById(R.id.recycler_id);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         list_datos = new ArrayList<DatosVo>();
         llenarDatos();

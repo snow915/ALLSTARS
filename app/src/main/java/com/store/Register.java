@@ -39,14 +39,14 @@ public class Register extends AppCompatActivity implements AdapterView.OnItemSel
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        sexo = (Spinner) findViewById(R.id.id_sexo);
-        nombre = (EditText) findViewById(R.id.id_nombre);
-        apellido = (EditText) findViewById(R.id.id_apellido);
-        email = (EditText) findViewById(R.id.id_email);
-        telefono = (EditText) findViewById(R.id.id_telefono);
-        user = (EditText) findViewById(R.id.id_user);
-        pass = (EditText) findViewById(R.id.id_pass);
-        sign_up = (Button) findViewById(R.id.id_sign_up);
+        sexo = findViewById(R.id.id_sexo);
+        nombre = findViewById(R.id.id_nombre);
+        apellido = findViewById(R.id.id_apellido);
+        email = findViewById(R.id.id_email);
+        telefono = findViewById(R.id.id_telefono);
+        user = findViewById(R.id.id_user);
+        pass = findViewById(R.id.id_pass);
+        sign_up = findViewById(R.id.id_sign_up);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.array_sex, android.R.layout.simple_spinner_item);

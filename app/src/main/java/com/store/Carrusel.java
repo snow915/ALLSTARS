@@ -35,13 +35,13 @@ public class Carrusel extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private int imagenes[] = new int[]{
+    private int[] imagenes = new int[]{
             R.drawable.conciertocarlos,
             R.drawable.badabun,
             R.drawable.capi
     };
 
-    private String nombres[] = new String[]{
+    private String[] nombres = new String[]{
             "Carlos Rivera", "OFERTAS", "OFERTAS"
     };
 
@@ -84,7 +84,7 @@ public class Carrusel extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_carrusel, container, false);
 
-        CarouselView carouselView = (CarouselView) v.findViewById(R.id.carrusel);
+        CarouselView carouselView = v.findViewById(R.id.carrusel);
         carouselView.setPageCount(imagenes.length);
         carouselView.setImageListener(new ImageListener() {
             @Override
