@@ -26,6 +26,7 @@ import androidx.fragment.app.DialogFragment;
 
 import android.os.Bundle;
 
+import com.bumptech.glide.Glide;
 import com.store.CarritoCompras.AdminSQLiteOpenHelper;
 
 import java.text.DateFormat;
@@ -47,8 +48,9 @@ public class InfoProducto extends AppCompatActivity implements
     ImageView imagen;
     String nombreIntent;
     String precioIntent;
+    String biografiaIntent;
     RatingBar ratingStars;
-    int image;
+    String imageRoute;
     int stars;
 
     @Override
@@ -66,11 +68,17 @@ public class InfoProducto extends AppCompatActivity implements
 
         nombreIntent = getIntent().getStringExtra("nombre");
         precioIntent = getIntent().getStringExtra("precio");
-        image = getIntent().getIntExtra("image",0);
+        biografiaIntent = getIntent().getStringExtra("biografia");
+        imageRoute = getIntent().getStringExtra("image");
         stars = getIntent().getIntExtra("stars",0);
         titulo.setText(nombreIntent);
         precio.setText(precioIntent);
-        imagen.setImageResource(image);
+        // Here load the image from FirebaseDataBase
+        Glide.with(InfoProducto.this)
+                .load(imageRoute)
+                .fitCenter()
+                .centerCrop()
+                .into(imagen);
         ratingStars.setRating(stars);
 
         moreInfo.setOnClickListener(new View.OnClickListener() {
@@ -140,7 +148,7 @@ public class InfoProducto extends AppCompatActivity implements
         ContentValues registro = new ContentValues();
         registro.put("tituloProducto",nombreIntent);
         registro.put("precioProducto",precioIntent);
-        registro.put("idImagen",image);
+        registro.put("idImagen",imageRoute);
         registro.put("idStars", stars);
         db.insert("Carrito",null, registro);
         db.close();

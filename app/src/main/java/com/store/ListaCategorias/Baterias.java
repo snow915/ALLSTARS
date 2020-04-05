@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +15,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.store.Adapters.AdapterDatos;
 import com.store.Vo.DatosVo;
 import com.store.InfoProducto;
@@ -37,6 +43,7 @@ public class Baterias extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     ArrayList<DatosVo> list_datos;
     RecyclerView recycler;
+    DatabaseReference reference;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -85,20 +92,22 @@ public class Baterias extends Fragment {
         recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         list_datos = new ArrayList<DatosVo>();
         llenarDatos();
-        AdapterDatos adapter = new AdapterDatos(list_datos);
+        AdapterDatos adapter = new AdapterDatos(list_datos, getContext());
         recycler.setAdapter(adapter);
         adapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String nombre = list_datos.get(recycler.getChildAdapterPosition(v)).getNombre();
                 String precio = list_datos.get(recycler.getChildAdapterPosition(v)).getPrecio();
-                int imagen = list_datos.get(recycler.getChildAdapterPosition(v)).getImagen();
+                String biografia = list_datos.get(recycler.getChildAdapterPosition(v)).getBiografia();
+                String imagen = list_datos.get(recycler.getChildAdapterPosition(v)).getRutaImagen();
                 int stars = list_datos.get(recycler.getChildAdapterPosition(v)).getStars();
                 Intent infoProducto = new Intent(getActivity(), InfoProducto.class);
                 infoProducto.putExtra("nombre", nombre);
                 infoProducto.putExtra("precio", precio);
                 infoProducto.putExtra("image",imagen);
                 infoProducto.putExtra("stars", stars);
+                infoProducto.putExtra("biografia", biografia);
                 startActivity(infoProducto);
             }
         });
@@ -107,16 +116,28 @@ public class Baterias extends Fragment {
     }
 
     public void llenarDatos(){
-        list_datos.add(new DatosVo("Bateria Alcatel OTC550","$229",R.drawable.alcatel_otc550,5));
-        list_datos.add(new DatosVo("Bateria Huawei HB500","$199",R.drawable.huawei_hb500,5));
-        list_datos.add(new DatosVo("Bateria Lenovo Vibe K5","$219",R.drawable.lenovo_vibek5,5));
-        list_datos.add(new DatosVo("Bateria Motorola BR50","$349",R.drawable.motorola_br50,5));
-        list_datos.add(new DatosVo("Bateria Samsung B500AE","$349",R.drawable.samsung_b500ae,5));
-        list_datos.add(new DatosVo("Bateria Blu Studio J2","$349",R.drawable.blu_studioj2,5));
-        list_datos.add(new DatosVo("Bateria iPhone 5s","$349",R.drawable.iphone_5s,5));
-        list_datos.add(new DatosVo("Bateria LG Generica","$349",R.drawable.lg,5));
-        list_datos.add(new DatosVo("Bateria Nokia B1CT","$349",R.drawable.nokia_bl4ct,5));
-        list_datos.add(new DatosVo("Bateria Sony XPeria","$349",R.drawable.sony_xperias,5));
+        reference = FirebaseDatabase.getInstance().getReference("data");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
+                    list_datos.add(
+                            new DatosVo(postSnapshot.child("nombre").toString(),
+                                    postSnapshot.child("precio").toString(),
+                                    postSnapshot.child("biografia").toString(),
+                                    postSnapshot.child("imagen").toString(),
+                                    Integer.parseInt(postSnapshot.child("puntaje").toString())
+                            )
+                    );
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event

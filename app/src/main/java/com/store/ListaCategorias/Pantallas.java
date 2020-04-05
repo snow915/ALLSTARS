@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +15,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.store.Adapters.AdapterDatos;
 import com.store.Vo.DatosVo;
 import com.store.InfoProducto;
@@ -41,6 +47,7 @@ public class Pantallas extends Fragment {
     private String mParam2;
     ArrayList<DatosVo> list_datos;
     RecyclerView recycler;
+    DatabaseReference reference;
     private OnFragmentInteractionListener mListener;
 
     public Pantallas() {
@@ -80,39 +87,57 @@ public class Pantallas extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_pantallas, container, false);
-
-        recycler = (RecyclerView) v.findViewById(R.id.recycler_id_pantallas);
-        recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        list_datos = new ArrayList<DatosVo>();
-        llenarDatos();
-        AdapterDatos adapter = new AdapterDatos(list_datos);
-        recycler.setAdapter(adapter);
-        adapter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String nombre = list_datos.get(recycler.getChildAdapterPosition(v)).getNombre();
-                String precio = list_datos.get(recycler.getChildAdapterPosition(v)).getPrecio();
-                int imagen = list_datos.get(recycler.getChildAdapterPosition(v)).getImagen();
-                int stars = list_datos.get(recycler.getChildAdapterPosition(v)).getStars();
-                Intent infoProducto = new Intent(getActivity(), InfoProducto.class);
-                infoProducto.putExtra("nombre", nombre);
-                infoProducto.putExtra("precio", precio);
-                infoProducto.putExtra("image",imagen);
-                infoProducto.putExtra("stars", stars);
-                startActivity(infoProducto);
-            }
-        });
-
+        llenarDatos(v);
         return v;
     }
 
-    public void llenarDatos(){
-        list_datos.add(new DatosVo("Pantalla Alcatel Idol 3","$399",R.drawable.pantalla_alcatel_idol,5));
-        list_datos.add(new DatosVo("Pantalla Huawei P30","$1,119",R.drawable.pantalla_huaweip30,5));
-        list_datos.add(new DatosVo("Pantalla iPhone 4","$329",R.drawable.pantalla_iphone_4,5));
-        list_datos.add(new DatosVo("Pantalla LG K30 X410","$799",R.drawable.pantalla_lgk30,5));
-        list_datos.add(new DatosVo("Pantalla Moto G3","$299",R.drawable.pantalla_motog3,5));
-        list_datos.add(new DatosVo("Pantalla Samsung J7 J700","$449",R.drawable.pantalla_samsung_j7,5));
+    public void llenarDatos(View v){
+        final View view = v;
+        list_datos = new ArrayList<DatosVo>();
+        reference = FirebaseDatabase.getInstance().getReference().child("data");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
+                    list_datos.add(
+                            new DatosVo(postSnapshot.child("nombre").getValue().toString(),
+                                    postSnapshot.child("categoria").getValue().toString(),
+                                    postSnapshot.child("biografia").getValue().toString(),
+                                    postSnapshot.child("imagen").getValue().toString(),
+                                    Integer.valueOf(postSnapshot.child("puntaje").getValue().toString())
+                            )
+                    );
+                }
+                recycler = view.findViewById(R.id.recycler_id_pantallas);
+                recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+
+                AdapterDatos adapter = new AdapterDatos(list_datos, getActivity().getApplicationContext());
+                recycler.setAdapter(adapter);
+                adapter.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String nombre = list_datos.get(recycler.getChildAdapterPosition(v)).getNombre();
+                        String precio = list_datos.get(recycler.getChildAdapterPosition(v)).getPrecio();
+                        String biografia = list_datos.get(recycler.getChildAdapterPosition(v)).getBiografia();
+                        String imagen = list_datos.get(recycler.getChildAdapterPosition(v)).getRutaImagen();
+                        int stars = list_datos.get(recycler.getChildAdapterPosition(v)).getStars();
+                        Intent infoProducto = new Intent(getActivity(), InfoProducto.class);
+                        infoProducto.putExtra("nombre", nombre);
+                        infoProducto.putExtra("precio", precio);
+                        infoProducto.putExtra("image",imagen);
+                        infoProducto.putExtra("stars", stars);
+                        infoProducto.putExtra("biografia", biografia);
+                        startActivity(infoProducto);
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event

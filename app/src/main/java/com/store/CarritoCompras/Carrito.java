@@ -88,20 +88,22 @@ public class Carrito extends Fragment {
         recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         list_datos = new ArrayList<DatosVo>();
         llenarDatos();
-        AdapterDatos adapter = new AdapterDatos(list_datos);
+        AdapterDatos adapter = new AdapterDatos(list_datos, getContext());
         recycler.setAdapter(adapter);
         adapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String nombre = list_datos.get(recycler.getChildAdapterPosition(v)).getNombre();
                 String precio = list_datos.get(recycler.getChildAdapterPosition(v)).getPrecio();
-                int imagen = list_datos.get(recycler.getChildAdapterPosition(v)).getImagen();
+                String imagen = list_datos.get(recycler.getChildAdapterPosition(v)).getRutaImagen();
+                String biografia = list_datos.get(recycler.getChildAdapterPosition(v)).getBiografia();
                 int stars = list_datos.get(recycler.getChildAdapterPosition(v)).getStars();
                 Intent infoProducto = new Intent(getActivity(), InfoProducto.class);
                 infoProducto.putExtra("nombre", nombre);
                 infoProducto.putExtra("precio", precio);
                 infoProducto.putExtra("image", imagen);
                 infoProducto.putExtra("stars", stars);
+                infoProducto.putExtra("biografia", biografia);
                 startActivity(infoProducto);
             }
         });
@@ -117,9 +119,10 @@ public class Carrito extends Fragment {
             do {
                 String nombre = fila.getString(fila.getColumnIndex("tituloProducto"));
                 String precio = fila.getString(fila.getColumnIndex("precioProducto"));
-                int imagen = fila.getInt(fila.getColumnIndex("idImagen"));
+                String imagen = fila.getString(fila.getColumnIndex("idImagen"));
+                String biografia = fila.getString(fila.getColumnIndex("biografia"));
                 int stars = fila.getInt(fila.getColumnIndex("idStars"));
-                list_datos.add(new DatosVo(nombre, precio, imagen, stars));
+                list_datos.add(new DatosVo(nombre, precio, biografia,imagen, stars));
             } while (fila.moveToNext());
         }
         db.close();

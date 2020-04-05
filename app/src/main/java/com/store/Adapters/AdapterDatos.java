@@ -1,5 +1,6 @@
 package com.store.Adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.store.InfoProducto;
 import com.store.Vo.DatosVo;
 import com.store.R;
 
@@ -19,9 +22,11 @@ public class AdapterDatos extends RecyclerView.Adapter<AdapterDatos.ViewHolderDa
 
     ArrayList<DatosVo> list_datos;
     private View.OnClickListener listener;
+    private Context context;
 
-    public AdapterDatos(ArrayList<DatosVo> list_datos) {
+    public AdapterDatos(ArrayList<DatosVo> list_datos, Context context) {
         this.list_datos = list_datos;
+        this.context = context;
     }
 
     @NonNull
@@ -36,7 +41,13 @@ public class AdapterDatos extends RecyclerView.Adapter<AdapterDatos.ViewHolderDa
     public void onBindViewHolder(@NonNull ViewHolderDatos holder, int position) {
         holder.nombre.setText(list_datos.get(position).getNombre());
         holder.precio.setText(list_datos.get(position).getPrecio());
-        holder.imagen.setImageResource(list_datos.get(position).getImagen());
+        // Here load the image from FirebaseDataBase
+        Glide.with(context)
+                .load(list_datos.get(position).getRutaImagen())
+                .fitCenter()
+                .centerCrop()
+                .into(holder.imagen);
+        //holder.imagen.setImageResource(list_datos.get(position).getRutaImagen());
         holder.stars.setRating(list_datos.get(position).getStars());
     }
 
