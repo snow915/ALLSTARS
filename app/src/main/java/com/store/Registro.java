@@ -50,7 +50,7 @@ public class Registro extends AppCompatActivity {
        EditText cp = findViewById(R.id.cp);
        EditText user = findViewById(R.id.user);
        EditText pass = findViewById(R.id.pass);
-       EditText arr[] = new EditText[9];
+       EditText[] arr = new EditText[9];
        arr[0] = name;
        arr[1] = first_name;
        arr[2] = last_name;

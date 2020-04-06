@@ -45,14 +45,14 @@ public class Contratacion extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contratacion);
 
-        fechaInicio = (EditText) findViewById(R.id.fechaInicio);
-        fechaFin = (EditText) findViewById(R.id.fechaFin);
-        horaInicio = (EditText) findViewById(R.id.horaInicio);
-        horaFin = (EditText) findViewById(R.id.horaFin);
-        detalles = (EditText) findViewById(R.id.idDetalles);
-        tipoPublico = (Spinner) findViewById(R.id.idPublico);
-        tipoEvento = (Spinner) findViewById(R.id.idEvento);
-        maps = (Button) findViewById(R.id.idMaps);
+        fechaInicio = findViewById(R.id.fechaInicio);
+        fechaFin = findViewById(R.id.fechaFin);
+        horaInicio = findViewById(R.id.horaInicio);
+        horaFin = findViewById(R.id.horaFin);
+        detalles = findViewById(R.id.idDetalles);
+        tipoPublico = findViewById(R.id.idPublico);
+        tipoEvento = findViewById(R.id.idEvento);
+        maps = findViewById(R.id.idMaps);
 
         fechaInicio.setOnClickListener(this);
         fechaFin.setOnClickListener(this);
@@ -134,21 +134,23 @@ public class Contratacion extends AppCompatActivity implements
             statusHoraFin = true;
             statusHoraInicio = false;
         } else if (v == maps){
-            PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+            Intent intent = new Intent(getApplicationContext(), Map.class);
+            startActivity(intent);
+            /*PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
             try {
                 startActivityForResult(builder.build(Contratacion.this), PLACE_PICKER_REQUEST);
             } catch (GooglePlayServicesRepairableException e) {
                 e.printStackTrace();
             } catch (GooglePlayServicesNotAvailableException e) {
                 e.printStackTrace();
-            }
+            }*/
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PLACE_PICKER_REQUEST) {
+        /*if (requestCode == PLACE_PICKER_REQUEST) {
             if (resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(data, getApplicationContext());
                 StringBuilder stringBuilder = new StringBuilder();
@@ -162,7 +164,7 @@ public class Contratacion extends AppCompatActivity implements
                 stringBuilder.append(longitude);
 
             }
-        }
+        }*/
     }
 
     @Override

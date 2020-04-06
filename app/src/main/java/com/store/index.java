@@ -100,10 +100,10 @@ public class index extends Fragment {
                 for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
                     list_datos.add(
                             new DatosVo(postSnapshot.child("nombre").getValue().toString(),
-                                postSnapshot.child("categoria").getValue().toString(),
-                                postSnapshot.child("biografia").getValue().toString(),
-                                postSnapshot.child("imagen").getValue().toString(),
-                                Integer.valueOf(postSnapshot.child("puntaje").getValue().toString())
+                                    postSnapshot.child("categoria").getValue().toString(),
+                                    postSnapshot.child("biografia").getValue().toString(),
+                                    postSnapshot.child("imagen").getValue().toString(),
+                                    Integer.valueOf(postSnapshot.child("puntaje").getValue().toString())
                             )
                     );
                 }

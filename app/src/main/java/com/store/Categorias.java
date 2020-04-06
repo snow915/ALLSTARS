@@ -91,7 +91,7 @@ public class Categorias extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_categorias, container, false);
-        recycler = (RecyclerView) v.findViewById(R.id.recycler_id_categorias);
+        recycler = v.findViewById(R.id.recycler_id_categorias);
         recycler.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         list_categorias = new ArrayList<CategoriasVo>();
         llenarDatos();
