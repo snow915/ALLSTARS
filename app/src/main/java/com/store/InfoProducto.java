@@ -88,7 +88,7 @@ public class InfoProducto extends AppCompatActivity implements
                 //dialog.show();
                 new SweetAlertDialog(InfoProducto.this, SweetAlertDialog.NORMAL_TYPE)
                         .setTitleText(nombreIntent)
-                        .setContentText("Texto de su biografía.")
+                        .setContentText(biografiaIntent)
                         .show();
             }
         });
