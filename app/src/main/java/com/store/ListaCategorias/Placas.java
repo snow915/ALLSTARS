@@ -87,49 +87,49 @@ public class Placas extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_placas, container, false);
-
-        recycler = (RecyclerView) v.findViewById(R.id.recycler_id_placas);
-        recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        list_datos = new ArrayList<DatosVo>();
-        llenarDatos();
-        AdapterDatos adapter = new AdapterDatos(list_datos, getContext());
-        recycler.setAdapter(adapter);
-        adapter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String nombre = list_datos.get(recycler.getChildAdapterPosition(v)).getNombre();
-                String precio = list_datos.get(recycler.getChildAdapterPosition(v)).getPrecio();
-                String biografia = list_datos.get(recycler.getChildAdapterPosition(v)).getBiografia();
-                String imagen = list_datos.get(recycler.getChildAdapterPosition(v)).getRutaImagen();
-                int stars = list_datos.get(recycler.getChildAdapterPosition(v)).getStars();
-                Intent infoProducto = new Intent(getActivity(), InfoProducto.class);
-                infoProducto.putExtra("nombre", nombre);
-                infoProducto.putExtra("precio", precio);
-                infoProducto.putExtra("image",imagen);
-                infoProducto.putExtra("stars", stars);
-                infoProducto.putExtra("biografia", biografia);
-                startActivity(infoProducto);
-            }
-        });
-
+        llenarDatos(v);
         return v;
     }
 
-    public void llenarDatos(){
-        reference = FirebaseDatabase.getInstance().getReference("data");
+    public void llenarDatos(View v){
+        final View view = v;
+        list_datos = new ArrayList<DatosVo>();
+        reference = FirebaseDatabase.getInstance().getReference().child("data");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
                     list_datos.add(
-                            new DatosVo(postSnapshot.child("nombre").toString(),
-                                    postSnapshot.child("precio").toString(),
-                                    postSnapshot.child("biografia").toString(),
-                                    postSnapshot.child("imagen").toString(),
-                                    Integer.parseInt(postSnapshot.child("puntaje").toString())
+                            new DatosVo(postSnapshot.child("nombre").getValue().toString(),
+                                    postSnapshot.child("categoria").getValue().toString(),
+                                    postSnapshot.child("biografia").getValue().toString(),
+                                    postSnapshot.child("imagen").getValue().toString(),
+                                    Integer.valueOf(postSnapshot.child("puntaje").getValue().toString())
                             )
                     );
                 }
+                recycler = view.findViewById(R.id.recycler_id_placas);
+                recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+
+                AdapterDatos adapter = new AdapterDatos(list_datos, getActivity().getApplicationContext());
+                recycler.setAdapter(adapter);
+                adapter.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String nombre = list_datos.get(recycler.getChildAdapterPosition(v)).getNombre();
+                        String precio = list_datos.get(recycler.getChildAdapterPosition(v)).getPrecio();
+                        String biografia = list_datos.get(recycler.getChildAdapterPosition(v)).getBiografia();
+                        String imagen = list_datos.get(recycler.getChildAdapterPosition(v)).getRutaImagen();
+                        int stars = list_datos.get(recycler.getChildAdapterPosition(v)).getStars();
+                        Intent infoProducto = new Intent(getActivity(), InfoProducto.class);
+                        infoProducto.putExtra("nombre", nombre);
+                        infoProducto.putExtra("precio", precio);
+                        infoProducto.putExtra("image",imagen);
+                        infoProducto.putExtra("stars", stars);
+                        infoProducto.putExtra("biografia", biografia);
+                        startActivity(infoProducto);
+                    }
+                });
             }
 
             @Override
