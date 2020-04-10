@@ -94,6 +94,7 @@
 
     <string-array name="array_publico">
         <item>Público</item>
+        <item>Todas las edades</item>
         <item>Menos de 12 años</item>
         <item>Entre 13 y 17 años</item>
         <item>Mayores de 18 años</item>

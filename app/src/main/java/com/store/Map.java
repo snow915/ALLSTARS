@@ -25,16 +25,21 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.store.Adapters.PlaceAutoSuggestAdapter;
 
 import java.io.IOException;
 import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class Map extends FragmentActivity implements OnMapReadyCallback {
     private GoogleMap map;
-    private LatLng sydney = new LatLng(-8.579892, 116.095239);
     private SupportMapFragment mapFragment;
     private SearchView searchView;
+    private FloatingActionButton finishLocation;
+    public double latitude, longitude;
+    public String location;
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +83,7 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
 
         searchView = findViewById(R.id.sv_location);
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        finishLocation = findViewById(R.id.finishLocation);
 
         autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -88,7 +94,7 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                String location = searchView.getQuery().toString();
+                location = searchView.getQuery().toString();
                 List<Address> addressList = null;
                 if (location != null || !location.equals("")){
                     Geocoder geocoder = new Geocoder(getApplicationContext());
@@ -98,7 +104,9 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
                         e.printStackTrace();
                     }
                     Address address = addressList.get(0);
-                    LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+                    latitude = address.getLatitude();
+                    longitude = address.getLongitude();
+                    LatLng latLng = new LatLng(latitude, longitude);
                     map.addMarker(new MarkerOptions().position(latLng).title(location));
                     map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng ,10));
                 }
@@ -108,6 +116,23 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
             @Override
             public boolean onQueryTextChange(String newText) {
                 return false;
+            }
+        });
+
+        finishLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new SweetAlertDialog(Map.this, SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText(location)
+                        .setContentText("¿Deseas continuar con la ubicación seleccionada?")
+                        .setConfirmText("Continuar")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                sDialog.dismissWithAnimation();
+                            }
+                        })
+                        .show();
             }
         });
 
