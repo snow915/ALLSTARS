@@ -16,14 +16,13 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlacePicker;
-
+import java.lang.reflect.Array;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class Contratacion extends AppCompatActivity implements
         DatePickerDialog.OnDateSetListener,
@@ -33,9 +32,9 @@ public class Contratacion extends AppCompatActivity implements
 
     EditText fechaInicio, fechaFin, horaInicio, horaFin, detalles;
     Spinner tipoPublico, tipoEvento;
+    String currentDateString;
     Button maps;
-    private int dia, mes, anio, hora, minutos;
-    int PLACE_PICKER_REQUEST = 1;
+    public int dia, mes, anio, hora, minutos;
     boolean statusFechaInicio = false;
     boolean statusFechaFin = false;
     boolean statusHoraInicio = false;
@@ -88,7 +87,7 @@ public class Contratacion extends AppCompatActivity implements
         c.set(Calendar.YEAR, year);
         c.set(Calendar.MONTH, month);
         c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-        String currentDateString = DateFormat.getDateInstance(DateFormat.FULL).format(c.getTime());
+        currentDateString = DateFormat.getDateInstance(DateFormat.FULL).format(c.getTime());
         if (statusFechaInicio) {
             fechaInicio.setText(currentDateString);
         } else if (statusFechaFin) {
@@ -134,37 +133,31 @@ public class Contratacion extends AppCompatActivity implements
             statusHoraFin = true;
             statusHoraInicio = false;
         } else if (v == maps){
+            String publico = tipoPublico.getSelectedItem().toString();
+            String evento = tipoEvento.getSelectedItem().toString();
+            String hora_inicio = horaInicio.getText().toString();
+            String hora_fin = horaFin.getText().toString();
+            String fecha_inicio = fechaInicio.getText().toString();
+            String fecha_fin = fechaFin.getText().toString();
+            String notasExtra = detalles.getText().toString();
+            ArrayList<String> list = new ArrayList<String>();
+            list.add(fecha_inicio);
+            list.add(fecha_fin);
+            list.add(hora_inicio);
+            list.add(hora_fin);
+            list.add(publico);
+            list.add(evento);
+            list.add(notasExtra);
             Intent intent = new Intent(getApplicationContext(), Map.class);
+            intent.putStringArrayListExtra("valuesHiring", list);
             startActivity(intent);
-            /*PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-            try {
-                startActivityForResult(builder.build(Contratacion.this), PLACE_PICKER_REQUEST);
-            } catch (GooglePlayServicesRepairableException e) {
-                e.printStackTrace();
-            } catch (GooglePlayServicesNotAvailableException e) {
-                e.printStackTrace();
-            }*/
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        /*if (requestCode == PLACE_PICKER_REQUEST) {
-            if (resultCode == RESULT_OK) {
-                Place place = PlacePicker.getPlace(data, getApplicationContext());
-                StringBuilder stringBuilder = new StringBuilder();
-                String latitude = String.valueOf(place.getLatLng().latitude);
-                String longitude = String.valueOf(place.getLatLng().longitude);
-                stringBuilder.append("LATITUDE: ");
-                stringBuilder.append(latitude);
-                stringBuilder.append("\n");
 
-                stringBuilder.append("LONGITUDE: ");
-                stringBuilder.append(longitude);
-
-            }
-        }*/
     }
 
     @Override

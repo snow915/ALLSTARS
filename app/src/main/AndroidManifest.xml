@@ -15,7 +15,8 @@
         android:roundIcon="@drawable/all_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Map"></activity>
+        <activity android:name=".EnviarSolicitud"></activity>
+        <activity android:name=".Map" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
