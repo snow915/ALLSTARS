@@ -13,6 +13,6 @@ public class EnviarSolicitud extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enviar_solicitud);
         final ArrayList<String> list = getIntent().getExtras().getStringArrayList("valuesHiring");
-        System.out.println(list.get(7));
+
     }
 }
