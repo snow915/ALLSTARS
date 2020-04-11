@@ -71,29 +71,29 @@
             android:text="@string/fechaFin"
             android:textSize="15dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtFechaInicio"/>
+            app:layout_constraintTop_toBottomOf="@+id/txtFechaInicio" />
 
         <TextView
             android:id="@+id/txtHoraInicio"
             android:layout_width="118dp"
             android:layout_height="25dp"
-            android:text="@string/horaInicio"
-            android:textSize="15dp"
             android:layout_marginStart="64dp"
             android:layout_marginLeft="64dp"
             android:layout_marginTop="28dp"
+            android:text="@string/horaInicio"
+            android:textSize="15dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtFechaFin"/>
+            app:layout_constraintTop_toBottomOf="@+id/txtFechaFin" />
 
         <TextView
             android:id="@+id/txtHoraFin"
             android:layout_width="118dp"
             android:layout_height="25dp"
-            android:text="@string/horaFin"
-            android:textSize="15dp"
             android:layout_marginStart="64dp"
             android:layout_marginLeft="64dp"
             android:layout_marginTop="28dp"
+            android:text="@string/horaFin"
+            android:textSize="15dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtHoraInicio" />
 
@@ -101,11 +101,11 @@
             android:id="@+id/txtTipoPublico"
             android:layout_width="118dp"
             android:layout_height="25dp"
-            android:text="@string/tipoPublico"
-            android:textSize="15dp"
             android:layout_marginStart="64dp"
             android:layout_marginLeft="64dp"
             android:layout_marginTop="28dp"
+            android:text="@string/tipoPublico"
+            android:textSize="15dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtHoraFin" />
 
@@ -113,11 +113,11 @@
             android:id="@+id/txtTipoEvento"
             android:layout_width="118dp"
             android:layout_height="25dp"
-            android:text="@string/tipoShow"
-            android:textSize="15dp"
             android:layout_marginStart="64dp"
             android:layout_marginLeft="64dp"
             android:layout_marginTop="28dp"
+            android:text="@string/tipoShow"
+            android:textSize="15dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtTipoPublico" />
 
@@ -125,11 +125,11 @@
             android:id="@+id/txtDetallesExtras"
             android:layout_width="118dp"
             android:layout_height="25dp"
-            android:text="@string/detalles"
-            android:textSize="15dp"
             android:layout_marginStart="64dp"
             android:layout_marginLeft="64dp"
             android:layout_marginTop="28dp"
+            android:text="@string/detalles"
+            android:textSize="15dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtTipoEvento" />
 
@@ -226,15 +226,16 @@
 
         <Button
             android:id="@+id/enviarSolicitud"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/enviar_solicitud"
+            android:layout_width="165dp"
+            android:layout_height="48dp"
             android:layout_marginTop="30dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/colorBlue"
+            android:text="@string/enviar_solicitud"
+            android:textColor="@color/colorWhite"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            android:background="@color/colorBlue"
-            android:textColor="@color/colorWhite"
             app:layout_constraintTop_toBottomOf="@+id/getDetalles" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

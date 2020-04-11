@@ -103,7 +103,8 @@ public class index extends Fragment {
                                     postSnapshot.child("categoria").getValue().toString(),
                                     postSnapshot.child("biografia").getValue().toString(),
                                     postSnapshot.child("imagen").getValue().toString(),
-                                    Integer.valueOf(postSnapshot.child("puntaje").getValue().toString())
+                                    Integer.valueOf(postSnapshot.child("puntaje").getValue().toString()),
+                                    postSnapshot.child("user").getValue().toString()
                             )
                     );
                 }
@@ -120,12 +121,14 @@ public class index extends Fragment {
                         String biografia = list_datos.get(recycler.getChildAdapterPosition(v)).getBiografia();
                         String imagen = list_datos.get(recycler.getChildAdapterPosition(v)).getRutaImagen();
                         int stars = list_datos.get(recycler.getChildAdapterPosition(v)).getStars();
+                        String username = list_datos.get(recycler.getChildAdapterPosition(v)).getUsername();
                         Intent infoProducto = new Intent(getActivity(), InfoProducto.class);
                         infoProducto.putExtra("nombre", nombre);
                         infoProducto.putExtra("precio", precio);
                         infoProducto.putExtra("image",imagen);
                         infoProducto.putExtra("stars", stars);
                         infoProducto.putExtra("biografia", biografia);
+                        infoProducto.putExtra("username" , username);
                         startActivity(infoProducto);
                     }
                 });

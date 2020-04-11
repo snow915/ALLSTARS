@@ -53,6 +53,7 @@ public class InfoProducto extends AppCompatActivity implements
     String biografiaIntent;
     RatingBar ratingStars;
     String imageRoute;
+    String username;
     int stars;
 
     @Override
@@ -73,6 +74,7 @@ public class InfoProducto extends AppCompatActivity implements
         biografiaIntent = getIntent().getStringExtra("biografia");
         imageRoute = getIntent().getStringExtra("image");
         stars = getIntent().getIntExtra("stars",0);
+        username = getIntent().getStringExtra("username");
         titulo.setText(nombreIntent);
         precio.setText(precioIntent);
         // Here load the image from FirebaseDataBase
@@ -111,6 +113,7 @@ public class InfoProducto extends AppCompatActivity implements
                 HashMap<String, String> hashMap = new HashMap<String, String>();
                 hashMap.put("rutaImagen", imageRoute);
                 hashMap.put("nombreFamoso", nombreIntent);
+                hashMap.put("usernameFamoso" , username);
                 intent.putExtra("mapValues", hashMap);
                 startActivity(intent);
             }

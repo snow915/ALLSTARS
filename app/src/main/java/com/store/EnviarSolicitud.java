@@ -2,7 +2,9 @@ package com.store;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -11,6 +13,8 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class EnviarSolicitud extends AppCompatActivity {
 
@@ -23,6 +27,12 @@ public class EnviarSolicitud extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enviar_solicitud);
+
+        new SweetAlertDialog(this)
+                .setTitleText("Verifica que la información sea la correcta")
+                .setContentText("Esta información sera enviada al famoso/a y en breve se comunicará contigo")
+                .setConfirmText("Entendido")
+                .show();
 
         //get array from Map.java that contains all values from Contratacion.java and Map.java
         hashMap = (HashMap<String, String>) getIntent().getSerializableExtra("mapValues");
@@ -56,5 +66,23 @@ public class EnviarSolicitud extends AppCompatActivity {
         if(!hashMap.get("detalles").equals("")){
             detalles.setText(hashMap.get("detalles"));
         }
+
+        enviarSolicitud.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new SweetAlertDialog(EnviarSolicitud.this, SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("Confirmar")
+                        .setContentText("La información se enviara")
+                        .setConfirmText("Enviar")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                //aqui mando la info a firebase
+                                sDialog.dismissWithAnimation();
+                            }
+                        })
+                        .show();
+            }
+        });
     }
 }

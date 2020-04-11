@@ -95,15 +95,17 @@ public class Carrito extends Fragment {
             public void onClick(View v) {
                 String nombre = list_datos.get(recycler.getChildAdapterPosition(v)).getNombre();
                 String precio = list_datos.get(recycler.getChildAdapterPosition(v)).getPrecio();
-                String imagen = list_datos.get(recycler.getChildAdapterPosition(v)).getRutaImagen();
                 String biografia = list_datos.get(recycler.getChildAdapterPosition(v)).getBiografia();
+                String imagen = list_datos.get(recycler.getChildAdapterPosition(v)).getRutaImagen();
                 int stars = list_datos.get(recycler.getChildAdapterPosition(v)).getStars();
+                String username = list_datos.get(recycler.getChildAdapterPosition(v)).getUsername();
                 Intent infoProducto = new Intent(getActivity(), InfoProducto.class);
                 infoProducto.putExtra("nombre", nombre);
                 infoProducto.putExtra("precio", precio);
-                infoProducto.putExtra("image", imagen);
+                infoProducto.putExtra("image",imagen);
                 infoProducto.putExtra("stars", stars);
                 infoProducto.putExtra("biografia", biografia);
+                infoProducto.putExtra("username" , username);
                 startActivity(infoProducto);
             }
         });
@@ -122,7 +124,8 @@ public class Carrito extends Fragment {
                 String imagen = fila.getString(fila.getColumnIndex("idImagen"));
                 String biografia = fila.getString(fila.getColumnIndex("biografia"));
                 int stars = fila.getInt(fila.getColumnIndex("idStars"));
-                list_datos.add(new DatosVo(nombre, precio, biografia,imagen, stars));
+                String username = fila.getString(fila.getColumnIndex("username"));
+                list_datos.add(new DatosVo(nombre, precio, biografia,imagen, stars, username));
             } while (fila.moveToNext());
         }
         db.close();
