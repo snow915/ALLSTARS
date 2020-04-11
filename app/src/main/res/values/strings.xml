@@ -124,6 +124,8 @@
 
     <string name="enviar_solicitud">Enviar solicitud</string>
 
+
+    <string name="requerido">Campo requerido</string>
     <!-- TODO: Remove or change this placeholder text -->
 
 </resources>

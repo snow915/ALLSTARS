@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -137,24 +138,66 @@ public class Contratacion extends AppCompatActivity implements
             statusHoraFin = true;
             statusHoraInicio = false;
         } else if (v == maps){
-            String publico = tipoPublico.getSelectedItem().toString();
-            String evento = tipoEvento.getSelectedItem().toString();
-            String hora_inicio = horaInicio.getText().toString();
-            String hora_fin = horaFin.getText().toString();
-            String fecha_inicio = fechaInicio.getText().toString();
-            String fecha_fin = fechaFin.getText().toString();
-            String notasExtra = detalles.getText().toString();
-            hashMap.put("tipoPublico", publico);
-            hashMap.put("tipoEvento", evento);
-            hashMap.put("horaInicio", hora_inicio);
-            hashMap.put("horaFin", hora_fin);
-            hashMap.put("fechaInicio", fecha_inicio);
-            hashMap.put("fechaFin", fecha_fin);
-            hashMap.put("detalles", notasExtra);
-            Intent intent = new Intent(getApplicationContext(), Map.class);
-            intent.putExtra("mapValues", hashMap);
-            startActivity(intent);
+
+            if (validaciones()){
+                hashMap.put("tipoPublico", tipoPublico.getSelectedItem().toString());
+                hashMap.put("tipoEvento", tipoEvento.getSelectedItem().toString());
+                hashMap.put("horaInicio",horaInicio.getText().toString());
+                hashMap.put("horaFin", horaFin.getText().toString());
+                hashMap.put("fechaInicio", fechaInicio.getText().toString());
+                hashMap.put("fechaFin", fechaFin.getText().toString());
+                hashMap.put("detalles", detalles.getText().toString());
+
+                Intent intent = new Intent(getApplicationContext(), Map.class);
+                intent.putExtra("mapValues", hashMap);
+                startActivity(intent);
+            }
+
         }
+    }
+
+    private boolean validaciones(){
+        String requerido = getString(R.string.requerido);
+        TextView errorTextviewPublico = (TextView) tipoPublico.getSelectedView();
+        TextView errorTextviewEventos = (TextView) tipoEvento.getSelectedView();
+
+        if(fechaInicio.getText().toString().equals("")){
+            fechaInicio.setError(requerido);
+            return false;
+        } else {
+            fechaInicio.setError(requerido, null);
+        }
+        if(fechaFin.getText().toString().equals("")){
+            fechaFin.setError(requerido);
+            return false;
+        } else {
+            fechaFin.setError(requerido, null);
+        }
+        if(horaInicio.getText().toString().equals("")){
+            horaInicio.setError(requerido);
+            return false;
+        } else {
+            horaInicio.setError(requerido, null);
+        }
+        if(horaFin.getText().toString().equals("")){
+            horaFin.setError(requerido);
+            return false;
+        } else {
+            horaFin.setError(requerido, null);
+        }
+        if(tipoPublico.getSelectedItem().toString().equals("Público")) {
+            errorTextviewPublico.setError(requerido);
+            return false;
+        } else {
+            errorTextviewPublico.setError(requerido, null);
+        }
+        if(tipoEvento.getSelectedItem().toString().equals("Evento")) {
+            errorTextviewEventos.setError(requerido);
+            return false;
+        } else {
+            errorTextviewEventos.setError(requerido, null);
+        }
+        return true;
     }
 
     @Override
