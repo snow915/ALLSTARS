@@ -126,23 +126,29 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
         finishLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new SweetAlertDialog(Map.this, SweetAlertDialog.WARNING_TYPE)
-                        .setTitleText(location)
-                        .setContentText("¿Deseas continuar con la ubicación seleccionada?")
-                        .setConfirmText("Continuar")
-                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sDialog) {
-                                hashMap.put("ubicacion", location);
-                                hashMap.put("latitud", String.valueOf(latitude));
-                                hashMap.put("longitud", String.valueOf(longitude));
-                                Intent intent = new Intent(getApplicationContext(), EnviarSolicitud.class);
-                                intent.putExtra("mapValues", hashMap);
-                                startActivity(intent);
-                                sDialog.dismissWithAnimation();
-                            }
-                        })
-                        .show();
+                if (autoCompleteTextView.getText().toString().equals("") || autoCompleteTextView.getText().toString().equals(null)) {
+                    new SweetAlertDialog(Map.this, SweetAlertDialog.WARNING_TYPE)
+                            .setTitleText("Debes buscar tu ubicación")
+                            .show();
+                } else {
+                    new SweetAlertDialog(Map.this, SweetAlertDialog.WARNING_TYPE)
+                            .setTitleText(location)
+                            .setContentText("¿Deseas continuar con la ubicación seleccionada?")
+                            .setConfirmText("Continuar")
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    hashMap.put("ubicacion", location);
+                                    hashMap.put("latitud", String.valueOf(latitude));
+                                    hashMap.put("longitud", String.valueOf(longitude));
+                                    Intent intent = new Intent(getApplicationContext(), EnviarSolicitud.class);
+                                    intent.putExtra("mapValues", hashMap);
+                                    startActivity(intent);
+                                    sDialog.dismissWithAnimation();
+                                }
+                            })
+                            .show();
+                }
             }
         });
 
