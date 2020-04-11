@@ -31,6 +31,7 @@ import com.store.Adapters.PlaceAutoSuggestAdapter;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -42,11 +43,12 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
     private FloatingActionButton finishLocation;
     public double latitude, longitude;
     public String location;
+    HashMap<String, String> hashMap;
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-        final ArrayList<String> list = getIntent().getExtras().getStringArrayList("valuesHiring");
+        hashMap = (HashMap<String, String>) getIntent().getSerializableExtra("mapValues");
         /*======================================================
         final AutoCompleteTextView autoCompleteTextView=findViewById(R.id.autocomplete);
         autoCompleteTextView.setAdapter(new PlaceAutoSuggestAdapter(Map.this,android.R.layout.simple_list_item_1));
@@ -131,11 +133,11 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
                         .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                             @Override
                             public void onClick(SweetAlertDialog sDialog) {
-                                list.add(location);
-                                list.add(String.valueOf(latitude));
-                                list.add(String.valueOf(longitude));
+                                hashMap.put("ubicacion", location);
+                                hashMap.put("latitud", String.valueOf(latitude));
+                                hashMap.put("longitud", String.valueOf(longitude));
                                 Intent intent = new Intent(getApplicationContext(), EnviarSolicitud.class);
-                                intent.putStringArrayListExtra("valuesHiring", list);
+                                intent.putExtra("mapValues", hashMap);
                                 startActivity(intent);
                                 sDialog.dismissWithAnimation();
                             }

@@ -30,7 +30,9 @@ import com.bumptech.glide.Glide;
 import com.store.CarritoCompras.AdminSQLiteOpenHelper;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -106,6 +108,10 @@ public class InfoProducto extends AppCompatActivity implements
                 //DialogFragment datePicker = new DatePickerFragment();
                 //datePicker.show(getSupportFragmentManager(), "date picker");
                 Intent intent=new Intent(getApplicationContext(), Contratacion.class);
+                HashMap<String, String> hashMap = new HashMap<String, String>();
+                hashMap.put("rutaImagen", imageRoute);
+                hashMap.put("nombreFamoso", nombreIntent);
+                intent.putExtra("mapValues", hashMap);
                 startActivity(intent);
             }
         });

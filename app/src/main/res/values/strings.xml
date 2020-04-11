@@ -122,6 +122,8 @@
     <string name="edit_profile">Editar perfil</string>
     <string name="delete_account">Eliminar cuenta</string>
 
+    <string name="enviar_solicitud">Enviar solicitud</string>
+
     <!-- TODO: Remove or change this placeholder text -->
 
 </resources>

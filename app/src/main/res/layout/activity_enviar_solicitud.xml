@@ -216,13 +216,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text=""
+            android:text="Sin detalles extras"
             android:textSize="18dp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtDetallesExtras" />
+
+        <Button
+            android:id="@+id/enviarSolicitud"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/enviar_solicitud"
+            android:layout_marginTop="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            android:background="@color/colorBlue"
+            android:textColor="@color/colorWhite"
+            app:layout_constraintTop_toBottomOf="@+id/getDetalles" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

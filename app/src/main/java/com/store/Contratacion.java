@@ -22,6 +22,7 @@ import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 public class Contratacion extends AppCompatActivity implements
@@ -39,10 +40,13 @@ public class Contratacion extends AppCompatActivity implements
     boolean statusFechaFin = false;
     boolean statusHoraInicio = false;
     boolean statusHoraFin = false;
+    HashMap<String, String> hashMap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contratacion);
+
+        hashMap = (HashMap<String, String>) getIntent().getSerializableExtra("mapValues");
 
         fechaInicio = findViewById(R.id.fechaInicio);
         fechaFin = findViewById(R.id.fechaFin);
@@ -140,16 +144,15 @@ public class Contratacion extends AppCompatActivity implements
             String fecha_inicio = fechaInicio.getText().toString();
             String fecha_fin = fechaFin.getText().toString();
             String notasExtra = detalles.getText().toString();
-            ArrayList<String> list = new ArrayList<String>();
-            list.add(fecha_inicio);
-            list.add(fecha_fin);
-            list.add(hora_inicio);
-            list.add(hora_fin);
-            list.add(publico);
-            list.add(evento);
-            list.add(notasExtra);
+            hashMap.put("tipoPublico", publico);
+            hashMap.put("tipoEvento", evento);
+            hashMap.put("horaInicio", hora_inicio);
+            hashMap.put("horaFin", hora_fin);
+            hashMap.put("fechaInicio", fecha_inicio);
+            hashMap.put("fechaFin", fecha_fin);
+            hashMap.put("detalles", notasExtra);
             Intent intent = new Intent(getApplicationContext(), Map.class);
-            intent.putStringArrayListExtra("valuesHiring", list);
+            intent.putExtra("mapValues", hashMap);
             startActivity(intent);
         }
     }
