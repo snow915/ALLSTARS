@@ -2,7 +2,9 @@ package com.store;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -27,6 +29,8 @@ public class EnviarSolicitud extends AppCompatActivity {
     HashMap<String, String> hashMap;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
+    String user;
+    public Solicitud solicitud, solicitudUbicacion;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +44,10 @@ public class EnviarSolicitud extends AppCompatActivity {
 
         //get array from Map.java that contains all values from Contratacion.java and Map.java
         hashMap = (HashMap<String, String>) getIntent().getSerializableExtra("mapValues");
-
+        load_preferences();
+        initFirebase();
+        solicitud = new Solicitud();
+        solicitudUbicacion = new Solicitud();
         //associate variables with ids
         titulo = findViewById(R.id.titulo);
         ubicacion = findViewById(R.id.getUbicacion);
@@ -82,7 +89,32 @@ public class EnviarSolicitud extends AppCompatActivity {
                             @Override
                             public void onClick(SweetAlertDialog sDialog) {
                                 //aqui mando la info a firebase
+                                solicitud.setNombreFamoso(hashMap.get("nombreFamoso"));
+                                solicitud.setFechaInicio(hashMap.get("fechaInicio"));
+                                solicitud.setFechaFin(hashMap.get("fechaFin"));
+                                solicitud.setHoraInicio(hashMap.get("horaInicio"));
+                                solicitud.setHoraFin(hashMap.get("horaFin"));
+                                solicitud.setTipoPublico(hashMap.get("tipoPublico"));
+                                solicitud.setTipoEvento(hashMap.get("tipoEvento"));
+                                solicitud.setUserFamoso(hashMap.get("usernameFamoso"));
+                                solicitud.setDetalles(hashMap.get("detalles"));
 
+                                solicitudUbicacion.setUbicacion(hashMap.get("ubicacion"));
+                                solicitudUbicacion.setLatitud(hashMap.get("latitud"));
+                                solicitudUbicacion.setLongitud(hashMap.get("longitud"));
+
+                                databaseReference.child("data")
+                                        .child(solicitud.getUserFamoso())
+                                        .child("solicitudes")
+                                        .child(user)
+                                        .setValue(solicitud);
+
+                                databaseReference.child("data")
+                                        .child(solicitud.getUserFamoso())
+                                        .child("solicitudes")
+                                        .child(user)
+                                        .child("ubicacion")
+                                        .setValue(solicitudUbicacion);
                                 sDialog.dismissWithAnimation();
                             }
                         })
@@ -95,6 +127,11 @@ public class EnviarSolicitud extends AppCompatActivity {
         FirebaseApp.initializeApp(this);
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
+    }
+
+    private void load_preferences(){
+        SharedPreferences preferences = getSharedPreferences("credentials", Context.MODE_PRIVATE);
+        user = preferences.getString("user",null);
     }
 
 }

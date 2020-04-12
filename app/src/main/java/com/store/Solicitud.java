@@ -2,8 +2,35 @@ package com.store;
 
 public class Solicitud {
 
-    private String ubicacion, latitud, longitud, fechaInicio, fechaFin, horaInicio, horaFin,
-            tipoPublico, tipoEvento, detalles;
+    private String ubicacion;
+    private String latitud;
+    private String longitud;
+    private String fechaInicio;
+    private String fechaFin;
+    private String horaInicio;
+    private String horaFin;
+    private String tipoPublico;
+    private String tipoEvento;
+    private String detalles;
+    private String userFamoso;
+
+    public String getUserFamoso() {
+        return userFamoso;
+    }
+
+    public void setUserFamoso(String userFamoso) {
+        this.userFamoso = userFamoso;
+    }
+
+    public String getNombreFamoso() {
+        return nombreFamoso;
+    }
+
+    public void setNombreFamoso(String nombreFamoso) {
+        this.nombreFamoso = nombreFamoso;
+    }
+
+    private String nombreFamoso;
 
     public String getUbicacion() {
         return ubicacion;
