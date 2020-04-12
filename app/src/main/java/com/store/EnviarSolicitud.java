@@ -10,6 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,7 +25,8 @@ public class EnviarSolicitud extends AppCompatActivity {
     private ImageView imagen;
     private Button enviarSolicitud;
     HashMap<String, String> hashMap;
-
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +82,7 @@ public class EnviarSolicitud extends AppCompatActivity {
                             @Override
                             public void onClick(SweetAlertDialog sDialog) {
                                 //aqui mando la info a firebase
+
                                 sDialog.dismissWithAnimation();
                             }
                         })
@@ -85,4 +90,11 @@ public class EnviarSolicitud extends AppCompatActivity {
             }
         });
     }
+
+    private void initFirebase(){
+        FirebaseApp.initializeApp(this);
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
+    }
+
 }
