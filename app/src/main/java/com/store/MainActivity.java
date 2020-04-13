@@ -324,6 +324,16 @@ public class MainActivity extends AppCompatActivity
                         }
                     })
                     .show();
+        } else if (id == R.id.requests) {
+            if (carousel != null) {
+                carousel = null;
+                getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().findFragmentById(R.id.content_main_carrusel)).commit();
+                mi_fragment = new FragmentSolicitud();
+                fragment_seleccionado = true;
+            } else {
+                mi_fragment = new EditProfile();
+                fragment_seleccionado = true;
+            }
         }
 
         if (fragment_seleccionado) {

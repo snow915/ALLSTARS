@@ -77,14 +77,14 @@
     <string name="profile_title">Perfil</string>
 
     <!-- START - Strings for Register Artist Layout -->
-        <string name="sign_up_artist_name_hint">Nombre artístico</string>
-        <string name="sign_up_artist_type_hint">¿Qué tipo de artista eres?"\n"Por favor selecciona al menos una opción</string>
-        <string name="sign_up_artist_chk1">Músico</string>
-        <string name="sign_up_artist_chk2">Youtuber</string>
-        <string name="sign_up_artist_chk3">Comediante</string>
-        <string name="sign_up_artist_chk4">Actor</string>
-        <string name="sign_up_artist_chk5">Actriz</string>
-        <string name="sign_up_artist_chk6">Deportista</string>
+    <string name="sign_up_artist_name_hint">Nombre artístico</string>
+    <string name="sign_up_artist_type_hint">¿Qué tipo de artista eres?"\n"Por favor selecciona al menos una opción</string>
+    <string name="sign_up_artist_chk1">Músico</string>
+    <string name="sign_up_artist_chk2">Youtuber</string>
+    <string name="sign_up_artist_chk3">Comediante</string>
+    <string name="sign_up_artist_chk4">Actor</string>
+    <string name="sign_up_artist_chk5">Actriz</string>
+    <string name="sign_up_artist_chk6">Deportista</string>
     <!-- END - Strings for Register Artist Layout -->
     <string-array name="array_sex">
         <item>Genero</item>
