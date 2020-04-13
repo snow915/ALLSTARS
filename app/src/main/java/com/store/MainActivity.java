@@ -268,6 +268,7 @@ public class MainActivity extends AppCompatActivity
                     b.putString("user_id", user_id);
                     mi_fragment.setArguments(b);
                 } else {
+                    mi_fragment = new ArtistProfile();
                     b.putString("user_id", artist_id);
                     mi_fragment.setArguments(b);
                 }
@@ -279,6 +280,7 @@ public class MainActivity extends AppCompatActivity
                     b.putString("user_id", user_id);
                     mi_fragment.setArguments(b);
                 } else {
+                    mi_fragment = new ArtistProfile();
                     b.putString("user_id", artist_id);
                     mi_fragment.setArguments(b);
                 }
@@ -294,6 +296,7 @@ public class MainActivity extends AppCompatActivity
                     b.putString("user_id", user_id);
                     mi_fragment.setArguments(b);
                 } else {
+                    mi_fragment = new EditArtistProfile();
                     b.putString("user_id", artist_id);
                     mi_fragment.setArguments(b);
                 }
@@ -305,6 +308,7 @@ public class MainActivity extends AppCompatActivity
                     b.putString("user_id", user_id);
                     mi_fragment.setArguments(b);
                 } else {
+                    mi_fragment = new EditArtistProfile();
                     b.putString("user_id", artist_id);
                     mi_fragment.setArguments(b);
                 }

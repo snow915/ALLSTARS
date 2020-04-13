@@ -73,54 +73,12 @@ public class Profile extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         String user_id = getArguments().getString("user_id");
-        if (user_id != null){
-            get_user_data(user_id);
-        } else {
-            user_id = getArguments().getString("artist_id");
-            get_artist_data(user_id);
-        }
+        get_user_data(user_id);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-    }
-
-    private void get_artist_data(String user_id) {
-        final List user_data = new ArrayList();
-        DatabaseReference ref;
-        ref = FirebaseDatabase.getInstance().getReference().child("data").child(user_id);
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    String artist_name = dataSnapshot.child("nombre").getValue().toString();
-                    String biografia = dataSnapshot.child("biografia").getValue().toString();
-                    String categorias = dataSnapshot.child("nombre").getValue().toString();
-                    String iamgen = dataSnapshot.child("nombre").getValue().toString();
-
-                    TextView name = getView().findViewById(R.id.id_nombre);
-                    TextView last_name = getView().findViewById(R.id.id_apellido);
-                    TextView email = getView().findViewById(R.id.id_email);
-                    TextView sex = getView().findViewById(R.id.id_sexo);
-                    TextView phone = getView().findViewById(R.id.id_telefono);
-                    name.setText(user_name);
-                    last_name.setText(user_last_name);
-                    email.setText(user_email);
-                    int index = user_sex.indexOf(',');
-                    user_sex = user_sex.substring(0, index);
-                    sex.setText(user_sex);
-                    phone.setText(user_phone);
-                }
-                else {
-
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
     }
 
     @Override
