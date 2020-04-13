@@ -1,12 +1,29 @@
 package com.store;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.store.Adapters.AdapterDatos;
+import com.store.Adapters.AdapterDatosSolicitud;
+import com.store.Vo.DatosSolicitudVo;
+
+import java.util.ArrayList;
 
 
 /**
@@ -20,9 +37,12 @@ public class FragmentSolicitud extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    ArrayList<DatosSolicitudVo> list_datos;
+    RecyclerView recycler;
+    DatabaseReference reference;
+    String artistUser;
 
     public FragmentSolicitud() {
         // Required empty public constructor
@@ -58,7 +78,58 @@ public class FragmentSolicitud extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        load_artist_preferences();
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_solicitud, container, false);
+        View v = inflater.inflate(R.layout.fragment_solicitud, container, false);
+        llenarDatos(v);
+        return v;
+    }
+
+    public void llenarDatos(View v){
+        final View view = v;
+        list_datos = new ArrayList<DatosSolicitudVo>();
+        reference = FirebaseDatabase.getInstance().getReference().child("data").child(artistUser).child("solicitudes");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
+                    list_datos.add(
+                            new DatosSolicitudVo(postSnapshot.child("fechaInicio").getValue().toString(),
+                                    postSnapshot.child("horaInicio").getValue().toString(),
+                                    postSnapshot.child("tipoEvento").getValue().toString()
+                            )
+                    );
+                }
+                recycler = view.findViewById(R.id.recycler_id_solicitud);
+                recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+
+                AdapterDatosSolicitud adapter = new AdapterDatosSolicitud(list_datos, getActivity().getApplicationContext());
+                recycler.setAdapter(adapter);
+                adapter.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String fechaInicio = list_datos.get(recycler.getChildAdapterPosition(v)).getFechaInicio();
+                        String horaInicio = list_datos.get(recycler.getChildAdapterPosition(v)).getHoraInicio();
+                        String tipoEvento = list_datos.get(recycler.getChildAdapterPosition(v)).getTipoEvento();
+                        //Intent infoProducto = new Intent(getActivity(), InfoProducto.class);
+                        //infoProducto.putExtra("fechaInicio", fechaInicio);
+                        //infoProducto.putExtra("horaInicio", horaInicio);
+                        //infoProducto.putExtra("tipoEvento", tipoEvento);
+                        //startActivity(infoProducto);
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private void load_artist_preferences() {
+        SharedPreferences preferences = getActivity().getSharedPreferences("artist_credentials", Context.MODE_PRIVATE);
+        artistUser = preferences.getString("artist_id", null);
     }
 }
