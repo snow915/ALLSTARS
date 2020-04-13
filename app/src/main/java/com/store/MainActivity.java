@@ -69,6 +69,8 @@ public class MainActivity extends AppCompatActivity
     String pass = null;
     String username = null;
     String user_id = null;
+    String artist_name = null;
+    String artist_id = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,13 +78,14 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         load_preferences();
+        load_artist_preferences();
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        if(user != null && pass != null){
+        if(user != null){
             user_id = user;
             NavigationView navView = findViewById(R.id.nav_view);
             View header = navView.getHeaderView(0);
@@ -92,6 +95,17 @@ public class MainActivity extends AppCompatActivity
             navView.getMenu().findItem(R.id.edit_profile).setVisible(true);
             navView.getMenu().findItem(R.id.delete_account).setVisible(true);
             navView.getMenu().findItem(R.id.nav_profile).setVisible(true);
+            navView.getMenu().findItem(R.id.requests).setVisible(false);
+        } else if(artist_id != null) {
+            NavigationView navView = findViewById(R.id.nav_view);
+            View header = navView.getHeaderView(0);
+            navView.getMenu().findItem(R.id.nav_signin).setVisible(false);
+            navView.getMenu().findItem(R.id.nav_send).setVisible(true);
+            navView.getMenu().findItem(R.id.see_profile).setVisible(true);
+            navView.getMenu().findItem(R.id.edit_profile).setVisible(true);
+            navView.getMenu().findItem(R.id.delete_account).setVisible(true);
+            navView.getMenu().findItem(R.id.nav_profile).setVisible(true);
+            navView.getMenu().findItem(R.id.requests).setVisible(true);
         }
         navigationView.setNavigationItemSelectedListener(this);
         carousel = new Carrusel();
@@ -107,13 +121,27 @@ public class MainActivity extends AppCompatActivity
         username = preferences.getString("username", null);
         user_id = preferences.getString("user_id", null);
     }
+    private void load_artist_preferences() {
+        SharedPreferences preferences = getSharedPreferences("artist_credentials", Context.MODE_PRIVATE);
+        pass = preferences.getString("pass",null);
+        artist_name = preferences.getString("artist_name", null);
+        artist_id = preferences.getString("artist_id", null);
+    }
 
-    private void save_preferences(){
+    private void save_preferences() {
         SharedPreferences preferences = getSharedPreferences("credentials", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor=preferences.edit();
         editor.putString("user",null);
         editor.putString("pass", null);
         editor.putString("username", null);
+        editor.commit();
+    }
+    private void save_artist_preferences() {
+        SharedPreferences preferences = getSharedPreferences("artist_credentials", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor=preferences.edit();
+        editor.putString("artist_name",null);
+        editor.putString("pass", null);
+        editor.putString("artist_id", null);
         editor.commit();
     }
 
@@ -133,12 +161,17 @@ public class MainActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.main, menu);
         String user_id = getIntent().getStringExtra("user_id");
         String user_name = getIntent().getStringExtra("user_name");
-        if(user != null && pass != null){
+        load_artist_preferences();
+        load_preferences();
+        if(user != null && pass != null && artist_id == null){
             user_id = user;
             user_name = username;
+        }else if (artist_id != null){
+            String welcome_message = getString(R.string.welcome_message);
+            TextView user_text = findViewById(R.id.no_logged_user_name);
+            user_text.setText( welcome_message + " " +artist_id);
         }
         if (user_id != null){
-
             String welcome_message = getString(R.string.welcome_message);
             TextView user_text = findViewById(R.id.no_logged_user_name);
             user_text.setText( welcome_message + " " +user_name);
@@ -194,10 +227,20 @@ public class MainActivity extends AppCompatActivity
                 fragment_seleccionado = true;
             }
         } else if (id == R.id.nav_send) {
-            save_preferences();
-            Intent intent = new Intent(this, Login.class);
-            startActivity(intent);
-            finish();
+            if (artist_id != null){
+                Toast.makeText(getApplicationContext(), "Artist", Toast.LENGTH_SHORT).show();
+                save_artist_preferences();
+                Intent intent = new Intent(this, Login.class);
+                startActivity(intent);
+                finish();
+            }
+            else if (user_id != null){
+                Toast.makeText(getApplicationContext(), "User", Toast.LENGTH_SHORT).show();
+                save_preferences();
+                Intent intent = new Intent(this, Login.class);
+                startActivity(intent);
+                finish();
+            }
         } else if(id == R.id.nav_carrito) {
             if (carousel != null) {
                 carousel = null;
@@ -208,6 +251,7 @@ public class MainActivity extends AppCompatActivity
                 mi_fragment = new Carrito();
                 fragment_seleccionado = true;
             }
+
         } else if (id == R.id.nav_signin) {
             Intent intent = new Intent(this, Login.class);
             startActivity(intent);

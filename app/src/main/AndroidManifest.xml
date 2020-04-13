@@ -15,7 +15,8 @@
         android:roundIcon="@drawable/all_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EnviarSolicitud"></activity>
+        <activity android:name=".RegistroArtista"></activity>
+        <activity android:name=".EnviarSolicitud" />
         <activity android:name=".Map" />
 
         <meta-data

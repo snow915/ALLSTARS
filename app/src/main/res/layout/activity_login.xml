@@ -52,12 +52,28 @@
         android:id="@+id/id_sign_in"
         android:layout_width="157dp"
         android:layout_height="43dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="16dp"
         android:background="@color/colorSuccess"
         android:text="@string/sign_in"
         android:textColor="@color/colorWhite"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText5" />
+
+
+    <Button
+        android:id="@+id/id_sign_in_as_artist"
+        android:layout_width="157dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="72dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/colorSuccess"
+        android:text="@string/sign_in_as_artist"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toTopOf="@+id/id_sign_up"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText5" />
 
@@ -70,9 +86,22 @@
         android:textColor="@color/colorWhite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/id_sign_in"
-        app:layout_constraintVertical_bias="0.121" />
+        app:layout_constraintVertical_bias="0.533" />
+
+    <Button
+        android:id="@+id/id_sign_up_as_artist"
+        android:layout_width="155dp"
+        android:layout_height="44dp"
+        android:background="@color/colorGreen"
+        android:text="@string/sign_up_as_artist"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/id_sign_up"
+        app:layout_constraintVertical_bias="0.583" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

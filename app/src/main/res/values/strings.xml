@@ -65,7 +65,9 @@
     <string name="email_input">Correo electrónico</string>
     <string name="phone_input">Celular</string>
     <string name="sign_in">Iniciar sesión</string>
-    <string name="sign_up">Registrarse</string>
+    <string name="sign_in_as_artist">Iniciar sesión como artista</string>
+    <string name="sign_up">Registrarme como espectador</string>
+    <string name="sign_up_as_artist">Registrarme como artista</string>
 
     <string name="btn_bio">Biografía</string>
     <string name="btn_favoritos">Añadir a favoritos</string>
@@ -74,6 +76,16 @@
 
     <string name="profile_title">Perfil</string>
 
+    <!-- START - Strings for Register Artist Layout -->
+        <string name="sign_up_artist_name_hint">Nombre artístico</string>
+        <string name="sign_up_artist_type_hint">¿Qué tipo de artista eres?"\n"Por favor selecciona al menos una opción</string>
+        <string name="sign_up_artist_chk1">Músico</string>
+        <string name="sign_up_artist_chk2">Youtuber</string>
+        <string name="sign_up_artist_chk3">Comediante</string>
+        <string name="sign_up_artist_chk4">Actor</string>
+        <string name="sign_up_artist_chk5">Actriz</string>
+        <string name="sign_up_artist_chk6">Deportista</string>
+    <!-- END - Strings for Register Artist Layout -->
     <string-array name="array_sex">
         <item>Genero</item>
         <item>Masculino</item>
@@ -121,6 +133,7 @@
     <string name="see_profile">Ver perfil</string>
     <string name="edit_profile">Editar perfil</string>
     <string name="delete_account">Eliminar cuenta</string>
+    <string name="requests">Mis solicitudes</string>
 
     <string name="enviar_solicitud">Enviar solicitud</string>
 

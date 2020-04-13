@@ -23,6 +23,11 @@
                 android:id="@+id/delete_account"
                 android:icon="@drawable/ic_delete_account"
                 android:title="@string/delete_account" />
+            <item
+                android:visible="false"
+                android:id="@+id/requests"
+                android:icon="@drawable/ic_request"
+                android:title="@string/requests" />
 
         </menu>
 
