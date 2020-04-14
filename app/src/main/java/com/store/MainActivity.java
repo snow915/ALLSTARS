@@ -351,7 +351,7 @@ public class MainActivity extends AppCompatActivity
                 mi_fragment = new FragmentSolicitud();
                 fragment_seleccionado = true;
             } else {
-                mi_fragment = new EditProfile();
+                mi_fragment = new FragmentSolicitud();
                 fragment_seleccionado = true;
             }
         }

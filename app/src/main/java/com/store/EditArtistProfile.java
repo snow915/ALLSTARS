@@ -240,19 +240,30 @@ public class EditArtistProfile extends Fragment {
                         artista.setUser(artist_id);
                         artista.setImagen(downloadUri.toString());
                         ref.setValue(artista);
-                        new SweetAlertDialog(getContext(), SweetAlertDialog.SUCCESS_TYPE)
-                                .setTitleText("Congratulations!")
-                                .setContentText("Data updated successfully!")
-                                .setConfirmText("Ok!")
-                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                    @Override
-                                    public void onClick(SweetAlertDialog sDialog) {
-                                        sDialog.dismissWithAnimation();
-                                        Intent intent = new Intent(getContext(),MainActivity.class);
-                                        startActivity(intent);
-                                    }
-                                })
-                                .show();
+                        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                new SweetAlertDialog(getContext(), SweetAlertDialog.SUCCESS_TYPE)
+                                        .setTitleText("Congratulations!")
+                                        .setContentText("Data updated successfully!")
+                                        .setConfirmText("Ok!")
+                                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                            @Override
+                                            public void onClick(SweetAlertDialog sDialog) {
+                                                sDialog.dismissWithAnimation();
+                                                EditArtistProfile myFragment = (EditArtistProfile)getFragmentManager().findFragmentByTag("Current");
+                                                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                                                ft.detach(myFragment).attach(myFragment).commit();
+                                            }
+                                        })
+                                        .show();
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
                     } else {
                         // Handle failures
                         // ...
@@ -278,19 +289,30 @@ public class EditArtistProfile extends Fragment {
             artista.setUser(artist_id);
             artista.setImagen(artist_image_route);
             ref.setValue(artista);
-            new SweetAlertDialog(getContext(), SweetAlertDialog.SUCCESS_TYPE)
-                    .setTitleText("Congratulations!")
-                    .setContentText("Data updated successfully!")
-                    .setConfirmText("Ok!")
-                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sDialog) {
-                            sDialog.dismissWithAnimation();
-                            Intent intent = new Intent(getContext(),MainActivity.class);
-                            startActivity(intent);
-                        }
-                    })
-                    .show();
+            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    new SweetAlertDialog(getContext(), SweetAlertDialog.SUCCESS_TYPE)
+                            .setTitleText("Congratulations!")
+                            .setContentText("Data updated successfully!")
+                            .setConfirmText("Ok!")
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    sDialog.dismissWithAnimation();
+                                    EditArtistProfile myFragment = (EditArtistProfile)getFragmentManager().findFragmentByTag("Current");
+                                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                                    ft.detach(myFragment).attach(myFragment).commit();
+                                }
+                            })
+                            .show();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
         }
     }
 
