@@ -8,7 +8,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -60,7 +62,7 @@ public class ArtistProfile extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String user_id = getArguments().getString("user_id");
+        String user_id = getArguments().getString("artist_id");
         get_artist_data(user_id);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
@@ -77,24 +79,28 @@ public class ArtistProfile extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     String artist_name = dataSnapshot.child("nombre").getValue().toString();
-                    String artist_categories = dataSnapshot.child("apellido").getValue().toString();
-                    String artist_image = dataSnapshot.child("correo").getValue().toString();
-                    String artist_biography = dataSnapshot.child("sexo").getValue().toString();
-                    String artist_pass = dataSnapshot.child("telefono").getValue().toString();
-                    String artist_rating = dataSnapshot.child("telefono").getValue().toString();
+                    String artist_categories = dataSnapshot.child("categoria").getValue().toString();
+                    String artist_image = dataSnapshot.child("imagen").getValue().toString();
+                    String artist_biography = dataSnapshot.child("biografia").getValue().toString();
+                    String artist_pass = dataSnapshot.child("pass").getValue().toString();
+                    String artist_rating = dataSnapshot.child("puntaje").getValue().toString();
                     TextView name = getView().findViewById(R.id.artist_name);
                     TextView categories = getView().findViewById(R.id.artist_categories);
-                    TextView image = getView().findViewById(R.id.imageView3);
-                    TextView biography = getView().findViewById(R.id.);
-                    TextView pass = getView().findViewById(R.id.id_telefono);
-                    TextView rating = getView().findViewById(R.id.id_telefono);
+                    ImageView image = getView().findViewById(R.id.imageView3);
+                    TextView biography = getView().findViewById(R.id.artist_biography);
+                    TextView pass = getView().findViewById(R.id.artist_password);
+                    TextView rating = getView().findViewById(R.id.artist_rating);
                     name.setText(artist_name);
-                    last_name.setText(artist_last_name);
-                    email.setText(artist_email);
-                    int index = artist_sex.indexOf(',');
-                    artist_sex = artist_sex.substring(0, index);
-                    sex.setText(artist_sex);
-                    phone.setText(artist_phone);
+                    categories.setText(artist_categories);
+                    biography.setText(artist_biography);
+                    if (artist_image.equals("")) {
+                        image.setImageResource(R.drawable.blank_profile_picture_973460_640);
+                    }
+
+//                    int index = artist_sex.indexOf(',');
+//                    artist_sex = artist_sex.substring(0, index);
+                    pass.setText(artist_pass);
+                    rating.setText(artist_rating);
                 }
                 else {
 

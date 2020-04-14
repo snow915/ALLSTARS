@@ -1,9 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <?xml version="1.0" encoding="utf-8"?>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -140,7 +140,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:ems="10"
-                android:gravity="start|top"
+                android:enabled="false"
+                android:gravity="center|start|top"
                 android:inputType="textMultiLine"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.497"
@@ -163,6 +164,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:editable="false"
+                android:enabled="false"
                 android:hint="Ingresa breve descripción de los servicios que ofreces"
                 android:textColorHint="@color/colorWhite"
                 android:textSize="12dp"
