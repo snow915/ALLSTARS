@@ -111,7 +111,7 @@ public class index extends Fragment {
                 recycler = view.findViewById(R.id.recycler_id);
                 recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
-                AdapterDatos adapter = new AdapterDatos(list_datos, getActivity().getApplicationContext());
+                AdapterDatos adapter = new AdapterDatos(list_datos, getContext());
                 recycler.setAdapter(adapter);
                 adapter.setOnClickListener(new View.OnClickListener() {
                     @Override

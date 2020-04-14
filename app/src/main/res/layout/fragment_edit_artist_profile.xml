@@ -11,7 +11,8 @@ tools:context=".EditArtistProfile">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="800dp">
+            android:layout_height="800dp"
+            android:id="@+id/edit_artist_layout">
 
             <CheckBox
                 android:id="@+id/checkBox17"
@@ -90,7 +91,7 @@ tools:context=".EditArtistProfile">
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/edit_artist_biography" />
 
-            <TextView
+            <EditText
                 android:id="@+id/edit_artist_name"
                 android:layout_width="wrap_content"
                 android:layout_height="43dp"
@@ -102,7 +103,7 @@ tools:context=".EditArtistProfile">
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView24" />
 
-            <TextView
+            <EditText
                 android:id="@+id/edit_artist_password"
                 android:layout_width="wrap_content"
                 android:layout_height="43dp"
@@ -203,10 +204,7 @@ tools:context=".EditArtistProfile">
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:editable="false"
-                android:enabled="false"
                 android:hint="Ingresa breve descripción de los servicios que ofreces"
-                android:textColorHint="@color/colorWhite"
                 android:textSize="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

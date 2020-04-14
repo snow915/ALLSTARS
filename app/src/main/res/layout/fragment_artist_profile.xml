@@ -14,7 +14,7 @@
             android:layout_height="888dp">
 
             <TextView
-                android:id="@+id/edit_artist_name"
+                android:id="@+id/artist_name"
                 android:layout_width="wrap_content"
                 android:layout_height="43dp"
                 android:layout_marginTop="12dp"
@@ -26,7 +26,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView24" />
 
             <TextView
-                android:id="@+id/edit_artist_password"
+                android:id="@+id/artist_password"
                 android:layout_width="wrap_content"
                 android:layout_height="43dp"
                 android:layout_marginTop="12dp"
@@ -38,7 +38,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/artist_password_title" />
 
             <TextView
-                android:id="@+id/edit_artist_rating"
+                android:id="@+id/artist_rating"
                 android:layout_width="wrap_content"
                 android:layout_height="43dp"
                 android:layout_marginTop="28dp"
@@ -110,7 +110,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/artist_biography" />
 
             <TextView
-                android:id="@+id/edit_artist_profile_title"
+                android:id="@+id/artist_profile_title2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -135,7 +135,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
-                android:id="@+id/edit_artist_categories"
+                android:id="@+id/artist_categories"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
@@ -150,7 +150,7 @@
                 tools:editable="false" />
 
             <ImageView
-                android:id="@+id/edit_artist_image"
+                android:id="@+id/imageView3"
                 android:layout_width="204dp"
                 android:layout_height="130dp"
                 android:layout_marginTop="16dp"
@@ -160,7 +160,7 @@
                 tools:src="@tools:sample/backgrounds/scenic" />
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edit_artist_biography"
+                android:id="@+id/artist_biography"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
