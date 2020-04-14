@@ -130,19 +130,22 @@ public class MainActivity extends AppCompatActivity
 
     private void save_preferences() {
         SharedPreferences preferences = getSharedPreferences("credentials", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor=preferences.edit();
-        editor.putString("user",null);
-        editor.putString("pass", null);
-        editor.putString("username", null);
-        editor.commit();
+        preferences.edit().clear().commit();
+//        SharedPreferences.Editor editor=preferences.edit();
+//        editor.putString("user",null);
+//        editor.putString("pass", null);
+//        editor.putString("username", null);
+//        editor.commit();
     }
     private void save_artist_preferences() {
         SharedPreferences preferences = getSharedPreferences("artist_credentials", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor=preferences.edit();
-        editor.putString("artist_name",null);
-        editor.putString("pass", null);
-        editor.putString("artist_id", null);
-        editor.commit();
+        preferences.edit().clear().commit();
+
+        //        SharedPreferences.Editor editor=preferences.edit();
+//        editor.putString("artist_name",null);
+//        editor.putString("pass", null);
+//        editor.putString("artist_id", null);
+//        editor.commit();
     }
 
     @Override
@@ -261,14 +264,26 @@ public class MainActivity extends AppCompatActivity
                 getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().findFragmentById(R.id.content_main_carrusel)).commit();
                 mi_fragment = new Profile();
                 Bundle b = new Bundle();
-                b.putString("user_id", user_id);
-                mi_fragment.setArguments(b);
+                if (user_id != null){
+                    b.putString("user_id", user_id);
+                    mi_fragment.setArguments(b);
+                } else {
+                    mi_fragment = new ArtistProfile();
+                    b.putString("artist_id", artist_id);
+                    mi_fragment.setArguments(b);
+                }
                 fragment_seleccionado = true;
             } else {
                 mi_fragment = new Profile();
                 Bundle b = new Bundle();
-                b.putString("user_id", user_id);
-                mi_fragment.setArguments(b);
+                if (user_id != null){
+                    b.putString("user_id", user_id);
+                    mi_fragment.setArguments(b);
+                } else {
+                    mi_fragment = new ArtistProfile();
+                    b.putString("artist_id", artist_id);
+                    mi_fragment.setArguments(b);
+                }
                 fragment_seleccionado = true;
             }
         } else if (id == R.id.edit_profile) {
@@ -277,14 +292,26 @@ public class MainActivity extends AppCompatActivity
                 getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().findFragmentById(R.id.content_main_carrusel)).commit();
                 mi_fragment = new EditProfile();
                 Bundle b = new Bundle();
-                b.putString("user_id", user_id);
-                mi_fragment.setArguments(b);
+                if (user_id != null){
+                    b.putString("user_id", user_id);
+                    mi_fragment.setArguments(b);
+                } else {
+                    mi_fragment = new EditArtistProfile();
+                    b.putString("artist_id", artist_id);
+                    mi_fragment.setArguments(b);
+                }
                 fragment_seleccionado = true;
             } else {
                 mi_fragment = new EditProfile();
                 Bundle b = new Bundle();
-                b.putString("user_id", user_id);
-                mi_fragment.setArguments(b);
+                if (user_id != null){
+                    b.putString("user_id", user_id);
+                    mi_fragment.setArguments(b);
+                } else {
+                    mi_fragment = new EditArtistProfile();
+                    b.putString("artist_id", artist_id);
+                    mi_fragment.setArguments(b);
+                }
                 fragment_seleccionado = true;
             }
         } else if (id == R.id.delete_account) {
