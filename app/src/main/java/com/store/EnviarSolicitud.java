@@ -99,23 +99,21 @@ public class EnviarSolicitud extends AppCompatActivity {
                                 solicitud.setUserFamoso(hashMap.get("usernameFamoso"));
                                 solicitud.setDetalles(hashMap.get("detalles"));
 
-                                solicitudUbicacion.setUbicacion(hashMap.get("ubicacion"));
-                                solicitudUbicacion.setLatitud(hashMap.get("latitud"));
-                                solicitudUbicacion.setLongitud(hashMap.get("longitud"));
+
+                                solicitud.setUbicacion(hashMap.get("ubicacion"));
+                                solicitud.setLatitud(hashMap.get("latitud"));
+                                solicitud.setLongitud(hashMap.get("longitud"));
 
                                 databaseReference.child("data")
                                         .child(solicitud.getUserFamoso())
                                         .child("solicitudes")
                                         .child(user)
                                         .setValue(solicitud);
-
-                                databaseReference.child("data")
-                                        .child(solicitud.getUserFamoso())
-                                        .child("solicitudes")
-                                        .child(user)
-                                        .child("ubicacion")
-                                        .setValue(solicitudUbicacion);
                                 sDialog.dismissWithAnimation();
+
+                                Intent intent = new Intent(getApplicationContext(), SollicitudEnviada.class);
+                                startActivity(intent);
+                                finish();
                             }
                         })
                         .show();

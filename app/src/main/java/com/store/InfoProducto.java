@@ -2,7 +2,9 @@ package com.store;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
@@ -28,6 +30,7 @@ import android.os.Bundle;
 
 import com.bumptech.glide.Glide;
 import com.store.CarritoCompras.AdminSQLiteOpenHelper;
+import com.store.Credenciales.Login;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -54,12 +57,16 @@ public class InfoProducto extends AppCompatActivity implements
     RatingBar ratingStars;
     String imageRoute;
     String username;
+    String userPreferences;
     int stars;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info_producto);
+
+        load_preferences();
+
         moreInfo = findViewById(R.id.detalles);
         buy = findViewById(R.id.comprar);
         add = findViewById(R.id.agregar);
@@ -107,15 +114,18 @@ public class InfoProducto extends AppCompatActivity implements
         buy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //DialogFragment datePicker = new DatePickerFragment();
-                //datePicker.show(getSupportFragmentManager(), "date picker");
-                Intent intent=new Intent(getApplicationContext(), Contratacion.class);
-                HashMap<String, String> hashMap = new HashMap<String, String>();
-                hashMap.put("rutaImagen", imageRoute);
-                hashMap.put("nombreFamoso", nombreIntent);
-                hashMap.put("usernameFamoso" , username);
-                intent.putExtra("mapValues", hashMap);
-                startActivity(intent);
+                if (userPreferences != null) {
+                    Intent intent=new Intent(getApplicationContext(), Contratacion.class);
+                    HashMap<String, String> hashMap = new HashMap<String, String>();
+                    hashMap.put("rutaImagen", imageRoute);
+                    hashMap.put("nombreFamoso", nombreIntent);
+                    hashMap.put("usernameFamoso" , username);
+                    intent.putExtra("mapValues", hashMap);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(getApplicationContext(), Login.class);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -174,10 +184,9 @@ public class InfoProducto extends AppCompatActivity implements
 
     }
 
-    public AlertDialog makeDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setView(R.layout.details_message);
-        return builder.create();
+    private void load_preferences(){
+        SharedPreferences preferences = getSharedPreferences("credentials", Context.MODE_PRIVATE);
+        userPreferences = preferences.getString("user",null);
     }
 
 }
