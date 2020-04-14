@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -71,7 +72,6 @@ public class ArtistProfile extends Fragment {
     }
 
     private void get_artist_data(String user_id) {
-        final List user_data = new ArrayList();
         DatabaseReference ref;
         ref = FirebaseDatabase.getInstance().getReference().child("data").child(user_id);
         ref.addValueEventListener(new ValueEventListener() {
@@ -96,13 +96,19 @@ public class ArtistProfile extends Fragment {
                     if (artist_image.equals("")) {
                         image.setImageResource(R.drawable.blank_profile_picture_973460_640);
                     }
+                    else {
+                        Glide.with(getContext())
+                                .load(artist_image)
+                                .fitCenter()
+                                .centerCrop()
+                                .into(image);
+                    }
 
 //                    int index = artist_sex.indexOf(',');
 //                    artist_sex = artist_sex.substring(0, index);
                     pass.setText(artist_pass);
                     rating.setText(artist_rating);
-                }
-                else {
+                } else {
 
                 }
             }

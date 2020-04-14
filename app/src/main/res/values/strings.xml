@@ -45,6 +45,10 @@
 
 
     </string>
+
+    <string name="shared_profile_label">Perfil</string>
+    <string name="shared_profile_personal_info_label">Información personal</string>
+
     <string name="app_btn_agregar">AGREGAR</string>
     <string name="app_btn_comprar">COMPRAR</string>
     <string-array name="cantidades">
@@ -86,6 +90,21 @@
     <string name="sign_up_artist_chk5">Actriz</string>
     <string name="sign_up_artist_chk6">Deportista</string>
     <!-- END - Strings for Register Artist Layout -->
+
+    <!-- START - Strings for Edit Artist Layout -->
+    <string name="edit_artist_name_hint">Nombre que los usuarios ven</string>
+    <string name="edit_artist_type_hint">Perteneces a esta(s) categorías</string>
+    <string name="edit_artist_chk1">Músico</string>
+    <string name="edit_artist_chk2">Youtuber</string>
+    <string name="edit_artist_chk3">Comediante</string>
+    <string name="edit_artist_chk4">Actor</string>
+    <string name="edit_artist_chk5">Actriz</string>
+    <string name="edit_artist_chk6">Deportista</string>
+    <string name="edit_artist_password_hint">Contraseña actual</string>
+    <string name="edit_artist_biography_hint">Descripción actual. Puedes agregar algo más</string>
+    <string name="edit_artist_apply_changes_hint">APLICAR CAMBIOS</string>
+    <!-- END - Strings for Edit Artist Layout -->
+
     <string-array name="array_sex">
         <item>Genero</item>
         <item>Masculino</item>

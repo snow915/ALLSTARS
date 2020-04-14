@@ -315,19 +315,35 @@ public class MainActivity extends AppCompatActivity
                 fragment_seleccionado = true;
             }
         } else if (id == R.id.delete_account) {
-            new SweetAlertDialog( MainActivity.this, SweetAlertDialog.WARNING_TYPE)
-                    .setTitleText("Are you sure that you want delete this?")
-                    .setContentText("This action cannot be undone")
-                    .setConfirmText("Yes")
-                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sDialog) {
-                            sDialog.setCanceledOnTouchOutside(false);
-                            sDialog.dismissWithAnimation();
-                            deleteUserData(user_id);
-                        }
-                    })
-                    .show();
+            if (user_id != null){
+                new SweetAlertDialog( MainActivity.this, SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("Are you sure that you want delete this?")
+                        .setContentText("This action cannot be undone")
+                        .setConfirmText("Yes")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                sDialog.setCanceledOnTouchOutside(false);
+                                sDialog.dismissWithAnimation();
+                                deleteUserData(user_id);
+                            }
+                        })
+                        .show();
+            } else {
+                new SweetAlertDialog( MainActivity.this, SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("Are you sure that you want delete this?")
+                        .setContentText("This action cannot be undone")
+                        .setConfirmText("Yes")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                sDialog.setCanceledOnTouchOutside(false);
+                                sDialog.dismissWithAnimation();
+                                deleteArtistData(artist_id);
+                            }
+                        })
+                        .show();
+            }
         } else if (id == R.id.requests) {
             if (carousel != null) {
                 carousel = null;
@@ -351,6 +367,25 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    private void deleteArtistData(String artist_id) {
+        DatabaseReference df = FirebaseDatabase.getInstance().getReference("data").child(artist_id);
+        df.removeValue();
+        save_preferences();
+        new SweetAlertDialog( MainActivity.this, SweetAlertDialog.SUCCESS_TYPE)
+                .setTitleText("Done")
+                .setContentText("Count deleted successfully!")
+                .setConfirmText("Got it")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        sDialog.setCanceledOnTouchOutside(false);
+                        sDialog.dismissWithAnimation();
+                        reload();
+                    }
+                })
+                .show();
+    }
+
     public void deleteUserData(String id){
         DatabaseReference df = FirebaseDatabase.getInstance().getReference("Usuarios").child(id);
         df.removeValue();
@@ -364,6 +399,7 @@ public class MainActivity extends AppCompatActivity
                     public void onClick(SweetAlertDialog sDialog) {
                         sDialog.setCanceledOnTouchOutside(false);
                         sDialog.dismissWithAnimation();
+                        save_artist_preferences();
                         reload();
                     }
                 })
