@@ -136,7 +136,8 @@
     <string name="requests">Mis solicitudes</string>
 
     <string name="enviar_solicitud">Enviar solicitud</string>
-
+    <string name="nombre_solicitante">Nombre del solicitante</string>
+    <string name="titulo_solicitud">Solicitud</string>
 
     <string name="requerido">Campo requerido</string>
     <!-- TODO: Remove or change this placeholder text -->

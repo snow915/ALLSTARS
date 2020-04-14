@@ -7,12 +7,15 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,6 +27,7 @@ import com.store.Adapters.AdapterDatosSolicitud;
 import com.store.Vo.DatosSolicitudVo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 /**
@@ -92,32 +96,63 @@ public class FragmentSolicitud extends Fragment {
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
-                    list_datos.add(
-                            new DatosSolicitudVo(postSnapshot.child("fechaInicio").getValue().toString(),
-                                    postSnapshot.child("horaInicio").getValue().toString(),
-                                    postSnapshot.child("tipoEvento").getValue().toString()
-                            )
-                    );
-                }
-                recycler = view.findViewById(R.id.recycler_id_solicitud);
-                recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-
-                AdapterDatosSolicitud adapter = new AdapterDatosSolicitud(list_datos, getActivity().getApplicationContext());
-                recycler.setAdapter(adapter);
-                adapter.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String fechaInicio = list_datos.get(recycler.getChildAdapterPosition(v)).getFechaInicio();
-                        String horaInicio = list_datos.get(recycler.getChildAdapterPosition(v)).getHoraInicio();
-                        String tipoEvento = list_datos.get(recycler.getChildAdapterPosition(v)).getTipoEvento();
-                        //Intent infoProducto = new Intent(getActivity(), InfoProducto.class);
-                        //infoProducto.putExtra("fechaInicio", fechaInicio);
-                        //infoProducto.putExtra("horaInicio", horaInicio);
-                        //infoProducto.putExtra("tipoEvento", tipoEvento);
-                        //startActivity(infoProducto);
+                if(dataSnapshot.exists()){
+                    for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
+                        list_datos.add(
+                                new DatosSolicitudVo(postSnapshot.child("fechaInicio").getValue().toString(),
+                                        postSnapshot.child("horaInicio").getValue().toString(),
+                                        postSnapshot.child("tipoEvento").getValue().toString(),
+                                        postSnapshot.child("fechaFin").getValue().toString(),
+                                        postSnapshot.child("horaFin").getValue().toString(),
+                                        postSnapshot.child("tipoPublico").getValue().toString(),
+                                        postSnapshot.child("detalles").getValue().toString(),
+                                        postSnapshot.child("ubicacion").getValue().toString(),
+                                        postSnapshot.child("latitud").getValue().toString(),
+                                        postSnapshot.child("longitud").getValue().toString()
+                                )
+                        );
                     }
-                });
+                    recycler = view.findViewById(R.id.recycler_id_solicitud);
+                    recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+
+                    AdapterDatosSolicitud adapter = new AdapterDatosSolicitud(list_datos, getActivity().getApplicationContext());
+                    recycler.setAdapter(adapter);
+                    adapter.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            //Este codigo se puede optimizar, tal vez convertirlo a HashMap y asi mandarlo en el intent, como en EnviarSolicitud.class
+                            String fechaInicio = list_datos.get(recycler.getChildAdapterPosition(v)).getFechaInicio();
+                            String fechaFin = list_datos.get(recycler.getChildAdapterPosition(v)).getFechaFin();
+                            String horaInicio = list_datos.get(recycler.getChildAdapterPosition(v)).getHoraInicio();
+                            String horaFin = list_datos.get(recycler.getChildAdapterPosition(v)).getHoraFin();
+                            String tipoEvento = list_datos.get(recycler.getChildAdapterPosition(v)).getTipoEvento();
+                            String tipoPublico = list_datos.get(recycler.getChildAdapterPosition(v)).getTipoPublico();
+                            String detalles = list_datos.get(recycler.getChildAdapterPosition(v)).getDetalles();
+                            String ubicacion = list_datos.get(recycler.getChildAdapterPosition(v)).getNombreUbicacion();
+                            String latitud = list_datos.get(recycler.getChildAdapterPosition(v)).getLatitud();
+                            String longitud = list_datos.get(recycler.getChildAdapterPosition(v)).getLongitud();
+
+                            guardarDatosUbucacion(ubicacion, latitud, longitud);
+
+                            Intent infoSolicitud = new Intent(getActivity(), InfoSolicitud.class);
+                            infoSolicitud.putExtra("fechaInicio", fechaInicio);
+                            infoSolicitud.putExtra("horaInicio", horaInicio);
+                            infoSolicitud.putExtra("tipoEvento", tipoEvento);
+                            infoSolicitud.putExtra("fechaFin", fechaFin);
+                            infoSolicitud.putExtra("horaFin", horaFin);
+                            infoSolicitud.putExtra("tipoPublico", tipoPublico);
+                            infoSolicitud.putExtra("detalles", detalles);
+                            infoSolicitud.putExtra("ubicacion", ubicacion);
+                            infoSolicitud.putExtra("latitud", latitud);
+                            infoSolicitud.putExtra("longitud", longitud);
+                            startActivity(infoSolicitud);
+                        }
+                    });
+                } else {
+                    Toast.makeText(getActivity(), "Nothing", Toast.LENGTH_LONG).show();
+                }
+
             }
 
             @Override
@@ -131,5 +166,14 @@ public class FragmentSolicitud extends Fragment {
     private void load_artist_preferences() {
         SharedPreferences preferences = getActivity().getSharedPreferences("artist_credentials", Context.MODE_PRIVATE);
         artistUser = preferences.getString("artist_id", null);
+    }
+
+    private void guardarDatosUbucacion(String nombreUbicacion, String latitud, String longitud) {
+        SharedPreferences preferences = getActivity().getSharedPreferences("datos_ubicacion", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor=preferences.edit();
+        editor.putString("nombreUbicacion", nombreUbicacion);
+        editor.putString("latitud", latitud);
+        editor.putString("longitud", longitud);
+        editor.commit();
     }
 }
