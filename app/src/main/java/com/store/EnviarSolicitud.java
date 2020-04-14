@@ -110,6 +110,10 @@ public class EnviarSolicitud extends AppCompatActivity {
                                         .child(user)
                                         .setValue(solicitud);
                                 sDialog.dismissWithAnimation();
+
+                                Intent intent = new Intent(getApplicationContext(), SollicitudEnviada.class);
+                                startActivity(intent);
+                                finish();
                             }
                         })
                         .show();
