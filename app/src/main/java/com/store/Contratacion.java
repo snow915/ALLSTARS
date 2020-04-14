@@ -102,7 +102,7 @@ public class Contratacion extends AppCompatActivity implements
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        String hour = hourOfDay+":"+minute;
+        String hour = String.format("%02d:%02d", hourOfDay, minute);
         if (statusHoraInicio) {
             horaInicio.setText(hour);
         } else if (statusHoraFin) {

@@ -4,8 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class InfoSolicitud extends AppCompatActivity {
 
@@ -16,6 +23,9 @@ public class InfoSolicitud extends AppCompatActivity {
     TextView txtTipoPublico;
     TextView txtTipoEvento;
     TextView txtDetalles;
+    TextView txtNombre;
+    Button rechazar;
+    Button aceptar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +40,8 @@ public class InfoSolicitud extends AppCompatActivity {
         String tipoPublico = getIntent().getStringExtra("tipoPublico");
         String tipoEvento = getIntent().getStringExtra("tipoEvento");
         String detalles = getIntent().getStringExtra("detalles");
+        String nombreSolicitante = getIntent().getStringExtra("nombreSolicitante");
+        String apellidoSolicitante = getIntent().getStringExtra("apellidoSolicitante");
 
         txtFechaInicio = findViewById(R.id.idFechaInicio);
         txtFechaFin = findViewById(R.id.idFechaFin);
@@ -38,6 +50,9 @@ public class InfoSolicitud extends AppCompatActivity {
         txtTipoPublico = findViewById(R.id.idTipoPublico);
         txtTipoEvento = findViewById(R.id.idTipoEvento);
         txtDetalles = findViewById(R.id.idDetalles);
+        txtNombre = findViewById(R.id.idNombre);
+        aceptar = findViewById(R.id.aceptar);
+        rechazar = findViewById(R.id.rechazar);
 
         txtFechaInicio.setText(fechaInicio);
         txtFechaFin.setText(fechaFin);
@@ -46,6 +61,43 @@ public class InfoSolicitud extends AppCompatActivity {
         txtTipoPublico.setText(tipoPublico);
         txtTipoEvento.setText(tipoEvento);
         txtDetalles.setText(detalles);
+        txtNombre.setText(nombreSolicitante + " " + apellidoSolicitante);
+
+        rechazar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        aceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final EditText editText = new EditText(InfoSolicitud.this);
+                editText.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_CLASS_NUMBER);
+                editText.setHint("$");
+                new SweetAlertDialog(InfoSolicitud.this, SweetAlertDialog.NORMAL_TYPE)
+                        .setTitleText("¿Cuanto vas a cobrar?")
+                        .setConfirmText("Aceptar")
+                        .setCustomView(editText)
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                String costo = editText.getText().toString();
+                                if(costo.equals("") || costo.equals(null)){
+                                    editText.setError("Escribe un monto");
+                                } else {
+                                    Intent intent = new Intent(InfoSolicitud.this, SolicitudAceptada.class);
+                                    startActivity(intent);
+                                    finishAffinity();
+                                    finish();
+                                }
+
+                            }
+                        })
+                        .show();
+            }
+        });
     }
 
 }

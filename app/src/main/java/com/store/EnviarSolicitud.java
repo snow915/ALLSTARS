@@ -29,8 +29,8 @@ public class EnviarSolicitud extends AppCompatActivity {
     HashMap<String, String> hashMap;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
-    String user;
-    public Solicitud solicitud, solicitudUbicacion;
+    String user, name, lastname;
+    public Solicitud solicitud;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +47,6 @@ public class EnviarSolicitud extends AppCompatActivity {
         load_preferences();
         initFirebase();
         solicitud = new Solicitud();
-        solicitudUbicacion = new Solicitud();
         //associate variables with ids
         titulo = findViewById(R.id.titulo);
         ubicacion = findViewById(R.id.getUbicacion);
@@ -98,8 +97,8 @@ public class EnviarSolicitud extends AppCompatActivity {
                                 solicitud.setTipoEvento(hashMap.get("tipoEvento"));
                                 solicitud.setUserFamoso(hashMap.get("usernameFamoso"));
                                 solicitud.setDetalles(hashMap.get("detalles"));
-
-
+                                solicitud.setUserName(name);
+                                solicitud.setUserLastname(lastname);
                                 solicitud.setUbicacion(hashMap.get("ubicacion"));
                                 solicitud.setLatitud(hashMap.get("latitud"));
                                 solicitud.setLongitud(hashMap.get("longitud"));
@@ -113,6 +112,7 @@ public class EnviarSolicitud extends AppCompatActivity {
 
                                 Intent intent = new Intent(getApplicationContext(), SollicitudEnviada.class);
                                 startActivity(intent);
+                                finishAffinity();
                                 finish();
                             }
                         })
@@ -130,6 +130,8 @@ public class EnviarSolicitud extends AppCompatActivity {
     private void load_preferences(){
         SharedPreferences preferences = getSharedPreferences("credentials", Context.MODE_PRIVATE);
         user = preferences.getString("user",null);
+        name = preferences.getString("username", null);
+        lastname = preferences.getString("lastname", null);
     }
 
 }

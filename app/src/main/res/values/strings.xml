@@ -144,6 +144,12 @@
         ¡Tu solicitud ha sido enviada, en breve tendras respuesta!
     </string>
     <string name="regresar">Regresar</string>
+    <string name="rechazar">Rechazar</string>
+    <string name="aceptar">Aceptar</string>
+    <string name="solicitud_aceptada">
+        ¡Solicitud aceptada! \n \n
+        Te haremos saber cuando el usuario realice el pago, tiene 24 horas para realizarlo
+    </string>
     <!-- TODO: Remove or change this placeholder text -->
 
 </resources>

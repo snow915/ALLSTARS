@@ -23,9 +23,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:text="@string/titulo_solicitud"
-        android:textStyle="bold"
-        android:textSize="25dp"
         android:textColor="@color/colorPrimary"
+        android:textSize="25dp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -125,11 +125,11 @@
         android:id="@+id/idFechaInicio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
         android:layout_marginTop="12dp"
         android:text="@string/fechaInicio"
         android:textColor="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView26" />
 
@@ -156,6 +156,35 @@
         android:textColor="@color/colorPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView37" />
+
+    <Button
+        android:id="@+id/rechazar"
+        android:layout_width="114dp"
+        android:layout_height="48dp"
+        android:background="@color/colorCancel"
+        android:text="@string/rechazar"
+        android:textColor="@color/colorWhite"
+        android:textStyle="bold"
+        android:layout_marginStart="80dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/idDetalles"
+        />
+
+    <Button
+        android:id="@+id/aceptar"
+        android:layout_width="114dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/colorSuccess"
+        android:text="@string/aceptar"
+        android:textColor="@color/colorWhite"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/rechazar"
+        app:layout_constraintTop_toBottomOf="@+id/idDetalles" />
 
     <TextView
         android:id="@+id/idTipoPublico"
@@ -209,25 +238,25 @@
         android:id="@+id/textView30"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="120dp"
-        android:layout_marginLeft="120dp"
         android:layout_marginTop="44dp"
+        android:layout_marginEnd="108dp"
+        android:layout_marginRight="108dp"
         android:text="@string/fechaFin"
         android:textColor="@color/colorPrimary"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/textView26"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/idNombre" />
 
     <TextView
         android:id="@+id/idFechaFin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="120dp"
-        android:layout_marginLeft="120dp"
         android:layout_marginTop="12dp"
         android:text="@string/fechaFin"
         android:textColor="@color/colorPrimary"
-        app:layout_constraintStart_toEndOf="@+id/idFechaInicio"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.68"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView30" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
