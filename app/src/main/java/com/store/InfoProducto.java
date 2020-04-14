@@ -57,7 +57,7 @@ public class InfoProducto extends AppCompatActivity implements
     RatingBar ratingStars;
     String imageRoute;
     String username;
-    String userPreferences;
+    String userPreferences, artistPreferences;
     int stars;
 
     @Override
@@ -66,7 +66,7 @@ public class InfoProducto extends AppCompatActivity implements
         setContentView(R.layout.activity_info_producto);
 
         load_preferences();
-
+        load_artist_preferences();
         moreInfo = findViewById(R.id.detalles);
         buy = findViewById(R.id.comprar);
         add = findViewById(R.id.agregar);
@@ -122,7 +122,19 @@ public class InfoProducto extends AppCompatActivity implements
                     hashMap.put("usernameFamoso" , username);
                     intent.putExtra("mapValues", hashMap);
                     startActivity(intent);
-                } else {
+                } else if (artistPreferences != null) {
+                    new SweetAlertDialog(InfoProducto.this, SweetAlertDialog.WARNING_TYPE)
+                            .setTitleText("Debes iniciar sesión como usuario normal para poder contratar")
+                            .setConfirmText("Entendido!")
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    sDialog.dismissWithAnimation();
+                                }
+                            })
+                            .show();
+                }
+                else {
                     Intent intent = new Intent(getApplicationContext(), Login.class);
                     startActivity(intent);
                 }
@@ -187,6 +199,11 @@ public class InfoProducto extends AppCompatActivity implements
     private void load_preferences(){
         SharedPreferences preferences = getSharedPreferences("credentials", Context.MODE_PRIVATE);
         userPreferences = preferences.getString("user",null);
+    }
+
+    private void load_artist_preferences() {
+        SharedPreferences preferences = getSharedPreferences("artist_credentials", Context.MODE_PRIVATE);
+        artistPreferences = preferences.getString("artist_id", null);
     }
 
 }

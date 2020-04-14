@@ -13,6 +13,8 @@ public class Solicitud {
     private String tipoEvento;
     private String detalles;
     private String userFamoso;
+    private String userName;
+    private String userLastname;
 
     public String getUserFamoso() {
         return userFamoso;
@@ -112,4 +114,19 @@ public class Solicitud {
         this.detalles = detalles;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserLastname() {
+        return userLastname;
+    }
+
+    public void setUserLastname(String usertLastname) {
+        this.userLastname = usertLastname;
+    }
 }

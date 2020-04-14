@@ -108,7 +108,9 @@ public class FragmentSolicitud extends Fragment {
                                         postSnapshot.child("detalles").getValue().toString(),
                                         postSnapshot.child("ubicacion").getValue().toString(),
                                         postSnapshot.child("latitud").getValue().toString(),
-                                        postSnapshot.child("longitud").getValue().toString()
+                                        postSnapshot.child("longitud").getValue().toString(),
+                                        postSnapshot.child("userName").getValue().toString(),
+                                        postSnapshot.child("userLastname").getValue().toString()
                                 )
                         );
                     }
@@ -132,6 +134,8 @@ public class FragmentSolicitud extends Fragment {
                             String ubicacion = list_datos.get(recycler.getChildAdapterPosition(v)).getNombreUbicacion();
                             String latitud = list_datos.get(recycler.getChildAdapterPosition(v)).getLatitud();
                             String longitud = list_datos.get(recycler.getChildAdapterPosition(v)).getLongitud();
+                            String nombreSolicitante = list_datos.get(recycler.getChildAdapterPosition(v)).getNombreSolicitante();
+                            String apellidoSolicitante = list_datos.get(recycler.getChildAdapterPosition(v)).getApellidoSolicitante();
 
                             guardarDatosUbucacion(ubicacion, latitud, longitud);
 
@@ -146,6 +150,8 @@ public class FragmentSolicitud extends Fragment {
                             infoSolicitud.putExtra("ubicacion", ubicacion);
                             infoSolicitud.putExtra("latitud", latitud);
                             infoSolicitud.putExtra("longitud", longitud);
+                            infoSolicitud.putExtra("nombreSolicitante", nombreSolicitante);
+                            infoSolicitud.putExtra("apellidoSolicitante", apellidoSolicitante);
                             startActivity(infoSolicitud);
                         }
                     });

@@ -97,7 +97,8 @@ public class Login extends AppCompatActivity {
                     String retrieved_password = dataSnapshot.child("pass").getValue().toString();
                     if (password.equals(retrieved_password)){
                         String user_name = dataSnapshot.child("nombre").getValue().toString();
-                        save_preferences(user_name, userd);
+                        String last_name = dataSnapshot.child("apellido").getValue().toString();
+                        save_preferences(user_name, userd, last_name);
                         Intent intent = new Intent(Login.this, MainActivity.class);
                         Bundle bundle =  new Bundle();
                         bundle.putString("user_id", userd);
@@ -159,7 +160,7 @@ public class Login extends AppCompatActivity {
         return true;
     }
 
-    private void save_preferences(String username, String user_id){
+    private void save_preferences(String username, String user_id, String lastname){
         SharedPreferences preferences = getSharedPreferences("credentials", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor=preferences.edit();
         editor.putString("user",user.getText().toString());
@@ -167,6 +168,7 @@ public class Login extends AppCompatActivity {
         editor.putString("pass",password.getText().toString());
         editor.putString("username", username);
         editor.putString("user_type", "user");
+        editor.putString("lastname", lastname);
         editor.commit();
     }
     private void save_artist_preferences(String username, String user_id) {
