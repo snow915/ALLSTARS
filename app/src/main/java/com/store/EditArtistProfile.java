@@ -148,8 +148,6 @@ public class EditArtistProfile extends Fragment {
                                 .centerCrop()
                                 .into(artist_image);
                     }
-//                    int index = artist_sex.indexOf(',');
-//                    artist_sex = artist_sex.substring(0, index);
                     pass.setText(artist_pass);
                 } else {
 

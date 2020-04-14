@@ -72,7 +72,6 @@ public class ArtistProfile extends Fragment {
     }
 
     private void get_artist_data(String user_id) {
-        final List user_data = new ArrayList();
         DatabaseReference ref;
         ref = FirebaseDatabase.getInstance().getReference().child("data").child(user_id);
         ref.addValueEventListener(new ValueEventListener() {
