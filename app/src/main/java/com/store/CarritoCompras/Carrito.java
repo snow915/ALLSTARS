@@ -3,26 +3,33 @@ package com.store.CarritoCompras;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.store.Adapters.AdapterDatos;
+import com.store.Vo.DatosFavoritosVo;
+import com.store.Vo.DatosVo;
 import com.store.InfoProducto;
 import com.store.R;
-import com.store.Vo.DatosVo;
 
 import java.util.ArrayList;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,8 +49,10 @@ public class Carrito extends Fragment {
     private String mParam1;
     private String mParam2;
     ArrayList<DatosVo> list_datos;
+    ArrayList<DatosFavoritosVo> list_favorites;
     RecyclerView recycler;
-    ImageView img;
+    DatabaseReference reference, referenceFavorites;
+    String user;
     private OnFragmentInteractionListener mListener;
 
     public Carrito() {
@@ -83,52 +92,98 @@ public class Carrito extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_carrito, container, false);
-
-        recycler = v.findViewById(R.id.recycler_id_carrito);
-        recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        list_datos = new ArrayList<DatosVo>();
-        llenarDatos();
-        AdapterDatos adapter = new AdapterDatos(list_datos, getContext());
-        recycler.setAdapter(adapter);
-        adapter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String nombre = list_datos.get(recycler.getChildAdapterPosition(v)).getNombre();
-                String precio = list_datos.get(recycler.getChildAdapterPosition(v)).getPrecio();
-                String biografia = list_datos.get(recycler.getChildAdapterPosition(v)).getBiografia();
-                String imagen = list_datos.get(recycler.getChildAdapterPosition(v)).getRutaImagen();
-                int stars = list_datos.get(recycler.getChildAdapterPosition(v)).getStars();
-                String username = list_datos.get(recycler.getChildAdapterPosition(v)).getUsername();
-                Intent infoProducto = new Intent(getActivity(), InfoProducto.class);
-                infoProducto.putExtra("nombre", nombre);
-                infoProducto.putExtra("precio", precio);
-                infoProducto.putExtra("image",imagen);
-                infoProducto.putExtra("stars", stars);
-                infoProducto.putExtra("biografia", biografia);
-                infoProducto.putExtra("username" , username);
-                startActivity(infoProducto);
-            }
-        });
-
+        load_preferences();
+        llenarDatos(v);
         return v;
     }
 
-    public void llenarDatos() {
-        AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(getActivity(), "carrito", null, 4);
-        SQLiteDatabase db = admin.getWritableDatabase();
-        Cursor fila = db.rawQuery("SELECT * FROM Carrito", null);
-        if (fila.moveToFirst()) {
-            do {
-                String nombre = fila.getString(fila.getColumnIndex("tituloProducto"));
-                String precio = fila.getString(fila.getColumnIndex("precioProducto"));
-                String imagen = fila.getString(fila.getColumnIndex("idImagen"));
-                String biografia = fila.getString(fila.getColumnIndex("biografia"));
-                int stars = fila.getInt(fila.getColumnIndex("idStars"));
-                String username = fila.getString(fila.getColumnIndex("username"));
-                list_datos.add(new DatosVo(nombre, precio, biografia,imagen, stars, username));
-            } while (fila.moveToNext());
-        }
-        db.close();
+    private void load_preferences(){
+        SharedPreferences preferences = getActivity().getSharedPreferences("credentials", Context.MODE_PRIVATE);
+        user = preferences.getString("user_id", null);
+    }
+
+
+    public void llenarDatos(View v){
+        final View view = v;
+
+        //////////////////////////////////////////////////////////////////////////////////////////
+
+        list_favorites = new ArrayList<DatosFavoritosVo>();
+        referenceFavorites = FirebaseDatabase.getInstance().getReference().child("Usuarios").child(user).child("favoritos");
+        referenceFavorites.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
+                for(DataSnapshot dataSnapshot1 : dataSnapshot2.getChildren()){
+                    //list_favorites.add(new DatosFavoritosVo(dataSnapshot1.getValue().toString()));
+                    final String favorite = dataSnapshot1.getValue().toString();
+                    //System.out.println("HEY: "+favorite);
+
+                    list_datos = new ArrayList<DatosVo>();
+                    reference = FirebaseDatabase.getInstance().getReference().child("data");
+                    reference.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
+                                if(favorite.equals(postSnapshot.child("user").getValue().toString())){
+                                    list_datos.add(
+                                            new DatosVo(postSnapshot.child("nombre").getValue().toString(),
+                                                    postSnapshot.child("categoria").getValue().toString(),
+                                                    postSnapshot.child("biografia").getValue().toString(),
+                                                    postSnapshot.child("imagen").getValue().toString(),
+                                                    Integer.valueOf(postSnapshot.child("puntaje").getValue().toString()),
+                                                    postSnapshot.child("user").getValue().toString()
+                                            )
+                                    );
+                                }
+                            }
+
+                            recycler = view.findViewById(R.id.recycler_id_carrito);
+                            recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+
+                            AdapterDatos adapter = new AdapterDatos(list_datos, getActivity().getApplicationContext());
+                            recycler.setAdapter(adapter);
+                            adapter.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    String nombre = list_datos.get(recycler.getChildAdapterPosition(v)).getNombre();
+                                    String precio = list_datos.get(recycler.getChildAdapterPosition(v)).getPrecio();
+                                    String biografia = list_datos.get(recycler.getChildAdapterPosition(v)).getBiografia();
+                                    String imagen = list_datos.get(recycler.getChildAdapterPosition(v)).getRutaImagen();
+                                    int stars = list_datos.get(recycler.getChildAdapterPosition(v)).getStars();
+                                    String username = list_datos.get(recycler.getChildAdapterPosition(v)).getUsername();
+                                    Intent infoProducto = new Intent(getActivity(), InfoProducto.class);
+                                    infoProducto.putExtra("nombre", nombre);
+                                    infoProducto.putExtra("precio", precio);
+                                    infoProducto.putExtra("image",imagen);
+                                    infoProducto.putExtra("stars", stars);
+                                    infoProducto.putExtra("biografia", biografia);
+                                    infoProducto.putExtra("username" , username);
+                                    startActivity(infoProducto);
+                                }
+                            });
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+       ////////////////////////////////////////////////////////////////////////////////////////
+
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event

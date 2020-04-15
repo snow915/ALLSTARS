@@ -29,6 +29,9 @@ import androidx.fragment.app.DialogFragment;
 import android.os.Bundle;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.store.CarritoCompras.AdminSQLiteOpenHelper;
 import com.store.Credenciales.Login;
 
@@ -59,7 +62,8 @@ public class InfoProducto extends AppCompatActivity implements
     String username;
     String userPreferences, artistPreferences;
     int stars;
-
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,7 +111,7 @@ public class InfoProducto extends AppCompatActivity implements
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                agregarProducto(v);
+                agregarFavoritos(v);
             }
         });
 
@@ -171,6 +175,21 @@ public class InfoProducto extends AppCompatActivity implements
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
+    }
+
+    public void agregarFavoritos(View v) {
+        initFirebase();
+        databaseReference.child("Usuarios").child(userPreferences).child("favoritos").child(username).setValue(username);
+
+        new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
+                .setTitleText("¡Agregado a favoritos!")
+                .show();
+    }
+
+    private void initFirebase(){
+        FirebaseApp.initializeApp(this);
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
     }
 
     public void agregarProducto(View v){
