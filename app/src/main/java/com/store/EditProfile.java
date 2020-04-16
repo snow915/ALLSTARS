@@ -80,7 +80,7 @@ public class EditProfile extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String user_id = getArguments().getString("user_id");
+        String user_id = getArguments().getString("username");
         get_user_data(user_id);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);

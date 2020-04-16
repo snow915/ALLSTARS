@@ -1,12 +1,7 @@
 package com.store.Credenciales;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
-
-import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -16,60 +11,59 @@ import com.store.MainActivity;
 import com.store.R;
 import com.store.Register;
 import com.store.RegistroArtista;
+import com.store.SharedPreferencesApp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 public class Login extends AppCompatActivity {
-    Button sign_in;
-    Button sign_up;
-    Button sign_up_as_artist;
-    Button sign_in_as_artist;
-    EditText user;
-    EditText password;
+
+    private Button btnSignIn;
+    private Button btnSignUp;
+    private Button btnSignUpAsArtist;
+    private Button btnSignInAsArtist;
+    private EditText edtxtUser;
+    private EditText edtxtPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        this.sign_in = findViewById(R.id.id_sign_in);
-        this.sign_up = findViewById(R.id.id_sign_up);
-        this.sign_up_as_artist = findViewById(R.id.id_sign_up_as_artist);
-        this.sign_in_as_artist = findViewById(R.id.id_sign_in_as_artist);
-        this.sign_in.setOnClickListener(new View.OnClickListener() {
+        //Associate variables with id from activity_login layout
+        btnSignIn = findViewById(R.id.id_sign_in);
+        btnSignUp = findViewById(R.id.id_sign_up);
+        btnSignUpAsArtist = findViewById(R.id.id_sign_up_as_artist);
+        btnSignInAsArtist = findViewById(R.id.id_sign_in_as_artist);
+        edtxtUser = findViewById(R.id.editText3);
+        edtxtPassword = findViewById(R.id.editText5);
+
+        btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                user = findViewById(R.id.editText3);
-                password = findViewById(R.id.editText5);
-                String user_val = user.getText().toString();
-                String password_val = password.getText().toString();
-                if (validate_fields(user, password)){
-                    user_exist(user_val, password_val);
-                }
-            }
-        });
-        this.sign_in_as_artist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                user = findViewById(R.id.editText3);
-                password = findViewById(R.id.editText5);
-                String user_val = user.getText().toString();
-                String password_val = password.getText().toString();
-                if (validate_fields(user, password)){
-                    artist_exist(user_val, password_val);
+                String userValue = edtxtUser.getText().toString();
+                String passValue = edtxtPassword.getText().toString();
+                if (validateFields(userValue, passValue)){
+                    userPassExist(userValue, passValue, "user");
                 }
             }
         });
 
-        this.sign_up.setOnClickListener(new View.OnClickListener() {
+        btnSignInAsArtist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String userValue = edtxtUser.getText().toString();
+                String passValue = edtxtPassword.getText().toString();
+                if (validateFields(userValue, passValue)){
+                    userPassExist(userValue, passValue, "artist");
+                }
+            }
+        });
+
+        btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), Register.class);
@@ -77,106 +71,63 @@ public class Login extends AppCompatActivity {
             }
         });
 
-        this.sign_up_as_artist.setOnClickListener(new View.OnClickListener() {
+        btnSignUpAsArtist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), RegistroArtista.class);
                 startActivity(intent);
             }
         });
-
     }
 
-    private void user_exist(final String userd, final String password) {
+
+    private void userPassExist(final String userValue, final String passValue, final String userType){
         DatabaseReference ref;
-        ref = FirebaseDatabase.getInstance().getReference().child("Usuarios").child(userd);
+        if (userType.equals("user")) {
+            ref = FirebaseDatabase.getInstance().getReference().child("Usuarios").child(userValue);
+        } else {
+            ref = FirebaseDatabase.getInstance().getReference().child("data").child(userValue);
+        }
+
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    String retrieved_password = dataSnapshot.child("pass").getValue().toString();
-                    if (password.equals(retrieved_password)){
-                        String user_name = dataSnapshot.child("nombre").getValue().toString();
-                        String last_name = dataSnapshot.child("apellido").getValue().toString();
-                        save_preferences(user_name, userd, last_name);
-                        Intent intent = new Intent(Login.this, MainActivity.class);
-                        Bundle bundle =  new Bundle();
-                        bundle.putString("user_id", userd);
-                        bundle.putString("user_name", user_name);
-                        bundle.putString("user_type", "user");
-                        intent.putExtras(bundle);
-                        startActivity(intent);
-                    }
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "The user "+userd+" doesn't exist", Toast.LENGTH_LONG).show();
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-    private void artist_exist(final String userd, final String password) {
-        DatabaseReference ref;
-        ref = FirebaseDatabase.getInstance().getReference().child("data").child(userd);
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    String retrieved_password = dataSnapshot.child("pass").getValue().toString();
-                    if (password.equals(retrieved_password)){
-                        String artist_name = dataSnapshot.child("nombre").getValue().toString();
-                        save_artist_preferences(artist_name, userd);
+                if (dataSnapshot.exists()) { //Here verify if user exist
+                    //Here get password of that user
+                    String retrievedPasswordDB = dataSnapshot.child("pass").getValue().toString();
+                    //Verify if pass from EditText and pass from DB is the same
+                    if (passValue.equals(retrievedPasswordDB)){
+                        String retrievedUserFirstName = "";
+                        String retrievedUserLastName = "";
+                        //Try catch handle errors of type NullPointerException
+                        try {
+                            retrievedUserFirstName = dataSnapshot.child("nombre").getValue().toString();
+                            retrievedUserLastName = dataSnapshot.child("apellido").getValue().toString();
+                        } catch (Exception e) { }
+                        SharedPreferencesApp sharedPreferencesApp = new SharedPreferencesApp(getApplicationContext());
+                        sharedPreferencesApp.saveLoginData(retrievedUserFirstName, retrievedUserLastName, userValue, passValue, userType);
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        Bundle bundle =  new Bundle();
-                        bundle.putString("artist_id", userd);
-                        bundle.putString("artist_name", artist_name);
-                        bundle.putString("user_type", "artist");
-                        intent.putExtras(bundle);
                         startActivity(intent);
+                        finishAffinity();
                     }
                 }
                 else {
-                    Toast.makeText(getApplicationContext(), "The user "+userd+" doesn't exist", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "El usuario "+userValue+" no existe", Toast.LENGTH_LONG).show();
                 }
             }
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError databaseError) { }
         });
     }
 
-    private boolean validate_fields(EditText user, EditText pass){
-        if (user.getText().toString().equals("")){
-            user.setError("Required");
+    private boolean validateFields(String user, String pass){
+        if (user.equals("")){
+            edtxtUser.setError("Required");
             return false;
-        } else if (pass.getText().toString().equals("")){
-            pass.setError("Required");
+        } else if (pass.equals("")){
+            edtxtPassword.setError("Required");
             return false;
         }
         return true;
-    }
-
-    private void save_preferences(String username, String user_id, String lastname){
-        SharedPreferences preferences = getSharedPreferences("credentials", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor=preferences.edit();
-        editor.putString("user",user.getText().toString());
-        editor.putString("user_id", user_id);
-        editor.putString("pass",password.getText().toString());
-        editor.putString("username", username);
-        editor.putString("user_type", "user");
-        editor.putString("lastname", lastname);
-        editor.commit();
-    }
-    private void save_artist_preferences(String username, String user_id) {
-        SharedPreferences preferences = getSharedPreferences("artist_credentials", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor=preferences.edit();
-        editor.putString("artist_id", user_id);
-        editor.putString("pass",password.getText().toString());
-        editor.putString("artist_name", username);
-        editor.commit();
     }
 }

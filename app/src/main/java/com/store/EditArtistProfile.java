@@ -101,7 +101,7 @@ public class EditArtistProfile extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        artist_id = getArguments().getString("artist_id");;
+        artist_id = getArguments().getString("artistUsername");
         get_artist_data(artist_id);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
