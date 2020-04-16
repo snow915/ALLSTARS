@@ -1,4 +1,4 @@
-package com.store.Vo;
+package com.store.vo;
 
 public class CategoriasVo {
     private String nombre;

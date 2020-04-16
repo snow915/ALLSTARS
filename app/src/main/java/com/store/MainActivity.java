@@ -1,7 +1,5 @@
 package com.store;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
@@ -12,7 +10,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.store.CarritoCompras.Carrito;
-import com.store.Credenciales.Login;
+import com.store.credentials.Login;
 import com.store.ListaCategorias.Altavoces;
 import com.store.ListaCategorias.Auriculares;
 import com.store.ListaCategorias.Baterias;
@@ -22,6 +20,11 @@ import com.store.ListaCategorias.Cristales;
 import com.store.ListaCategorias.Display;
 import com.store.ListaCategorias.Pantallas;
 import com.store.ListaCategorias.Placas;
+import com.store.famous.ArtistProfile;
+import com.store.famous.EditArtistProfile;
+import com.store.user.EditProfile;
+import com.store.user.Profile;
+
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;

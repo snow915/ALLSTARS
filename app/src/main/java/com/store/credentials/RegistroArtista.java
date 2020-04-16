@@ -1,68 +1,71 @@
-package com.store;
+package com.store.credentials;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
-
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
+import com.store.Artistas;
+import com.store.MainActivity;
+import com.store.R;
 import java.util.ArrayList;
-
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class RegistroArtista extends AppCompatActivity {
-    EditText artist_name;
-    String categories;
-    ArrayList values;
-    EditText user;
-    EditText pass;
-    Button register_artist;
-    ConstraintLayout my_layout;
-    FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference;
+
+    private EditText edtxtArtistName;
+    private String categories;
+    private ArrayList values;
+    private EditText edtxtUser;
+    private EditText edtxtPass;
+    private Button btnRegisterArtist;
+    private ConstraintLayout myLayout;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
     public Artistas a;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro_artista);
+
         initFirebase();
         a = new Artistas();
-        artist_name = findViewById(R.id.id_nombre);
+
+        edtxtArtistName = findViewById(R.id.id_nombre);
         categories = "";
         values = new ArrayList<String>();
-        user = findViewById(R.id.id_user);
-        pass = findViewById(R.id.id_pass);
-        my_layout = findViewById(R.id.my_layout);
-        register_artist = findViewById(R.id.id_sign_up_as_artist);
-        register_artist.setOnClickListener(new View.OnClickListener() {
+        edtxtUser = findViewById(R.id.id_user);
+        edtxtPass = findViewById(R.id.id_pass);
+        myLayout = findViewById(R.id.my_layout);
+        btnRegisterArtist = findViewById(R.id.id_sign_up_as_artist);
+
+        btnRegisterArtist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList results = validations(my_layout, values, user, pass, artist_name);
+                ArrayList results = validations(myLayout, values, edtxtUser, edtxtPass, edtxtArtistName);
                 if (results.size() > 0) {
                     for (int i = 0; i < results.size(); i++) {
                         categories+=results.get(i).toString()+ ", ";
                     }
-                    a.setUser(user.getText().toString());
-                    a.setNombre(artist_name.getText().toString());
-                    a.setPass(pass.getText().toString());
+                    a.setUser(edtxtUser.getText().toString());
+                    a.setNombre(edtxtArtistName.getText().toString());
+                    a.setPass(edtxtPass.getText().toString());
                     a.setBiografia("");
                     a.setCategoria(categories);
                     a.setImagen("");
                     a.setPuntaje(0);
-                    user_exist(user.getText().toString());
+                    userExist(edtxtUser.getText().toString());
                     results.clear();
                     categories = "";
 
@@ -77,7 +80,8 @@ public class RegistroArtista extends AppCompatActivity {
             }
         });
     }
-    public ArrayList validations(ConstraintLayout ml, ArrayList vals, EditText username, EditText password, EditText artist_name) {
+
+    private ArrayList validations(ConstraintLayout ml, ArrayList vals, EditText username, EditText password, EditText artist_name) {
         if(artist_name.getText().toString().equals("")){
             artist_name.setError("Required");
             return vals;
@@ -112,9 +116,10 @@ public class RegistroArtista extends AppCompatActivity {
         }
         return vals;
     }
-    private void user_exist(final String userd) {
+
+    private void userExist(final String username) {
         DatabaseReference ref;
-        ref = FirebaseDatabase.getInstance().getReference().child("data").child(userd);
+        ref = FirebaseDatabase.getInstance().getReference().child("data").child(username);
         //addListenerForSingleValueEvent hace que onDataChange de Firebase se ejecute 1 sola vez, de lo contrario lo hara 2 veces
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

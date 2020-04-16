@@ -1,65 +1,39 @@
-package com.store;
+package com.store.user;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.store.R;
 
-import java.util.ArrayList;
-import java.util.List;
-
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link Profile.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link Profile#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class Profile extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private TextView name;
+    private TextView txtLastName;
+    private TextView txtEmail;
+    private TextView txtSex;
+    private TextView txtPhone;
+    private int index;
 
     private OnFragmentInteractionListener mListener;
 
-    public Profile() {
-        // Required empty public constructor
-    }
+    public Profile() {}
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Profile.
-     */
-    // TODO: Rename and change types and number of parameters
     public static Profile newInstance(String param1, String param2) {
         Profile fragment = new Profile();
         Bundle args = new Bundle();
@@ -72,8 +46,8 @@ public class Profile extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String user_id = getArguments().getString("username");
-        get_user_data(user_id);
+        String username = getArguments().getString("username");
+        getUserData(username);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -117,48 +91,37 @@ public class Profile extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-    public void get_user_data(String userd){
-        final List user_data = new ArrayList();
+
+    public void getUserData(String username){
         DatabaseReference ref;
-        ref = FirebaseDatabase.getInstance().getReference().child("Usuarios").child(userd);
+        ref = FirebaseDatabase.getInstance().getReference().child("Usuarios").child(username);
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    String user_name = dataSnapshot.child("nombre").getValue().toString();
-                    String user_last_name = dataSnapshot.child("apellido").getValue().toString();
-                    String user_email = dataSnapshot.child("correo").getValue().toString();
-                    String user_sex = dataSnapshot.child("sexo").getValue().toString();
-                    String user_phone = dataSnapshot.child("telefono").getValue().toString();
-                    TextView name = getView().findViewById(R.id.id_nombre);
-                    TextView last_name = getView().findViewById(R.id.id_apellido);
-                    TextView email = getView().findViewById(R.id.id_email);
-                    TextView sex = getView().findViewById(R.id.id_sexo);
-                    TextView phone = getView().findViewById(R.id.id_telefono);
-                    name.setText(user_name);
-                    last_name.setText(user_last_name);
-                    email.setText(user_email);
-                    int index = user_sex.indexOf(',');
-                    user_sex = user_sex.substring(0, index);
-                    sex.setText(user_sex);
-                    phone.setText(user_phone);
-                }
-                else {
+                    String userFirstName = dataSnapshot.child("nombre").getValue().toString();
+                    String userLastName = dataSnapshot.child("apellido").getValue().toString();
+                    String userEmail = dataSnapshot.child("correo").getValue().toString();
+                    String userSex = dataSnapshot.child("sexo").getValue().toString();
+                    String userPhone = dataSnapshot.child("telefono").getValue().toString();
 
+                    name = getView().findViewById(R.id.id_nombre);
+                    txtLastName = getView().findViewById(R.id.id_apellido);
+                    txtEmail = getView().findViewById(R.id.id_email);
+                    txtSex = getView().findViewById(R.id.id_sexo);
+                    txtPhone = getView().findViewById(R.id.id_telefono);
+
+                    name.setText(userFirstName);
+                    txtLastName.setText(userLastName);
+                    txtEmail.setText(userEmail);
+                    index = userSex.indexOf(',');
+                    userSex = userSex.substring(0, index);
+                    txtSex.setText(userSex);
+                    txtPhone.setText(userPhone);
                 }
             }
             @Override

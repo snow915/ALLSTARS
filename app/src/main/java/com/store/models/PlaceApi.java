@@ -1,10 +1,6 @@
-package com.store.Models;
+package com.store.models;
 
-import android.location.Address;
-import android.location.Geocoder;
 import android.util.Log;
-
-import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,8 +12,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
 
 public class PlaceApi {
 

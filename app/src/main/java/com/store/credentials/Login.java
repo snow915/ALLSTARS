@@ -1,4 +1,4 @@
-package com.store.Credenciales;
+package com.store.credentials;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,8 +9,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.store.MainActivity;
 import com.store.R;
-import com.store.Register;
-import com.store.RegistroArtista;
 import com.store.SharedPreferencesApp;
 
 import androidx.annotation.NonNull;

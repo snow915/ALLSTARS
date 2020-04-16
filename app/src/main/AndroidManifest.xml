@@ -35,7 +35,7 @@
             android:value="@string/google_maps_key" />
 
         <activity android:name=".InfoSolicitud" />
-        <activity android:name=".RegistroArtista" />
+        <activity android:name=".credentials.RegistroArtista" />
         <activity android:name=".EnviarSolicitud" />
         <activity android:name=".Map" />
         <activity android:name=".Contratacion" />
@@ -47,10 +47,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".Invitado" />
-        <activity android:name=".Registro" />
-        <activity android:name=".Register" />
+        <activity android:name=".credentials.Register" />
         <activity
-            android:name=".Credenciales.Login"
+            android:name=".credentials.Login"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".InfoProducto" />
         <activity

@@ -1,4 +1,4 @@
-package com.store.Adapters;
+package com.store.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.store.Vo.CategoriasVo;
+import com.store.vo.CategoriasVo;
 import com.store.R;
 
 import java.util.ArrayList;

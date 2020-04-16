@@ -1,11 +1,11 @@
-package com.store.Adapters;
+package com.store.adapters;
 
 import android.content.Context;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 
-import com.store.Models.PlaceApi;
+import com.store.models.PlaceApi;
 
 import java.util.ArrayList;
 

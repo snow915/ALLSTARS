@@ -1,19 +1,15 @@
-package com.store.Adapters;
+package com.store.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.store.InfoProducto;
-import com.store.Vo.DatosSolicitudVo;
+import com.store.vo.DatosSolicitudVo;
 import com.store.R;
 
 import java.util.ArrayList;
