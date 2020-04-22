@@ -71,14 +71,7 @@ public class EditProfile extends Fragment{
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                edtxtName = getView().findViewById(R.id.id_nombre);
-                edtxtUser = getView().findViewById(R.id.username);
-                edtxtPass = getView().findViewById(R.id.password);
-                edtxtLastName = getView().findViewById(R.id.id_apellido);
-                edtxtEmail = getView().findViewById(R.id.id_email);
-                spinSex = getView().findViewById(R.id.id_sexo);
-                edtxtPhone = getView().findViewById(R.id.id_telefono);
-
+                associateIds();
                 String nameValue = edtxtName.getText().toString();
                 String userValue = edtxtUser.getText().toString();
                 String passValue = edtxtPass.getText().toString();
@@ -135,7 +128,7 @@ public class EditProfile extends Fragment{
                     String userEmail = dataSnapshot.child("correo").getValue().toString();
                     String userSex = dataSnapshot.child("sexo").getValue().toString();
                     String userPhone = dataSnapshot.child("telefono").getValue().toString();
-
+                    associateIds();
                     edtxtName.setText(userName);
                     edtxtUser.setText(user);
                     edtxtPass.setText(pass);
@@ -158,17 +151,17 @@ public class EditProfile extends Fragment{
         });
     }
 
-    private void updateUser(EditText name, EditText user, EditText pass, EditText last_name, EditText email, Spinner sex, EditText phone){
+    private void updateUser(String name, String user, String pass, String lastName, String email, String sex, String phone){
         String username = getArguments().getString("username");
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Usuarios").child(username);
         Usuarios usuario= new Usuarios();
-        usuario.setNombre(nameValue);
-        usuario.setUser(userValue);
-        usuario.setApellido(lastNameValue);
-        usuario.setPass(passValue);
-        usuario.setCorreo(emailValue);
-        usuario.setSexo(sexValue);
-        usuario.setTelefono(phoneValue);
+        usuario.setNombre(name);
+        usuario.setUser(user);
+        usuario.setApellido(lastName);
+        usuario.setPass(pass);
+        usuario.setCorreo(email);
+        usuario.setSexo(sex);
+        usuario.setTelefono(phone);
         ref.setValue(usuario);
         new SweetAlertDialog(getContext(), SweetAlertDialog.SUCCESS_TYPE)
                 .setTitleText("Datos actualizados")
@@ -185,48 +178,58 @@ public class EditProfile extends Fragment{
                 .show();
     }
 
-    private boolean validations(String nombre, String user, String pass, String apellido, String email, Spinner sexo, String telefono){
+    private boolean validations(String nombre, String user, String pass, String apellido, String email, String sexo, String telefono){
         if(nombre.equals("")){
-            nombre.setError("No puede estar vacío");
+            edtxtName.setError("No puede estar vacío");
             return false;
         }
         if(apellido.equals("")){
-            apellido.setError("No puede estar vacío");
+            edtxtLastName.setError("No puede estar vacío");
             return false;
         }
         if(email.equals("")){
-            email.setError("No puede estar vacío");
+            edtxtEmail.setError("No puede estar vacío");
             return false;
         }
         if(telefono.equals("")){
-            telefono.setError("No puede estar vacío");
+            edtxtPhone.setError("No puede estar vacío");
             return false;
         }
         if(telefono.length() < 10){
-            telefono.setError("Faltan dígitos");
+            edtxtPhone.setError("Faltan dígitos");
             return false;
         }
-        if(sexo.getSelectedItem().toString().equals("Gender")){
-            TextView errorTextview = (TextView) sexo.getSelectedView();
+        if(spinSex.getSelectedItem().toString().equals("Gender")){
+            TextView errorTextview = (TextView) spinSex.getSelectedView();
             errorTextview.setError("Opción inválida");
             return false;
         }
         if(user.equals("")){
-            user.setError("No puede estar vacío");
+            edtxtUser.setError("No puede estar vacío");
             return false;
         }
-        if(user.length() < 4){
-            user.setError("4 caracteres mínimo");
+        if(edtxtUser.length() < 4){
+            edtxtUser.setError("4 caracteres mínimo");
             return false;
         }
         if(pass.equals("")){
-            pass.setError("No puede estar vacío");
+            edtxtPass.setError("No puede estar vacío");
             return false;
         }
         if(pass.length() < 8){
-            pass.setError("8 caracteres mínimo");
+            edtxtPass.setError("8 caracteres mínimo");
             return false;
         }
         return true;
+    }
+
+    private void associateIds(){
+        edtxtName = getView().findViewById(R.id.id_nombre);
+        edtxtUser = getView().findViewById(R.id.username);
+        edtxtPass = getView().findViewById(R.id.password);
+        edtxtLastName = getView().findViewById(R.id.id_apellido);
+        edtxtEmail = getView().findViewById(R.id.id_email);
+        spinSex = getView().findViewById(R.id.id_sexo);
+        edtxtPhone = getView().findViewById(R.id.id_telefono);
     }
 }

@@ -103,25 +103,27 @@ public class Profile extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    String userFirstName = dataSnapshot.child("nombre").getValue().toString();
-                    String userLastName = dataSnapshot.child("apellido").getValue().toString();
-                    String userEmail = dataSnapshot.child("correo").getValue().toString();
-                    String userSex = dataSnapshot.child("sexo").getValue().toString();
-                    String userPhone = dataSnapshot.child("telefono").getValue().toString();
+                    try{
+                        String userFirstName = dataSnapshot.child("nombre").getValue().toString();
+                        String userLastName = dataSnapshot.child("apellido").getValue().toString();
+                        String userEmail = dataSnapshot.child("correo").getValue().toString();
+                        String userSex = dataSnapshot.child("sexo").getValue().toString();
+                        String userPhone = dataSnapshot.child("telefono").getValue().toString();
 
-                    name = getView().findViewById(R.id.id_nombre);
-                    txtLastName = getView().findViewById(R.id.id_apellido);
-                    txtEmail = getView().findViewById(R.id.id_email);
-                    txtSex = getView().findViewById(R.id.id_sexo);
-                    txtPhone = getView().findViewById(R.id.id_telefono);
+                        name = getView().findViewById(R.id.id_nombre);
+                        txtLastName = getView().findViewById(R.id.id_apellido);
+                        txtEmail = getView().findViewById(R.id.id_email);
+                        txtSex = getView().findViewById(R.id.id_sexo);
+                        txtPhone = getView().findViewById(R.id.id_telefono);
 
-                    name.setText(userFirstName);
-                    txtLastName.setText(userLastName);
-                    txtEmail.setText(userEmail);
-                    index = userSex.indexOf(',');
-                    userSex = userSex.substring(0, index);
-                    txtSex.setText(userSex);
-                    txtPhone.setText(userPhone);
+                        name.setText(userFirstName);
+                        txtLastName.setText(userLastName);
+                        txtEmail.setText(userEmail);
+                        index = userSex.indexOf(',');
+                        userSex = userSex.substring(0, index);
+                        txtSex.setText(userSex);
+                        txtPhone.setText(userPhone);
+                    } catch (Exception e){}
                 }
             }
             @Override
