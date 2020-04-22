@@ -1,4 +1,4 @@
-package com.store;
+package com.store.famous;
 
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.store.R;
 import com.store.adapters.AdapterDatosSolicitud;
 import com.store.vo.DatosSolicitudVo;
 

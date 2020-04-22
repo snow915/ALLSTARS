@@ -1,11 +1,7 @@
 package com.store;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 
 import androidx.appcompat.app.AlertDialog;
 import android.os.Bundle;
@@ -17,22 +13,19 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
-
 import com.bumptech.glide.Glide;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.store.CarritoCompras.AdminSQLiteOpenHelper;
 import com.store.credentials.Login;
-
+import com.store.global.TimePickerFragment;
+import com.store.user.Contratacion;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
-
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class InfoProducto extends AppCompatActivity implements
@@ -40,86 +33,83 @@ public class InfoProducto extends AppCompatActivity implements
         DatePickerDialog.OnDateSetListener,
         TimePickerDialog.OnTimeSetListener {
 
-    Button moreInfo;
-    Button buy;
-    Button add;
-    Button precios;
-    TextView titulo;
-    TextView precio;
-    ImageView imagen;
-    String nombreIntent;
-    String precioIntent;
-    String biografiaIntent;
-    RatingBar ratingStars;
-    String imageRoute;
-    String username;
-    String userPreferences, artistPreferences;
-    int stars;
-    FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference;
+    private Button moreInfo;
+    private Button hire;
+    private Button btnFavorites;
+    private Button btnPrices;
+    private TextView txtTitle;
+    private ImageView imgImage;
+    private String artistName;
+    private String biography;
+    private RatingBar ratingStars;
+    private String imageRoute;
+    private String artistUsername;
+    private String usernameSession, artistUsernameSession;
+    private int stars;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info_producto);
 
-        load_preferences();
-        load_artist_preferences();
+        SharedPreferencesApp sharedPreferencesApp = new SharedPreferencesApp(getApplicationContext());
+        sharedPreferencesApp.loadPreferences();
+        usernameSession = sharedPreferencesApp.getUsername();
+        artistUsernameSession = sharedPreferencesApp.getArtistUsername();
+
         moreInfo = findViewById(R.id.detalles);
-        buy = findViewById(R.id.comprar);
-        add = findViewById(R.id.agregar);
-        precios = findViewById(R.id.precios);
-        titulo = findViewById(R.id.titulo);
-        precio = findViewById(R.id.precio);
-        imagen = findViewById(R.id.imagen);
+        hire = findViewById(R.id.comprar);
+        btnFavorites = findViewById(R.id.agregar);
+        btnPrices = findViewById(R.id.precios);
+        txtTitle = findViewById(R.id.titulo);
+        imgImage = findViewById(R.id.imagen);
         ratingStars = findViewById(R.id.ratingStars);
 
-        nombreIntent = getIntent().getStringExtra("nombre");
-        precioIntent = getIntent().getStringExtra("precio");
-        biografiaIntent = getIntent().getStringExtra("biografia");
+        artistName = getIntent().getStringExtra("name");
+        biography = getIntent().getStringExtra("biography");
         imageRoute = getIntent().getStringExtra("image");
         stars = getIntent().getIntExtra("stars",0);
-        username = getIntent().getStringExtra("username");
-        titulo.setText(nombreIntent);
-        precio.setText(precioIntent);
+        artistUsername = getIntent().getStringExtra("username");
+
+        txtTitle.setText(artistName);
         // Here load the image from FirebaseDataBase
         Glide.with(InfoProducto.this)
                 .load(imageRoute)
                 .fitCenter()
                 .centerCrop()
-                .into(imagen);
+                .into(imgImage);
         ratingStars.setRating(stars);
 
         moreInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //AlertDialog dialog = makeDialog();
-                //dialog.show();
                 new SweetAlertDialog(InfoProducto.this, SweetAlertDialog.NORMAL_TYPE)
-                        .setTitleText(nombreIntent)
-                        .setContentText(biografiaIntent)
+                        .setTitleText(artistName)
+                        .setContentText(biography)
                         .show();
             }
         });
 
-        add.setOnClickListener(new View.OnClickListener() {
+        btnFavorites.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                agregarFavoritos(v);
+                addFavorites(v);
             }
         });
 
-        buy.setOnClickListener(new View.OnClickListener() {
+        hire.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (userPreferences != null) {
+                if (usernameSession != null) {
                     Intent intent=new Intent(getApplicationContext(), Contratacion.class);
                     HashMap<String, String> hashMap = new HashMap<String, String>();
                     hashMap.put("rutaImagen", imageRoute);
-                    hashMap.put("nombreFamoso", nombreIntent);
-                    hashMap.put("usernameFamoso" , username);
+                    hashMap.put("nombreFamoso", artistName);
+                    hashMap.put("usernameFamoso" , artistUsername);
                     intent.putExtra("mapValues", hashMap);
                     startActivity(intent);
-                } else if (artistPreferences != null) {
+                } else if (artistUsernameSession != null) {
                     new SweetAlertDialog(InfoProducto.this, SweetAlertDialog.WARNING_TYPE)
                             .setTitleText("Debes iniciar sesión como usuario normal para poder contratar")
                             .setConfirmText("Entendido!")
@@ -138,7 +128,7 @@ public class InfoProducto extends AppCompatActivity implements
             }
         });
 
-        precios.setOnClickListener(new View.OnClickListener() {
+        btnPrices.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog dialog = tablePrices();
@@ -170,9 +160,9 @@ public class InfoProducto extends AppCompatActivity implements
 
     }
 
-    public void agregarFavoritos(View v) {
+    public void addFavorites(View v) {
         initFirebase();
-        databaseReference.child("Usuarios").child(userPreferences).child("favoritos").child(username).setValue(username);
+        databaseReference.child("Usuarios").child(usernameSession).child("favoritos").child(artistUsername).setValue(artistUsername);
 
         new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
                 .setTitleText("¡Agregado a favoritos!")
@@ -185,19 +175,6 @@ public class InfoProducto extends AppCompatActivity implements
         databaseReference = firebaseDatabase.getReference();
     }
 
-    public void agregarProducto(View v){
-        AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "carrito", null, 4);
-        SQLiteDatabase db = admin.getWritableDatabase();
-        ContentValues registro = new ContentValues();
-        registro.put("tituloProducto",nombreIntent);
-        registro.put("precioProducto",precioIntent);
-        registro.put("idImagen",imageRoute);
-        registro.put("idStars", stars);
-        db.insert("Carrito",null, registro);
-        db.close();
-        Toast.makeText(this,"Agregado a favoritos",Toast.LENGTH_SHORT).show();
-    }
-
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String item = (String) parent.getItemAtPosition(position);
@@ -206,16 +183,6 @@ public class InfoProducto extends AppCompatActivity implements
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
-    }
-
-    private void load_preferences(){
-        SharedPreferences preferences = getSharedPreferences("credentials", Context.MODE_PRIVATE);
-        userPreferences = preferences.getString("user",null);
-    }
-
-    private void load_artist_preferences() {
-        SharedPreferences preferences = getSharedPreferences("artist_credentials", Context.MODE_PRIVATE);
-        artistPreferences = preferences.getString("artist_id", null);
     }
 
 }

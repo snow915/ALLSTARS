@@ -1,4 +1,4 @@
-package com.store;
+package com.store.user;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,14 +17,15 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
-import java.lang.reflect.Array;
+import com.store.global.DatePickerFragment;
+import com.store.Map;
+import com.store.R;
+import com.store.global.TimePickerFragment;
+
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 
 public class Contratacion extends AppCompatActivity implements
         DatePickerDialog.OnDateSetListener,

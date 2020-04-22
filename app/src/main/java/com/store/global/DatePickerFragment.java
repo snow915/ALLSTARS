@@ -1,4 +1,4 @@
-package com.store;
+package com.store.global;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;

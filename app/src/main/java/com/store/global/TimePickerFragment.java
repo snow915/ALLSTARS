@@ -1,4 +1,4 @@
-package com.store;
+package com.store.global;
 
 import android.app.Dialog;
 import android.app.TimePickerDialog;

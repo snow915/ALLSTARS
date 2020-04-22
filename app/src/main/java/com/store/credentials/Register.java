@@ -21,7 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.store.MainActivity;
 import com.store.R;
-import com.store.Usuarios;
+import com.store.user.Usuarios;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 

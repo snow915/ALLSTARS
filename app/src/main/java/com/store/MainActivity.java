@@ -10,6 +10,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.store.CarritoCompras.Carrito;
+import com.store.ListaCategorias.Categorias;
 import com.store.credentials.Login;
 import com.store.ListaCategorias.Altavoces;
 import com.store.ListaCategorias.Auriculares;
@@ -22,6 +23,7 @@ import com.store.ListaCategorias.Pantallas;
 import com.store.ListaCategorias.Placas;
 import com.store.famous.ArtistProfile;
 import com.store.famous.EditArtistProfile;
+import com.store.famous.FragmentSolicitud;
 import com.store.user.EditProfile;
 import com.store.user.Profile;
 

@@ -19,6 +19,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.store.adapters.PlaceAutoSuggestAdapter;
+import com.store.user.EnviarSolicitud;
 
 import java.io.IOException;
 import java.util.HashMap;

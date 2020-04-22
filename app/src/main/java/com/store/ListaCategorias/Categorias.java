@@ -1,4 +1,4 @@
-package com.store;
+package com.store.ListaCategorias;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -14,16 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.store.R;
 import com.store.adapters.AdapterCategorias;
-import com.store.ListaCategorias.Altavoces;
-import com.store.ListaCategorias.Auriculares;
-import com.store.ListaCategorias.Baterias;
-import com.store.ListaCategorias.Botones;
-import com.store.ListaCategorias.Camaras;
-import com.store.ListaCategorias.Cristales;
-import com.store.ListaCategorias.Display;
-import com.store.ListaCategorias.Pantallas;
-import com.store.ListaCategorias.Placas;
 import com.store.vo.CategoriasVo;
 
 import java.util.ArrayList;

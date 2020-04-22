@@ -53,19 +53,6 @@
                     android:scrollbarSize="5dp"
                     android:stepSize="0.5" />
 
-
-            <TextView
-                android:id="@+id/precio"
-                android:layout_gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="15dp"
-                android:gravity="center"
-                android:text="@string/app_precio"
-                android:textColor="@color/negro"
-                android:textSize="25dp" />
-
             <Button
                 android:id="@+id/agregar"
                 android:layout_width="match_parent"

@@ -1,4 +1,4 @@
-package com.store;
+package com.store.famous;
 
 public class Artistas {
     private String biografia;

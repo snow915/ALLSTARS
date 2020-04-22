@@ -1,4 +1,4 @@
-package com.store;
+package com.store.famous;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,20 +7,25 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class SollicitudEnviada extends AppCompatActivity {
+import com.store.MainActivity;
+import com.store.R;
+
+public class SolicitudAceptada extends AppCompatActivity {
 
     Button regresar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sollicitud_enviada);
+        setContentView(R.layout.activity_solicitud_aceptada);
+
         regresar = findViewById(R.id.idRegresar);
         regresar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intent = new Intent(SolicitudAceptada.this, MainActivity.class);
                 startActivity(intent);
+                finishAffinity();
                 finish();
             }
         });

@@ -38,7 +38,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.store.Artistas;
 import com.store.R;
 
 import java.io.ByteArrayOutputStream;
