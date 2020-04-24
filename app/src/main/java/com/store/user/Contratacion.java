@@ -3,7 +3,6 @@ package com.store.user;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
-
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -17,12 +16,10 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-
 import com.store.global.DatePickerFragment;
 import com.store.Map;
 import com.store.R;
 import com.store.global.TimePickerFragment;
-
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -33,16 +30,15 @@ public class Contratacion extends AppCompatActivity implements
         TimePickerDialog.OnTimeSetListener,
         AdapterView.OnItemSelectedListener{
 
-    EditText fechaInicio, fechaFin, horaInicio, horaFin, detalles;
-    Spinner tipoPublico, tipoEvento;
-    String currentDateString;
-    Button maps;
-    public int dia, mes, anio, hora, minutos;
-    boolean statusFechaInicio = false;
-    boolean statusFechaFin = false;
-    boolean statusHoraInicio = false;
-    boolean statusHoraFin = false;
-    HashMap<String, String> hashMap;
+    private EditText startDate, finishDate, startTime, finishTime, details;
+    private Spinner audienceType, eventType;
+    private String currentDateString;
+    private Button maps;
+    private boolean statusStartDate = false;
+    private boolean statusFinishDate = false;
+    private boolean statusStartTime = false;
+    private boolean statusFinishTime = false;
+    public HashMap<String, String> hashMap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,37 +46,34 @@ public class Contratacion extends AppCompatActivity implements
 
         hashMap = (HashMap<String, String>) getIntent().getSerializableExtra("mapValues");
 
-        fechaInicio = findViewById(R.id.fechaInicio);
-        fechaFin = findViewById(R.id.fechaFin);
-        horaInicio = findViewById(R.id.horaInicio);
-        horaFin = findViewById(R.id.horaFin);
-        detalles = findViewById(R.id.idDetalles);
-        tipoPublico = findViewById(R.id.idPublico);
-        tipoEvento = findViewById(R.id.idEvento);
+        startDate = findViewById(R.id.fechaInicio);
+        finishDate = findViewById(R.id.fechaFin);
+        startTime = findViewById(R.id.horaInicio);
+        finishTime = findViewById(R.id.horaFin);
+        details = findViewById(R.id.idDetalles);
+        audienceType = findViewById(R.id.idPublico);
+        eventType = findViewById(R.id.idEvento);
         maps = findViewById(R.id.idMaps);
 
-        fechaInicio.setOnClickListener(this);
-        fechaFin.setOnClickListener(this);
-
-        horaInicio.setOnClickListener(this);
-        horaFin.setOnClickListener(this);
-
+        startDate.setOnClickListener(this);
+        finishDate.setOnClickListener(this);
+        startTime.setOnClickListener(this);
+        finishTime.setOnClickListener(this);
         maps.setOnClickListener(this);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.array_publico, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        tipoPublico.setAdapter(adapter);
-        tipoPublico.setOnItemSelectedListener(this);
+        audienceType.setAdapter(adapter);
+        audienceType.setOnItemSelectedListener(this);
 
         ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this,
                 R.array.array_eventos, android.R.layout.simple_spinner_item);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        tipoEvento.setAdapter(adapter2);
-        tipoEvento.setOnItemSelectedListener(this);
+        eventType.setAdapter(adapter2);
+        eventType.setOnItemSelectedListener(this);
 
     }
-
 
     /*
      * LA FECHA SE SETEA CUANDO ENTRA A ESTA FUNCIÓN, ES POR ESO QUE SE TIENEN LAS VARIABLES
@@ -94,20 +87,20 @@ public class Contratacion extends AppCompatActivity implements
         c.set(Calendar.MONTH, month);
         c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
         currentDateString = DateFormat.getDateInstance(DateFormat.FULL).format(c.getTime());
-        if (statusFechaInicio) {
-            fechaInicio.setText(currentDateString);
-        } else if (statusFechaFin) {
-            fechaFin.setText(currentDateString);
+        if (statusStartDate) {
+            startDate.setText(currentDateString);
+        } else if (statusFinishDate) {
+            finishDate.setText(currentDateString);
         }
     }
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         String hour = String.format("%02d:%02d", hourOfDay, minute);
-        if (statusHoraInicio) {
-            horaInicio.setText(hour);
-        } else if (statusHoraFin) {
-            horaFin.setText(hour);
+        if (statusStartTime) {
+            startTime.setText(hour);
+        } else if (statusFinishTime) {
+            finishTime.setText(hour);
         }
     }
 
@@ -118,85 +111,83 @@ public class Contratacion extends AppCompatActivity implements
         */
     @Override
     public void onClick(View v) {
-        if (v == fechaInicio) {
+        if(v == startDate || v == finishDate){
             DialogFragment datePicker = new DatePickerFragment();
             datePicker.show(getSupportFragmentManager(), "date picker");
-            statusFechaInicio = true;
-            statusFechaFin = false;
-        } else if (v == fechaFin) {
-            DialogFragment datePicker = new DatePickerFragment();
-            datePicker.show(getSupportFragmentManager(), "date picker");
-            statusFechaFin = true;
-            statusFechaInicio = false;
-        } else if (v == horaInicio) {
+            //This executes when startDate first is true, then pass to if statement unread finishDate
+            statusStartDate = true;
+            statusFinishDate = false;
+            //This executes when finishDate ir is read
+            if(v == finishDate){
+                statusFinishDate = true;
+                statusStartDate = false;
+            }
+        } else if (v == startTime || v == finishTime) {
             DialogFragment timePicker = new TimePickerFragment();
             timePicker.show(getSupportFragmentManager(), "time picker");
-            statusHoraInicio = true;
-            statusHoraFin = false;
-        } else if (v == horaFin) {
-            DialogFragment timePicker = new TimePickerFragment();
-            timePicker.show(getSupportFragmentManager(), "time picker");
-            statusHoraFin = true;
-            statusHoraInicio = false;
+            statusStartTime = true;
+            statusFinishTime = false;
+            if(v == finishTime){
+                statusFinishTime = true;
+                statusStartTime = false;
+            }
         } else if (v == maps){
-
-            if (validaciones()){
-                hashMap.put("tipoPublico", tipoPublico.getSelectedItem().toString());
-                hashMap.put("tipoEvento", tipoEvento.getSelectedItem().toString());
-                hashMap.put("horaInicio",horaInicio.getText().toString());
-                hashMap.put("horaFin", horaFin.getText().toString());
-                hashMap.put("fechaInicio", fechaInicio.getText().toString());
-                hashMap.put("fechaFin", fechaFin.getText().toString());
-                hashMap.put("detalles", detalles.getText().toString());
+            if (validations()){
+                hashMap.put("tipoPublico", audienceType.getSelectedItem().toString());
+                hashMap.put("tipoEvento", eventType.getSelectedItem().toString());
+                hashMap.put("horaInicio", startTime.getText().toString());
+                hashMap.put("horaFin", finishTime.getText().toString());
+                hashMap.put("fechaInicio", startDate.getText().toString());
+                hashMap.put("fechaFin", finishDate.getText().toString());
+                hashMap.put("detalles", details.getText().toString());
 
                 Intent intent = new Intent(getApplicationContext(), Map.class);
                 intent.putExtra("mapValues", hashMap);
                 startActivity(intent);
             }
-
         }
     }
 
-    private boolean validaciones(){
-        String requerido = getString(R.string.requerido);
-        TextView errorTextviewPublico = (TextView) tipoPublico.getSelectedView();
-        TextView errorTextviewEventos = (TextView) tipoEvento.getSelectedView();
+    private boolean validations(){
+        String required = getString(R.string.requerido);
+        TextView errorTextviewAudience = (TextView) audienceType.getSelectedView();
+        TextView errorTextviewEvents = (TextView) eventType.getSelectedView();
 
-        if(fechaInicio.getText().toString().equals("")){
-            fechaInicio.setError(requerido);
+        if(startDate.getText().toString().equals("")){
+            startDate.setError(required);
             return false;
         } else {
-            fechaInicio.setError(requerido, null);
+            startDate.setError(required, null);
         }
-        if(fechaFin.getText().toString().equals("")){
-            fechaFin.setError(requerido);
+        if(finishDate.getText().toString().equals("")){
+            finishDate.setError(required);
             return false;
         } else {
-            fechaFin.setError(requerido, null);
+            finishDate.setError(required, null);
         }
-        if(horaInicio.getText().toString().equals("")){
-            horaInicio.setError(requerido);
+        if(startTime.getText().toString().equals("")){
+            startTime.setError(required);
             return false;
         } else {
-            horaInicio.setError(requerido, null);
+            startTime.setError(required, null);
         }
-        if(horaFin.getText().toString().equals("")){
-            horaFin.setError(requerido);
+        if(finishTime.getText().toString().equals("")){
+            finishTime.setError(required);
             return false;
         } else {
-            horaFin.setError(requerido, null);
+            finishTime.setError(required, null);
         }
-        if(tipoPublico.getSelectedItem().toString().equals("Público")) {
-            errorTextviewPublico.setError(requerido);
+        if(audienceType.getSelectedItem().toString().equals("Público")) {
+            errorTextviewAudience.setError(required);
             return false;
         } else {
-            errorTextviewPublico.setError(requerido, null);
+            errorTextviewAudience.setError(required, null);
         }
-        if(tipoEvento.getSelectedItem().toString().equals("Evento")) {
-            errorTextviewEventos.setError(requerido);
+        if(eventType.getSelectedItem().toString().equals("Evento")) {
+            errorTextviewEvents.setError(required);
             return false;
         } else {
-            errorTextviewEventos.setError(requerido, null);
+            errorTextviewEvents.setError(required, null);
         }
         return true;
     }
@@ -204,16 +195,11 @@ public class Contratacion extends AppCompatActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
     }
 
     @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-    }
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {}
 
     @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
+    public void onNothingSelected(AdapterView<?> parent) {}
 }
