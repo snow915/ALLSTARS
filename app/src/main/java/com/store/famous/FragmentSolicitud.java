@@ -4,60 +4,38 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.store.R;
+import com.store.SharedPreferencesApp;
 import com.store.adapters.AdapterDatosSolicitud;
 import com.store.vo.DatosSolicitudVo;
-
 import java.util.ArrayList;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link FragmentSolicitud#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class FragmentSolicitud extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
     private String mParam1;
     private String mParam2;
-    ArrayList<DatosSolicitudVo> list_datos;
-    RecyclerView recycler;
-    DatabaseReference reference;
-    String artistUser;
+    ArrayList<DatosSolicitudVo> listData;
+    private RecyclerView recycler;
+    private DatabaseReference reference;
+    private String artistUser;
+    private SharedPreferencesApp sharedPreferencesApp;
 
-    public FragmentSolicitud() {
-        // Required empty public constructor
-    }
+    public FragmentSolicitud() {}
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FragmentSolicitud.
-     */
-    // TODO: Rename and change types and number of parameters
     public static FragmentSolicitud newInstance(String param1, String param2) {
         FragmentSolicitud fragment = new FragmentSolicitud();
         Bundle args = new Bundle();
@@ -79,8 +57,9 @@ public class FragmentSolicitud extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        load_artist_preferences();
-        // Inflate the layout for this fragment
+        sharedPreferencesApp = new SharedPreferencesApp(getContext());
+        sharedPreferencesApp.loadPreferences();
+        artistUser = sharedPreferencesApp.getArtistUsername();
         View v = inflater.inflate(R.layout.fragment_solicitud, container, false);
         llenarDatos(v);
         return v;
@@ -88,14 +67,14 @@ public class FragmentSolicitud extends Fragment {
 
     public void llenarDatos(View v){
         final View view = v;
-        list_datos = new ArrayList<DatosSolicitudVo>();
+        listData = new ArrayList<DatosSolicitudVo>();
         reference = FirebaseDatabase.getInstance().getReference().child("data").child(artistUser).child("solicitudes");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
                     for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
-                        list_datos.add(
+                        listData.add(
                                 new DatosSolicitudVo(postSnapshot.child("fechaInicio").getValue().toString(),
                                         postSnapshot.child("horaInicio").getValue().toString(),
                                         postSnapshot.child("tipoEvento").getValue().toString(),
@@ -114,25 +93,25 @@ public class FragmentSolicitud extends Fragment {
                     recycler = view.findViewById(R.id.recycler_id_solicitud);
                     recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
-                    AdapterDatosSolicitud adapter = new AdapterDatosSolicitud(list_datos, getActivity().getApplicationContext());
+                    AdapterDatosSolicitud adapter = new AdapterDatosSolicitud(listData, getActivity().getApplicationContext());
                     recycler.setAdapter(adapter);
                     adapter.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
 
                             //Este codigo se puede optimizar, tal vez convertirlo a HashMap y asi mandarlo en el intent, como en EnviarSolicitud.class
-                            String fechaInicio = list_datos.get(recycler.getChildAdapterPosition(v)).getFechaInicio();
-                            String fechaFin = list_datos.get(recycler.getChildAdapterPosition(v)).getFechaFin();
-                            String horaInicio = list_datos.get(recycler.getChildAdapterPosition(v)).getHoraInicio();
-                            String horaFin = list_datos.get(recycler.getChildAdapterPosition(v)).getHoraFin();
-                            String tipoEvento = list_datos.get(recycler.getChildAdapterPosition(v)).getTipoEvento();
-                            String tipoPublico = list_datos.get(recycler.getChildAdapterPosition(v)).getTipoPublico();
-                            String detalles = list_datos.get(recycler.getChildAdapterPosition(v)).getDetalles();
-                            String ubicacion = list_datos.get(recycler.getChildAdapterPosition(v)).getNombreUbicacion();
-                            String latitud = list_datos.get(recycler.getChildAdapterPosition(v)).getLatitud();
-                            String longitud = list_datos.get(recycler.getChildAdapterPosition(v)).getLongitud();
-                            String nombreSolicitante = list_datos.get(recycler.getChildAdapterPosition(v)).getNombreSolicitante();
-                            String apellidoSolicitante = list_datos.get(recycler.getChildAdapterPosition(v)).getApellidoSolicitante();
+                            String fechaInicio = listData.get(recycler.getChildAdapterPosition(v)).getFechaInicio();
+                            String fechaFin = listData.get(recycler.getChildAdapterPosition(v)).getFechaFin();
+                            String horaInicio = listData.get(recycler.getChildAdapterPosition(v)).getHoraInicio();
+                            String horaFin = listData.get(recycler.getChildAdapterPosition(v)).getHoraFin();
+                            String tipoEvento = listData.get(recycler.getChildAdapterPosition(v)).getTipoEvento();
+                            String tipoPublico = listData.get(recycler.getChildAdapterPosition(v)).getTipoPublico();
+                            String detalles = listData.get(recycler.getChildAdapterPosition(v)).getDetalles();
+                            String ubicacion = listData.get(recycler.getChildAdapterPosition(v)).getNombreUbicacion();
+                            String latitud = listData.get(recycler.getChildAdapterPosition(v)).getLatitud();
+                            String longitud = listData.get(recycler.getChildAdapterPosition(v)).getLongitud();
+                            String nombreSolicitante = listData.get(recycler.getChildAdapterPosition(v)).getNombreSolicitante();
+                            String apellidoSolicitante = listData.get(recycler.getChildAdapterPosition(v)).getApellidoSolicitante();
 
                             guardarDatosUbucacion(ubicacion, latitud, longitud);
 
@@ -166,17 +145,12 @@ public class FragmentSolicitud extends Fragment {
 
     }
 
-    private void load_artist_preferences() {
-        SharedPreferences preferences = getActivity().getSharedPreferences("artist_credentials", Context.MODE_PRIVATE);
-        artistUser = preferences.getString("artist_id", null);
-    }
-
-    private void guardarDatosUbucacion(String nombreUbicacion, String latitud, String longitud) {
+    private void guardarDatosUbucacion(String locationName, String latitude, String longitude) {
         SharedPreferences preferences = getActivity().getSharedPreferences("datos_ubicacion", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor=preferences.edit();
-        editor.putString("nombreUbicacion", nombreUbicacion);
-        editor.putString("latitud", latitud);
-        editor.putString("longitud", longitud);
+        editor.putString("nombreUbicacion", locationName);
+        editor.putString("latitud", latitude);
+        editor.putString("longitud", longitude);
         editor.commit();
     }
 }
