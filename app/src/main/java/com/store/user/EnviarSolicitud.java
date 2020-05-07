@@ -2,36 +2,33 @@ package com.store.user;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.store.R;
+import com.store.SharedPreferencesApp;
 import com.store.Solicitud;
-
 import java.util.HashMap;
-
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class EnviarSolicitud extends AppCompatActivity {
 
-    private TextView titulo, ubicacion, fechaInicio, fechaFin, horaInicio, horaFin, tipoPublico, tipoEvento, detalles;
-    private ImageView imagen;
-    private Button enviarSolicitud;
+    private TextView title, location, startDate, finishDate, startTime, finishTime, audienceType, eventType, details;
+    private ImageView img;
+    private Button sendRequest;
     HashMap<String, String> hashMap;
-    FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference;
-    String user, name, lastname;
-    public Solicitud solicitud;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
+    String username, userFirstName, userLastname;
+    public Solicitud requestObj;
+    private SharedPreferencesApp sharedPreferencesApp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,40 +42,46 @@ public class EnviarSolicitud extends AppCompatActivity {
 
         //get array from Map.java that contains all values from Contratacion.java and Map.java
         hashMap = (HashMap<String, String>) getIntent().getSerializableExtra("mapValues");
-        load_preferences();
+
+        sharedPreferencesApp = new SharedPreferencesApp(getApplicationContext());
+        sharedPreferencesApp.loadPreferences();
+        username = sharedPreferencesApp.getUsername();
+        userFirstName = sharedPreferencesApp.getUserFirstName();
+        userLastname = sharedPreferencesApp.getUserLastName();
+
         initFirebase();
-        solicitud = new Solicitud();
+        requestObj = new Solicitud();
         //associate variables with ids
-        titulo = findViewById(R.id.titulo);
-        ubicacion = findViewById(R.id.getUbicacion);
-        fechaInicio = findViewById(R.id.getFechaInicio);
-        fechaFin = findViewById(R.id.getFechaFin);
-        horaInicio = findViewById(R.id.getHoraInicio);
-        horaFin = findViewById(R.id.getHoraFin);
-        tipoPublico = findViewById(R.id.getTipoPublico);
-        tipoEvento = findViewById(R.id.getTipoEvento);
-        detalles = findViewById(R.id.getDetalles);
-        imagen = findViewById(R.id.imagen);
-        enviarSolicitud = findViewById(R.id.enviarSolicitud);
+        title = findViewById(R.id.titulo);
+        location = findViewById(R.id.getUbicacion);
+        startDate = findViewById(R.id.getFechaInicio);
+        finishDate = findViewById(R.id.getFechaFin);
+        startTime = findViewById(R.id.getHoraInicio);
+        finishTime = findViewById(R.id.getHoraFin);
+        audienceType = findViewById(R.id.getTipoPublico);
+        eventType = findViewById(R.id.getTipoEvento);
+        details = findViewById(R.id.getDetalles);
+        img = findViewById(R.id.imagen);
+        sendRequest = findViewById(R.id.enviarSolicitud);
 
         Glide.with(EnviarSolicitud.this)
                 .load(hashMap.get("rutaImagen"))
                 .fitCenter()
                 .centerCrop()
-                .into(imagen);
-        titulo.setText(hashMap.get("nombreFamoso"));
-        ubicacion.setText(hashMap.get("ubicacion"));
-        fechaInicio.setText(hashMap.get("fechaInicio"));
-        fechaFin.setText(hashMap.get("fechaFin"));
-        horaInicio.setText(hashMap.get("horaInicio"));
-        horaFin.setText(hashMap.get("horaFin"));
-        tipoPublico.setText(hashMap.get("tipoPublico"));
-        tipoEvento.setText(hashMap.get("tipoEvento"));
+                .into(img);
+        title.setText(hashMap.get("nombreFamoso"));
+        location.setText(hashMap.get("ubicacion"));
+        startDate.setText(hashMap.get("fechaInicio"));
+        finishDate.setText(hashMap.get("fechaFin"));
+        startTime.setText(hashMap.get("horaInicio"));
+        finishTime.setText(hashMap.get("horaFin"));
+        audienceType.setText(hashMap.get("tipoPublico"));
+        eventType.setText(hashMap.get("tipoEvento"));
         if(!hashMap.get("detalles").equals("")){
-            detalles.setText(hashMap.get("detalles"));
+            details.setText(hashMap.get("detalles"));
         }
 
-        enviarSolicitud.setOnClickListener(new View.OnClickListener() {
+        sendRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new SweetAlertDialog(EnviarSolicitud.this, SweetAlertDialog.WARNING_TYPE)
@@ -89,26 +92,26 @@ public class EnviarSolicitud extends AppCompatActivity {
                             @Override
                             public void onClick(SweetAlertDialog sDialog) {
                                 //aqui mando la info a firebase
-                                solicitud.setNombreFamoso(hashMap.get("nombreFamoso"));
-                                solicitud.setFechaInicio(hashMap.get("fechaInicio"));
-                                solicitud.setFechaFin(hashMap.get("fechaFin"));
-                                solicitud.setHoraInicio(hashMap.get("horaInicio"));
-                                solicitud.setHoraFin(hashMap.get("horaFin"));
-                                solicitud.setTipoPublico(hashMap.get("tipoPublico"));
-                                solicitud.setTipoEvento(hashMap.get("tipoEvento"));
-                                solicitud.setUserFamoso(hashMap.get("usernameFamoso"));
-                                solicitud.setDetalles(hashMap.get("detalles"));
-                                solicitud.setUserName(name);
-                                solicitud.setUserLastname(lastname);
-                                solicitud.setUbicacion(hashMap.get("ubicacion"));
-                                solicitud.setLatitud(hashMap.get("latitud"));
-                                solicitud.setLongitud(hashMap.get("longitud"));
+                                requestObj.setNombreFamoso(hashMap.get("nombreFamoso"));
+                                requestObj.setFechaInicio(hashMap.get("fechaInicio"));
+                                requestObj.setFechaFin(hashMap.get("fechaFin"));
+                                requestObj.setHoraInicio(hashMap.get("horaInicio"));
+                                requestObj.setHoraFin(hashMap.get("horaFin"));
+                                requestObj.setTipoPublico(hashMap.get("tipoPublico"));
+                                requestObj.setTipoEvento(hashMap.get("tipoEvento"));
+                                requestObj.setUserFamoso(hashMap.get("usernameFamoso"));
+                                requestObj.setDetalles(hashMap.get("detalles"));
+                                requestObj.setUserName(userFirstName);
+                                requestObj.setUserLastname(userLastname);
+                                requestObj.setUbicacion(hashMap.get("ubicacion"));
+                                requestObj.setLatitud(hashMap.get("latitud"));
+                                requestObj.setLongitud(hashMap.get("longitud"));
 
                                 databaseReference.child("data")
-                                        .child(solicitud.getUserFamoso())
+                                        .child(requestObj.getUserFamoso())
                                         .child("solicitudes")
-                                        .child(user)
-                                        .setValue(solicitud);
+                                        .child(username)
+                                        .setValue(requestObj);
                                 sDialog.dismissWithAnimation();
 
                                 Intent intent = new Intent(getApplicationContext(), SollicitudEnviada.class);
@@ -128,11 +131,5 @@ public class EnviarSolicitud extends AppCompatActivity {
         databaseReference = firebaseDatabase.getReference();
     }
 
-    private void load_preferences(){
-        SharedPreferences preferences = getSharedPreferences("credentials", Context.MODE_PRIVATE);
-        user = preferences.getString("user",null);
-        name = preferences.getString("username", null);
-        lastname = preferences.getString("lastname", null);
-    }
 
 }
