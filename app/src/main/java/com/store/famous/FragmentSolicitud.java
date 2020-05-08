@@ -22,6 +22,7 @@ import com.store.SharedPreferencesApp;
 import com.store.adapters.AdapterDatosSolicitud;
 import com.store.vo.DatosSolicitudVo;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class FragmentSolicitud extends Fragment {
     private static final String ARG_PARAM1 = "param1";
@@ -33,6 +34,7 @@ public class FragmentSolicitud extends Fragment {
     private DatabaseReference reference;
     private String artistUser;
     private SharedPreferencesApp sharedPreferencesApp;
+    public HashMap<String, String> hashMapArtist = new HashMap<String, String>();
 
     public FragmentSolicitud() {}
 
@@ -61,11 +63,11 @@ public class FragmentSolicitud extends Fragment {
         sharedPreferencesApp.loadPreferences();
         artistUser = sharedPreferencesApp.getArtistUsername();
         View v = inflater.inflate(R.layout.fragment_solicitud, container, false);
-        llenarDatos(v);
+        fillData(v);
         return v;
     }
 
-    public void llenarDatos(View v){
+    private void fillData(View v){
         final View view = v;
         listData = new ArrayList<DatosSolicitudVo>();
         reference = FirebaseDatabase.getInstance().getReference().child("data").child(artistUser).child("solicitudes");
@@ -99,35 +101,36 @@ public class FragmentSolicitud extends Fragment {
                         @Override
                         public void onClick(View v) {
 
-                            //Este codigo se puede optimizar, tal vez convertirlo a HashMap y asi mandarlo en el intent, como en EnviarSolicitud.class
-                            String fechaInicio = listData.get(recycler.getChildAdapterPosition(v)).getFechaInicio();
-                            String fechaFin = listData.get(recycler.getChildAdapterPosition(v)).getFechaFin();
-                            String horaInicio = listData.get(recycler.getChildAdapterPosition(v)).getHoraInicio();
-                            String horaFin = listData.get(recycler.getChildAdapterPosition(v)).getHoraFin();
-                            String tipoEvento = listData.get(recycler.getChildAdapterPosition(v)).getTipoEvento();
-                            String tipoPublico = listData.get(recycler.getChildAdapterPosition(v)).getTipoPublico();
-                            String detalles = listData.get(recycler.getChildAdapterPosition(v)).getDetalles();
-                            String ubicacion = listData.get(recycler.getChildAdapterPosition(v)).getNombreUbicacion();
-                            String latitud = listData.get(recycler.getChildAdapterPosition(v)).getLatitud();
-                            String longitud = listData.get(recycler.getChildAdapterPosition(v)).getLongitud();
-                            String nombreSolicitante = listData.get(recycler.getChildAdapterPosition(v)).getNombreSolicitante();
-                            String apellidoSolicitante = listData.get(recycler.getChildAdapterPosition(v)).getApellidoSolicitante();
+                            String startDate = listData.get(recycler.getChildAdapterPosition(v)).getFechaInicio();
+                            String finishDate = listData.get(recycler.getChildAdapterPosition(v)).getFechaFin();
+                            String startTime = listData.get(recycler.getChildAdapterPosition(v)).getHoraInicio();
+                            String finishTime = listData.get(recycler.getChildAdapterPosition(v)).getHoraFin();
+                            String eventType = listData.get(recycler.getChildAdapterPosition(v)).getTipoEvento();
+                            String audienceType = listData.get(recycler.getChildAdapterPosition(v)).getTipoPublico();
+                            String details = listData.get(recycler.getChildAdapterPosition(v)).getDetalles();
+                            String location = listData.get(recycler.getChildAdapterPosition(v)).getNombreUbicacion();
+                            String latitude = listData.get(recycler.getChildAdapterPosition(v)).getLatitud();
+                            String longitude = listData.get(recycler.getChildAdapterPosition(v)).getLongitud();
+                            String applicantsFirstname = listData.get(recycler.getChildAdapterPosition(v)).getNombreSolicitante();
+                            String applicantsLastname = listData.get(recycler.getChildAdapterPosition(v)).getApellidoSolicitante();
 
-                            guardarDatosUbucacion(ubicacion, latitud, longitud);
+                            hashMapArtist.put("startDate", startDate);
+                            hashMapArtist.put("finishDate", finishDate);
+                            hashMapArtist.put("startTime", startTime);
+                            hashMapArtist.put("finishTime", finishTime);
+                            hashMapArtist.put("eventType", eventType);
+                            hashMapArtist.put("audienceType", audienceType);
+                            hashMapArtist.put("details", details);
+                            hashMapArtist.put("location", location);
+                            hashMapArtist.put("latitude", latitude);
+                            hashMapArtist.put("longitude", longitude);
+                            hashMapArtist.put("applicantsFirstname", applicantsFirstname);
+                            hashMapArtist.put("applicantsLastname", applicantsLastname);
+
+                            saveLocationData(location, latitude, longitude);
 
                             Intent infoSolicitud = new Intent(getActivity(), InfoSolicitud.class);
-                            infoSolicitud.putExtra("fechaInicio", fechaInicio);
-                            infoSolicitud.putExtra("horaInicio", horaInicio);
-                            infoSolicitud.putExtra("tipoEvento", tipoEvento);
-                            infoSolicitud.putExtra("fechaFin", fechaFin);
-                            infoSolicitud.putExtra("horaFin", horaFin);
-                            infoSolicitud.putExtra("tipoPublico", tipoPublico);
-                            infoSolicitud.putExtra("detalles", detalles);
-                            infoSolicitud.putExtra("ubicacion", ubicacion);
-                            infoSolicitud.putExtra("latitud", latitud);
-                            infoSolicitud.putExtra("longitud", longitud);
-                            infoSolicitud.putExtra("nombreSolicitante", nombreSolicitante);
-                            infoSolicitud.putExtra("apellidoSolicitante", apellidoSolicitante);
+                            infoSolicitud.putExtra("mapValuesArtist", hashMapArtist);
                             startActivity(infoSolicitud);
                         }
                     });
@@ -145,7 +148,7 @@ public class FragmentSolicitud extends Fragment {
 
     }
 
-    private void guardarDatosUbucacion(String locationName, String latitude, String longitude) {
+    private void saveLocationData(String locationName, String latitude, String longitude) {
         SharedPreferences preferences = getActivity().getSharedPreferences("datos_ubicacion", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor=preferences.edit();
         editor.putString("nombreUbicacion", locationName);
