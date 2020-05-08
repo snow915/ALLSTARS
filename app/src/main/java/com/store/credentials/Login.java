@@ -2,6 +2,12 @@ package com.store.credentials;
 
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,6 +33,8 @@ public class Login extends AppCompatActivity {
     private EditText edtxtUser;
     private EditText edtxtPassword;
 
+    private FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,13 +47,16 @@ public class Login extends AppCompatActivity {
         edtxtUser = findViewById(R.id.editText3);
         edtxtPassword = findViewById(R.id.editText5);
 
+        mAuth = FirebaseAuth.getInstance();
+
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String userValue = edtxtUser.getText().toString();
                 String passValue = edtxtPassword.getText().toString();
                 if (validateFields(userValue, passValue)){
-                    userPassExist(userValue, passValue, "user");
+                    signIn(userValue, passValue);
+                    //userPassExist(userValue, passValue, "user");
                 }
             }
         });
@@ -76,6 +87,35 @@ public class Login extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private void signIn(String email, String password) {
+
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            //Log.d(TAG, "signInWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            String userID  = user.getUid();
+
+                            Toast.makeText(Login.this, "MUY BIEN",
+                                    Toast.LENGTH_SHORT).show();
+                            //updateUI(user);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            //Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            Exception error = task.getException();
+                            String hola = String.valueOf(error);
+                            Toast.makeText(Login.this, hola,
+                                    Toast.LENGTH_SHORT).show();
+
+                            //updateUI(null);
+                        }
+                    }
+                });
     }
 
 

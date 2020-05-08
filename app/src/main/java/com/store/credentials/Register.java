@@ -116,12 +116,15 @@ public class Register extends AppCompatActivity implements AdapterView.OnItemSel
                                     })
                                     .show();
                             FirebaseUser user = mAuth.getCurrentUser();
+                            //String hahaha  = user.getUid();
+                            //Toast.makeText(Register.this, hahaha, Toast.LENGTH_SHORT).show();
                             //updateUI(user);
                         } else {
-
+                            Exception error = task.getException();
+                            String hola = String.valueOf(error);
                             new SweetAlertDialog(Register.this, SweetAlertDialog.ERROR_TYPE)
                                     .setTitleText("Ouch!")
-                                    .setContentText("Ocurrio un error inesperado, intenta de nuevo más tarde")
+                                    .setContentText(hola)
                                     .hideConfirmButton()
                                     .setCancelText("Entendido")
                                     .show();
