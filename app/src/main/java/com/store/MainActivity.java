@@ -7,6 +7,7 @@ import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.store.CarritoCompras.Carrito;
@@ -33,6 +34,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import android.view.Menu;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class MainActivity extends AppCompatActivity
@@ -56,6 +59,7 @@ public class MainActivity extends AppCompatActivity
     private Fragment myFragment = null;
     private Fragment carousel = null;
     private boolean fragmentSelected = false;
+    private String userID = null;
     private String username = null;
     private String userFirstName = null;
     private String artistUsername = null;
@@ -70,6 +74,7 @@ public class MainActivity extends AppCompatActivity
 
         sharedPreferencesApp = new SharedPreferencesApp(getApplicationContext());
         sharedPreferencesApp.loadPreferences();
+        userID = sharedPreferencesApp.getUserID();
         username = sharedPreferencesApp.getUsername();
         userFirstName = sharedPreferencesApp.getUserFirstName();
         artistUsername = sharedPreferencesApp.getArtistUsername();
@@ -184,6 +189,7 @@ public class MainActivity extends AppCompatActivity
                 reload();
             }
             else if (username != null){
+                FirebaseAuth.getInstance().signOut();
                 sharedPreferencesApp.cleanPreferences();
                 reload();
             }
@@ -209,7 +215,7 @@ public class MainActivity extends AppCompatActivity
             myFragment = new Profile();
             Bundle b = new Bundle();
             if (username != null){
-                b.putString("username", username);
+                b.putString("userID", userID);
                 myFragment.setArguments(b);
             } else {
                 myFragment = new ArtistProfile();
@@ -225,7 +231,7 @@ public class MainActivity extends AppCompatActivity
             myFragment = new EditProfile();
             Bundle b = new Bundle();
             if (username != null){
-                b.putString("username", username);
+                b.putString("userID", userID);
                 myFragment.setArguments(b);
             } else {
                 myFragment = new EditArtistProfile();

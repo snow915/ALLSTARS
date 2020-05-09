@@ -54,8 +54,8 @@ public class EditProfile extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String username = getArguments().getString("username");
-        getUserData(username);
+        String userID = getArguments().getString("userID");
+        getUserData(userID);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -114,15 +114,15 @@ public class EditProfile extends Fragment{
         void onFragmentInteraction(Uri uri);
     }
 
-    public void getUserData(String username){
+    public void getUserData(String userID){
         DatabaseReference ref;
-        ref = FirebaseDatabase.getInstance().getReference().child("Usuarios").child(username);
+        ref = FirebaseDatabase.getInstance().getReference().child("Usuarios").child(userID);
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     String userName = dataSnapshot.child("nombre").getValue().toString();
-                    String user = dataSnapshot.child("user").getValue().toString();
+                    //String user = dataSnapshot.child("user").getValue().toString();
                     String pass = dataSnapshot.child("pass").getValue().toString();
                     String userLastName = dataSnapshot.child("apellido").getValue().toString();
                     String userEmail = dataSnapshot.child("correo").getValue().toString();
@@ -130,7 +130,7 @@ public class EditProfile extends Fragment{
                     String userPhone = dataSnapshot.child("telefono").getValue().toString();
                     associateIds();
                     edtxtName.setText(userName);
-                    edtxtUser.setText(user);
+                    //edtxtUser.setText(user);
                     edtxtPass.setText(pass);
                     edtxtLastName.setText(userLastName);
                     edtxtEmail.setText(userEmail);

@@ -13,6 +13,7 @@ public class SharedPreferencesApp extends Application {
     private String artistUsername;
     private String artistFirstName;
     private String userType;
+    private String userID;
     /*
     SharedPreferences are related to context,
     without context of the activity it will not work
@@ -21,18 +22,20 @@ public class SharedPreferencesApp extends Application {
         this.context = context;
     }
 
-    public void saveLoginData(String userFirstName, String userLastName, String username, String password, String userType){
+    public void saveLoginData(String userFirstName, String userLastName, String username, String userID,/*String password,*/ String userType){
         SharedPreferences preferences = context.getSharedPreferences("credentials", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor=preferences.edit();
         if (userType.equals("user")){
             editor.putString("username", username);
-            editor.putString("userPassword", password);
+            //editor.putString("userPassword", password);
+            editor.putString("userID", userID);
             editor.putString("userFirstName", userFirstName);
             editor.putString("userType", "user");
             editor.putString("userLastName", userLastName);
         } else {
             editor.putString("artistUsername", username);
-            editor.putString("artistPassword", password);
+            editor.putString("artistID", userID);
+            //editor.putString("artistPassword", password);
             editor.putString("artistFirstName", userFirstName);
             editor.putString("userType", "artist");
         }
@@ -45,6 +48,7 @@ public class SharedPreferencesApp extends Application {
         //This handle errors of type null, or app closes
         try {
             if(userType.equals("user")){
+                userID = preferences.getString("userID", null);
                 username = preferences.getString("username",null);
                 password = preferences.getString("userPassword",null);
                 userFirstName = preferences.getString("userFirstName", null);
@@ -60,6 +64,10 @@ public class SharedPreferencesApp extends Application {
     public void cleanPreferences() {
         SharedPreferences preferences = context.getSharedPreferences("credentials", Context.MODE_PRIVATE);
         preferences.edit().clear().commit();
+    }
+
+    public String getUserID(){
+        return userID;
     }
 
     public String getUsername() {

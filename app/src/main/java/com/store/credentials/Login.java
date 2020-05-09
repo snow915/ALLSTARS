@@ -7,6 +7,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,6 +38,7 @@ public class Login extends AppCompatActivity {
     private EditText edtxtUser;
     private EditText edtxtPassword;
 
+    private DatabaseReference ref;
     private FirebaseAuth mAuth;
 
     @Override
@@ -57,7 +61,7 @@ public class Login extends AppCompatActivity {
                 String userValue = edtxtUser.getText().toString();
                 String passValue = edtxtPassword.getText().toString();
                 if (validateFields(userValue, passValue)){
-                    signIn(userValue, passValue);
+                    signIn(userValue, passValue, "user");
                     //userPassExist(userValue, passValue, "user");
                 }
             }
@@ -91,42 +95,80 @@ public class Login extends AppCompatActivity {
         });
     }
 
-    private void signIn(String email, String password) {
+    private void signIn(String email, String password, final String userType) {
 
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            //Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             String userID  = user.getUid();
 
-                            Toast.makeText(Login.this, "MUY BIEN",
-                                    Toast.LENGTH_SHORT).show();
-                            //updateUI(user);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            //Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Exception error = task.getException();
-                            String hola = String.valueOf(error);
-                            new SweetAlertDialog(Login.this, SweetAlertDialog.ERROR_TYPE)
-                                    .setTitleText("Ouch!")
-                                    .setContentText(hola)
-                                    .hideConfirmButton()
-                                    .setCancelText("Entendido")
-                                    .show();
+                            //code for retrieve data from RealtimeDatabase depends of userID
+                            retrieveDataRealtimeDB(userID, userType);
 
-                            //updateUI(null);
+                        } else {
+                            try {
+                                throw task.getException();
+                            } catch (FirebaseAuthInvalidCredentialsException e){
+                                new SweetAlertDialog(Login.this, SweetAlertDialog.WARNING_TYPE)
+                                        .setTitleText("Usuario o contraseña erroneos")
+                                        .hideConfirmButton()
+                                        .setCancelText("Entendido")
+                                        .show();
+                            }  catch (FirebaseAuthInvalidUserException e){
+                                new SweetAlertDialog(Login.this, SweetAlertDialog.WARNING_TYPE)
+                                        .setTitleText("El usuario que proporcionaste no existe")
+                                        .hideConfirmButton()
+                                        .setCancelText("Entendido")
+                                        .show();
+                            }
+                            catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 });
     }
 
+    private void retrieveDataRealtimeDB(final String userID, final String userType) {
+        if (userType.equals("user")) {
+            ref = FirebaseDatabase.getInstance().getReference().child("Usuarios").child(userID);
+        } else {
+            ref = FirebaseDatabase.getInstance().getReference().child("data").child(userID);
+        }
+
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                String retrievedUserFirstName = "";
+                String retrievedUserLastName = "";
+                String retrievedUserEmail = "";
+                //Try catch handle errors of type NullPointerException
+                try {
+                    retrievedUserFirstName = dataSnapshot.child("nombre").getValue().toString();
+                    retrievedUserLastName = dataSnapshot.child("apellido").getValue().toString();
+                    retrievedUserEmail = dataSnapshot.child("correo").getValue().toString();
+                } catch (Exception e) {
+                }
+                SharedPreferencesApp sharedPreferencesApp = new SharedPreferencesApp(getApplicationContext());
+                sharedPreferencesApp.saveLoginData(retrievedUserFirstName, retrievedUserLastName, retrievedUserEmail ,userID, userType);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+                finishAffinity();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
+
 
     private void userPassExist(final String userValue, final String passValue, final String userType){
-        DatabaseReference ref;
         if (userType.equals("user")) {
             ref = FirebaseDatabase.getInstance().getReference().child("Usuarios").child(userValue);
         } else {
@@ -149,7 +191,7 @@ public class Login extends AppCompatActivity {
                             retrievedUserLastName = dataSnapshot.child("apellido").getValue().toString();
                         } catch (Exception e) { }
                         SharedPreferencesApp sharedPreferencesApp = new SharedPreferencesApp(getApplicationContext());
-                        sharedPreferencesApp.saveLoginData(retrievedUserFirstName, retrievedUserLastName, userValue, passValue, userType);
+                        sharedPreferencesApp.saveLoginData(retrievedUserFirstName, retrievedUserLastName, "" ,userValue, userType);
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(intent);
                         finishAffinity();

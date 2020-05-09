@@ -74,7 +74,7 @@ public class Register extends AppCompatActivity implements AdapterView.OnItemSel
                 String emailConverted = email.replace('@', '-').replace('.', '_');
 
                 if(validations()){
-                    usersObj.setUid(emailConverted);
+                    //usersObj.setUid(emailConverted);
                     usersObj.setNombre(edtxtFirstName.getText().toString());
                     usersObj.setApellido(edtxtLastName.getText().toString());
                     usersObj.setCorreo(edtxtEmail.getText().toString());

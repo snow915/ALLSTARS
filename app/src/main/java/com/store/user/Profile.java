@@ -46,8 +46,8 @@ public class Profile extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String username = getArguments().getString("username");
-        getUserData(username);
+        String userID = getArguments().getString("userID");
+        getUserData(userID);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -96,9 +96,9 @@ public class Profile extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    public void getUserData(String username){
+    public void getUserData(String userID){
         DatabaseReference ref;
-        ref = FirebaseDatabase.getInstance().getReference().child("Usuarios").child(username);
+        ref = FirebaseDatabase.getInstance().getReference().child("Usuarios").child(userID);
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
