@@ -24,6 +24,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class Login extends AppCompatActivity {
 
     private Button btnSignIn;
@@ -109,8 +111,12 @@ public class Login extends AppCompatActivity {
                             //Log.w(TAG, "signInWithEmail:failure", task.getException());
                             Exception error = task.getException();
                             String hola = String.valueOf(error);
-                            Toast.makeText(Login.this, hola,
-                                    Toast.LENGTH_SHORT).show();
+                            new SweetAlertDialog(Login.this, SweetAlertDialog.ERROR_TYPE)
+                                    .setTitleText("Ouch!")
+                                    .setContentText(hola)
+                                    .hideConfirmButton()
+                                    .setCancelText("Entendido")
+                                    .show();
 
                             //updateUI(null);
                         }

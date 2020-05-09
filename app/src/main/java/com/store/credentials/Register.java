@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,19 +12,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.store.MainActivity;
 import com.store.R;
 import com.store.user.Usuarios;
@@ -38,7 +34,7 @@ public class Register extends AppCompatActivity implements AdapterView.OnItemSel
     private Button btnSignUp;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
-    public Usuarios u;
+    public Usuarios usersObj;
     //private static final String TAG = "Register";
     private FirebaseAuth mAuth;
 
@@ -63,7 +59,7 @@ public class Register extends AppCompatActivity implements AdapterView.OnItemSel
         sex.setOnItemSelectedListener(this);
 
         initFirebase();
-        u = new Usuarios();
+        usersObj = new Usuarios();
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -78,14 +74,14 @@ public class Register extends AppCompatActivity implements AdapterView.OnItemSel
                 String emailConverted = email.replace('@', '-').replace('.', '_');
 
                 if(validations()){
-                    u.setUid(emailConverted);
-                    u.setNombre(edtxtFirstName.getText().toString());
-                    u.setApellido(edtxtLastName.getText().toString());
-                    u.setCorreo(edtxtEmail.getText().toString());
-                    u.setTelefono(edtxtPhone.getText().toString());
-                    u.setPass(edtxtPass.getText().toString());
-                    u.setSexo(sex.getSelectedItem().toString()+","+ sex.getSelectedItemPosition());
-                    user_exist(emailConverted, email, password);
+                    usersObj.setUid(emailConverted);
+                    usersObj.setNombre(edtxtFirstName.getText().toString());
+                    usersObj.setApellido(edtxtLastName.getText().toString());
+                    usersObj.setCorreo(edtxtEmail.getText().toString());
+                    usersObj.setTelefono(edtxtPhone.getText().toString());
+                    usersObj.setPass(edtxtPass.getText().toString());
+                    usersObj.setSexo(sex.getSelectedItem().toString()+","+ sex.getSelectedItemPosition());
+                    createUser(email, password);
                 }
             }
         });
@@ -99,7 +95,6 @@ public class Register extends AppCompatActivity implements AdapterView.OnItemSel
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             //AQUI OCURRE EL REGISTRO
-                            databaseReference.child("Usuarios").child(u.getUid()).setValue(u);
                             clearInputs();
                             new SweetAlertDialog(Register.this, SweetAlertDialog.SUCCESS_TYPE)
                                     .setTitleText("Felicidades!")
@@ -116,19 +111,22 @@ public class Register extends AppCompatActivity implements AdapterView.OnItemSel
                                     })
                                     .show();
                             FirebaseUser user = mAuth.getCurrentUser();
-                            //String hahaha  = user.getUid();
+                            String userID  = user.getUid();
+                            databaseReference.child("Usuarios").child(userID).setValue(usersObj);
                             //Toast.makeText(Register.this, hahaha, Toast.LENGTH_SHORT).show();
                             //updateUI(user);
                         } else {
-                            Exception error = task.getException();
-                            String hola = String.valueOf(error);
-                            new SweetAlertDialog(Register.this, SweetAlertDialog.ERROR_TYPE)
-                                    .setTitleText("Ouch!")
-                                    .setContentText(hola)
-                                    .hideConfirmButton()
-                                    .setCancelText("Entendido")
-                                    .show();
-                            //updateUI(null);
+                            try {
+                                throw task.getException();
+                            } catch (FirebaseAuthUserCollisionException e){
+                                    new SweetAlertDialog(Register.this, SweetAlertDialog.WARNING_TYPE)
+                                            .setTitleText("La cuenta de correo electronico esta siendo usada por otra cuenta")
+                                            .hideConfirmButton()
+                                            .setCancelText("Entendido")
+                                            .show();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
 
                     }
@@ -195,30 +193,5 @@ public class Register extends AppCompatActivity implements AdapterView.OnItemSel
             return false;
         }
         return true;
-    }
-
-    private void user_exist(final String username, final String email, final String password) {
-        DatabaseReference ref;
-        ref = FirebaseDatabase.getInstance().getReference().child("Usuarios").child(username);
-        //addListenerForSingleValueEvent does that onDataChange of Firebase run 1 time, else run 2 times
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    new SweetAlertDialog(Register.this, SweetAlertDialog.WARNING_TYPE)
-                            .setTitleText("Ya hay una persona registrada con este correo")
-                            .hideConfirmButton()
-                            .setCancelText("Entendido")
-                            .show();
-                }
-                else {
-                    createUser(email, password);
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
     }
 }
