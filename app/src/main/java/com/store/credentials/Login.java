@@ -105,8 +105,19 @@ public class Login extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
                             String userID  = user.getUid();
 
-                            //code for retrieve data from RealtimeDatabase depends of userID
-                            retrieveDataRealtimeDB(userID, userType);
+                            //EMAIL VERIFICATION
+                            //user.isEmailVerified() returns true when the mail was verified
+                            if(user.isEmailVerified()){
+                                retrieveDataRealtimeDB(userID, userType);
+                            } else {
+                                new SweetAlertDialog(Login.this, SweetAlertDialog.WARNING_TYPE)
+                                        .setTitleText("Debes verificar tu correo primero")
+                                        .hideConfirmButton()
+                                        .setCancelText("Entendido")
+                                        .show();
+                                FirebaseAuth.getInstance().signOut();
+                            }
+                            //EMAIL VERIFICATION
 
                         } else {
                             try {

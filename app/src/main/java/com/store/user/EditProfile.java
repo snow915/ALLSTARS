@@ -151,6 +151,8 @@ public class EditProfile extends Fragment{
         });
     }
 
+
+    //checar esta funcion para actualizar los datos, tambien en firebase auth
     private void updateUser(String name, String user, String pass, String lastName, String email, String sex, String phone){
         String username = getArguments().getString("username");
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Usuarios").child(username);

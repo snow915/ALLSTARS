@@ -70,7 +70,7 @@
     <string name="phone_input">Celular</string>
     <string name="sign_in">Iniciar sesión</string>
     <string name="sign_in_as_artist">Iniciar sesión como artista</string>
-    <string name="sign_up">Registrarme como espectador</string>
+    <string name="sign_up">Registrarme</string>
     <string name="sign_up_as_artist">Registrarme como artista</string>
 
     <string name="btn_bio">Biografía</string>

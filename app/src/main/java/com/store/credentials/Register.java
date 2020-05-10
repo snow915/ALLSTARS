@@ -2,7 +2,6 @@ package com.store.credentials;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -25,17 +25,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.store.MainActivity;
 import com.store.R;
 import com.store.user.Usuarios;
-
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class Register extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-    private Spinner sex;
+    private Spinner spinSex;
     private EditText edtxtFirstName, edtxtLastName, edtxtEmail, edtxtPhone, edtxtPass;
     private Button btnSignUp;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
     public Usuarios usersObj;
-    //private static final String TAG = "Register";
     private FirebaseAuth mAuth;
 
     @Override
@@ -43,7 +41,7 @@ public class Register extends AppCompatActivity implements AdapterView.OnItemSel
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        sex = findViewById(R.id.id_sexo);
+        spinSex = findViewById(R.id.id_sexo);
         edtxtFirstName = findViewById(R.id.id_nombre);
         edtxtLastName = findViewById(R.id.id_apellido);
         edtxtEmail = findViewById(R.id.id_email);
@@ -55,15 +53,13 @@ public class Register extends AppCompatActivity implements AdapterView.OnItemSel
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.array_sex, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        sex.setAdapter(adapter);
-        sex.setOnItemSelectedListener(this);
+        spinSex.setAdapter(adapter);
+        spinSex.setOnItemSelectedListener(this);
 
         initFirebase();
         usersObj = new Usuarios();
 
-        // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-        // [END initialize_auth]
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,16 +67,15 @@ public class Register extends AppCompatActivity implements AdapterView.OnItemSel
 
                 String email = edtxtEmail.getText().toString();
                 String password = edtxtPass.getText().toString();
-                String emailConverted = email.replace('@', '-').replace('.', '_');
 
                 if(validations()){
-                    //usersObj.setUid(emailConverted);
+                    //This data is for save in Realtime Database
                     usersObj.setNombre(edtxtFirstName.getText().toString());
                     usersObj.setApellido(edtxtLastName.getText().toString());
                     usersObj.setCorreo(edtxtEmail.getText().toString());
                     usersObj.setTelefono(edtxtPhone.getText().toString());
                     usersObj.setPass(edtxtPass.getText().toString());
-                    usersObj.setSexo(sex.getSelectedItem().toString()+","+ sex.getSelectedItemPosition());
+                    usersObj.setSexo(spinSex.getSelectedItem().toString()+","+ spinSex.getSelectedItemPosition());
                     createUser(email, password);
                 }
             }
@@ -94,27 +89,11 @@ public class Register extends AppCompatActivity implements AdapterView.OnItemSel
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            //AQUI OCURRE EL REGISTRO
-                            clearInputs();
-                            new SweetAlertDialog(Register.this, SweetAlertDialog.SUCCESS_TYPE)
-                                    .setTitleText("Felicidades!")
-                                    .setContentText("Registro exitoso!")
-                                    .setConfirmText("Perfecto!")
-                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                        @Override
-                                        public void onClick(SweetAlertDialog sDialog) {
-                                            sDialog.dismissWithAnimation();
-                                            Intent intent=new Intent(Register.this, MainActivity.class);
-                                            startActivity(intent);
-                                            finish();
-                                        }
-                                    })
-                                    .show();
                             FirebaseUser user = mAuth.getCurrentUser();
                             String userID  = user.getUid();
-                            databaseReference.child("Usuarios").child(userID).setValue(usersObj);
-                            //Toast.makeText(Register.this, hahaha, Toast.LENGTH_SHORT).show();
-                            //updateUI(user);
+
+                            sendMail(user, userID);
+
                         } else {
                             try {
                                 throw task.getException();
@@ -129,6 +108,43 @@ public class Register extends AppCompatActivity implements AdapterView.OnItemSel
                             }
                         }
 
+                    }
+                });
+    }
+
+    private void sendMail(FirebaseUser user, final String userID){
+        //The userID is for save de data in RealtimeDatabase
+        user.sendEmailVerification()
+                .addOnCompleteListener(Register.this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            //Save data in Realtime Database
+                            databaseReference.child("Usuarios").child(userID).setValue(usersObj);
+                            clearInputs();
+
+                            new SweetAlertDialog(Register.this, SweetAlertDialog.SUCCESS_TYPE)
+                                    .setTitleText("Registro exitoso")
+                                    .setContentText("Se envio un correo de confirmación")
+                                    .setConfirmText("Perfecto")
+                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                        @Override
+                                        public void onClick(SweetAlertDialog sDialog) {
+                                            sDialog.dismissWithAnimation();
+                                            Intent intent=new Intent(Register.this, MainActivity.class);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    })
+                                    .show();
+
+                        } else {
+                            new SweetAlertDialog(Register.this, SweetAlertDialog.ERROR_TYPE)
+                                    .setTitleText("Un error interno ha ocurrido, intenta de nuevo más tarde")
+                                    .hideConfirmButton()
+                                    .setCancelText("Entendido")
+                                    .show();
+                        }
                     }
                 });
     }
@@ -155,7 +171,7 @@ public class Register extends AppCompatActivity implements AdapterView.OnItemSel
         edtxtEmail.setText("");
         edtxtPhone.setText("");
         edtxtPass.setText("");
-        sex.setSelection(0);
+        spinSex.setSelection(0);
     }
 
     private boolean validations(){
@@ -179,8 +195,8 @@ public class Register extends AppCompatActivity implements AdapterView.OnItemSel
             edtxtPhone.setError("Missing numbers");
             return false;
         }
-        if(sex.getSelectedItem().toString().equals("Gender")){
-            TextView errorTextview = (TextView) sex.getSelectedView();
+        if(spinSex.getSelectedItem().toString().equals("Gender")){
+            TextView errorTextview = (TextView) spinSex.getSelectedView();
             errorTextview.setError("Your Error Message here");
             return false;
         }
