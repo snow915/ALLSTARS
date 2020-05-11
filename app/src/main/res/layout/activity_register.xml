@@ -8,7 +8,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingBottom="30dp">
 
         <TextView
             android:id="@+id/textView3"
@@ -108,6 +109,18 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/id_pass" />
+
+        <Button
+            android:id="@+id/id_sign_up_artist"
+            android:layout_width="279dp"
+            android:layout_height="56dp"
+            android:layout_marginTop="50dp"
+            android:background="@color/colorStars"
+            android:text="@string/sign_up_as_artist"
+            android:textColor="@color/colorWhite"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/id_sign_up" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

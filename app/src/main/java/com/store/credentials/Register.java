@@ -30,7 +30,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 public class Register extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private Spinner spinSex;
     private EditText edtxtFirstName, edtxtLastName, edtxtEmail, edtxtPhone, edtxtPass;
-    private Button btnSignUp;
+    private Button btnSignUp, btnSignUpArtist;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
     public Usuarios usersObj;
@@ -48,6 +48,7 @@ public class Register extends AppCompatActivity implements AdapterView.OnItemSel
         edtxtPhone = findViewById(R.id.id_telefono);
         edtxtPass = findViewById(R.id.id_pass);
         btnSignUp = findViewById(R.id.id_sign_up);
+        btnSignUpArtist = findViewById(R.id.id_sign_up_artist);
 
         //With this i show the Spinner with the values
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -78,6 +79,14 @@ public class Register extends AppCompatActivity implements AdapterView.OnItemSel
                     usersObj.setSexo(spinSex.getSelectedItem().toString()+","+ spinSex.getSelectedItemPosition());
                     createUser(email, password);
                 }
+            }
+        });
+
+        btnSignUpArtist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Register.this, RegistroArtista.class);
+                startActivity(intent);
             }
         });
 

@@ -2,7 +2,6 @@ package com.store.credentials;
 
 import android.content.Intent;
 import android.os.Bundle;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -19,24 +18,20 @@ import com.google.firebase.database.ValueEventListener;
 import com.store.MainActivity;
 import com.store.R;
 import com.store.SharedPreferencesApp;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class Login extends AppCompatActivity {
 
-    private Button btnSignIn;
-    private Button btnSignUp;
-    private Button btnSignUpAsArtist;
-    private Button btnSignInAsArtist;
-    private EditText edtxtUser;
-    private EditText edtxtPassword;
+    private Button btnSignIn, btnSignUp;
+    private EditText edtxtUser, edtxtPassword;
+    private CheckBox chboxSignInArtist;
 
     private DatabaseReference ref;
     private FirebaseAuth mAuth;
@@ -48,10 +43,9 @@ public class Login extends AppCompatActivity {
         //Associate variables with id from activity_login layout
         btnSignIn = findViewById(R.id.id_sign_in);
         btnSignUp = findViewById(R.id.id_sign_up);
-        btnSignUpAsArtist = findViewById(R.id.id_sign_up_as_artist);
-        btnSignInAsArtist = findViewById(R.id.id_sign_in_as_artist);
         edtxtUser = findViewById(R.id.editText3);
         edtxtPassword = findViewById(R.id.editText5);
+        chboxSignInArtist = findViewById(R.id.checkBox_sign_in_artist);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -60,23 +54,16 @@ public class Login extends AppCompatActivity {
             public void onClick(View v) {
                 String userValue = edtxtUser.getText().toString();
                 String passValue = edtxtPassword.getText().toString();
-                if (validateFields(userValue, passValue)){
-                    signIn(userValue, passValue, "user");
-                    //userPassExist(userValue, passValue, "user");
+                if(validateFields(userValue, passValue)){
+                    if(chboxSignInArtist.isChecked()){
+                        userPassExist(userValue, passValue, "artist");
+                    } else {
+                        signIn(userValue, passValue, "user");
+                    }
                 }
             }
         });
 
-        btnSignInAsArtist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String userValue = edtxtUser.getText().toString();
-                String passValue = edtxtPassword.getText().toString();
-                if (validateFields(userValue, passValue)){
-                    userPassExist(userValue, passValue, "artist");
-                }
-            }
-        });
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,13 +73,6 @@ public class Login extends AppCompatActivity {
             }
         });
 
-        btnSignUpAsArtist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), RegistroArtista.class);
-                startActivity(intent);
-            }
-        });
     }
 
     private void signIn(String email, String password, final String userType) {
@@ -202,7 +182,7 @@ public class Login extends AppCompatActivity {
                             retrievedUserLastName = dataSnapshot.child("apellido").getValue().toString();
                         } catch (Exception e) { }
                         SharedPreferencesApp sharedPreferencesApp = new SharedPreferencesApp(getApplicationContext());
-                        sharedPreferencesApp.saveLoginData(retrievedUserFirstName, retrievedUserLastName, "" ,userValue, userType);
+                        sharedPreferencesApp.saveLoginData(retrievedUserFirstName, retrievedUserLastName, userValue ,userValue, userType);
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(intent);
                         finishAffinity();
