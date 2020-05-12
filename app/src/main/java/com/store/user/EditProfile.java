@@ -121,29 +121,43 @@ public class EditProfile extends Fragment{
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    String userName = dataSnapshot.child("nombre").getValue().toString();
-                    //String user = dataSnapshot.child("user").getValue().toString();
-                    String pass = dataSnapshot.child("pass").getValue().toString();
-                    String userLastName = dataSnapshot.child("apellido").getValue().toString();
-                    String userEmail = dataSnapshot.child("correo").getValue().toString();
-                    String userSex = dataSnapshot.child("sexo").getValue().toString();
-                    String userPhone = dataSnapshot.child("telefono").getValue().toString();
-                    associateIds();
-                    edtxtName.setText(userName);
-                    //edtxtUser.setText(user);
-                    edtxtPass.setText(pass);
-                    edtxtLastName.setText(userLastName);
-                    edtxtEmail.setText(userEmail);
+                    try{
+                        String userName = dataSnapshot.child("nombre").getValue().toString();
+                        String userLastName = dataSnapshot.child("apellido").getValue().toString();
+                        String userEmail = dataSnapshot.child("correo").getValue().toString();
 
-                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
-                            R.array.array_sex, android.R.layout.simple_spinner_item);
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        associateIds();
+                        edtxtName.setText(userName);
+                        edtxtLastName.setText(userLastName);
+                        edtxtEmail.setText(userEmail);
 
-                    spinSex.setAdapter(adapter);
-                    int index = userSex.indexOf(",");
-                    int item_pos = Integer.parseInt(userSex.substring(index+1));
-                    spinSex.setSelection(item_pos);
-                    edtxtPhone.setText(userPhone);
+                        /*
+                        userSex, userPhone y pass lo mandamos a traer en este punto
+                        porque cuando te logueas con Google esos datos no se guardan
+                        en RealtimeDatabase, por lo tanto son nulos, y se declaran
+                        en esta parte para cuando nos logueamos con cuenta Google se carguen
+                        los datos existentes (userName, userLastName, userEmail (arriba)),
+                        y cuando llegue a este punto (que son nulos) se vaya al catch.
+                        De lo contrario cuando encuentre un nulo va a ir al catch y no mostraria
+                        los datos en pantalla
+                        */
+                        String userSex = dataSnapshot.child("sexo").getValue().toString();
+                        String userPhone = dataSnapshot.child("telefono").getValue().toString();
+                        String pass = dataSnapshot.child("pass").getValue().toString();
+
+                        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                                R.array.array_sex, android.R.layout.simple_spinner_item);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                        spinSex.setAdapter(adapter);
+                        int index = userSex.indexOf(",");
+                        int item_pos = Integer.parseInt(userSex.substring(index+1));
+                        spinSex.setSelection(item_pos);
+                        edtxtPhone.setText(userPhone);
+                        edtxtPass.setText(pass);
+                    } catch (Exception e){
+
+                    }
                 }
             }
             @Override

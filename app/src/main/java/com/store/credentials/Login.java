@@ -10,12 +10,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
-import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DataSnapshot;
@@ -26,6 +26,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.store.MainActivity;
 import com.store.R;
 import com.store.SharedPreferencesApp;
+import com.store.user.Usuarios;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -42,14 +44,13 @@ public class Login extends AppCompatActivity {
     private Button btnSignIn, btnSignUp;
     private EditText edtxtUser, edtxtPassword;
     private CheckBox chboxSignInArtist;
-
-    private DatabaseReference ref;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
     private FirebaseAuth mAuth;
-
     private static final String TAG = "GoogleActivity";
     private static final int RC_SIGN_IN = 9001;
     private GoogleSignInClient mGoogleSignInClient;
-
+    public Usuarios usersObj;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,9 +70,8 @@ public class Login extends AppCompatActivity {
                 .requestEmail()
                 .build();
         // [END config_signin]
-
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
+        initFirebase();
         mAuth = FirebaseAuth.getInstance();
 
         btnSignIn.setOnClickListener(new View.OnClickListener() {
@@ -88,7 +88,6 @@ public class Login extends AppCompatActivity {
                 }
             }
         });
-
 
         //GOOGLE BUTTON
         findViewById(R.id.sign_in_google_button).setOnClickListener(new View.OnClickListener() {
@@ -109,32 +108,31 @@ public class Login extends AppCompatActivity {
 
     }
 
-    // [START onactivityresult]
+    // It runs when we click the google button
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
-                // Google Sign In was successful, authenticate with Firebase
+                // Google Sign In was successful, now authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
-                // Google Sign In failed, update UI appropriately
-                Log.e(TAG, "Google sign in failed", e);
-                // [START_EXCLUDE]
-                //updateUI(null);
-                // [END_EXCLUDE]
+                // Google Sign In failed
+                Log.w(TAG, "Google sign in failed", e);
             }
         }
     }
-    // [END onactivityresult]
 
-    // [START auth_with_google]
+    // start firebase_auth_with_google
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
+
+        usersObj = new Usuarios();
+        usersObj.setNombre(acct.getGivenName());
+        usersObj.setApellido(acct.getFamilyName());
+        usersObj.setCorreo(acct.getEmail());
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
@@ -142,20 +140,27 @@ public class Login extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            //updateUI(user);
+                            String userID = user.getUid(); //me da el id de firebase
+
+                            //SAVE INFO IN FIREBASE REALTIME
+                            databaseReference.child("Usuarios").child(userID).setValue(usersObj);
+                            //SAVE INFO IN FIREBASE REALTIME
+
+                            //INIT ....
+                            SharedPreferencesApp sharedPreferencesApp = new SharedPreferencesApp(getApplicationContext());
+                            sharedPreferencesApp.saveLoginData(usersObj.getNombre(), usersObj.getApellido(), usersObj.getCorreo() ,userID, "user");
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(intent);
+                            finishAffinity();
+
                         } else {
-                            // If sign in fails, display a message to the user.
                             Log.e(TAG, "signInWithCredential:failure", task.getException());
-                            //Snackbar.make(findViewById(R.id.main_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
-                            //updateUI(null);
                         }
                     }
                 });
     }
-    // [END auth_with_google]
+
 
     private void signIn(String email, String password, final String userType) {
 
@@ -205,14 +210,20 @@ public class Login extends AppCompatActivity {
                 });
     }
 
+    private void initFirebase(){
+        FirebaseApp.initializeApp(this);
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
+    }
+
     private void retrieveDataRealtimeDB(final String userID, final String userType) {
         if (userType.equals("user")) {
-            ref = FirebaseDatabase.getInstance().getReference().child("Usuarios").child(userID);
+            databaseReference = FirebaseDatabase.getInstance().getReference().child("Usuarios").child(userID);
         } else {
-            ref = FirebaseDatabase.getInstance().getReference().child("data").child(userID);
+            databaseReference = FirebaseDatabase.getInstance().getReference().child("data").child(userID);
         }
 
-        ref.addValueEventListener(new ValueEventListener() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -243,12 +254,12 @@ public class Login extends AppCompatActivity {
 
     private void userPassExist(final String userValue, final String passValue, final String userType){
         if (userType.equals("user")) {
-            ref = FirebaseDatabase.getInstance().getReference().child("Usuarios").child(userValue);
+            databaseReference = FirebaseDatabase.getInstance().getReference().child("Usuarios").child(userValue);
         } else {
-            ref = FirebaseDatabase.getInstance().getReference().child("data").child(userValue);
+            databaseReference = FirebaseDatabase.getInstance().getReference().child("data").child(userValue);
         }
 
-        ref.addValueEventListener(new ValueEventListener() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) { //Here verify if user exist

@@ -107,18 +107,23 @@ public class Profile extends Fragment {
                         String userFirstName = dataSnapshot.child("nombre").getValue().toString();
                         String userLastName = dataSnapshot.child("apellido").getValue().toString();
                         String userEmail = dataSnapshot.child("correo").getValue().toString();
-                        String userSex = dataSnapshot.child("sexo").getValue().toString();
-                        String userPhone = dataSnapshot.child("telefono").getValue().toString();
 
                         name = getView().findViewById(R.id.id_nombre);
                         txtLastName = getView().findViewById(R.id.id_apellido);
                         txtEmail = getView().findViewById(R.id.id_email);
-                        txtSex = getView().findViewById(R.id.id_sexo);
-                        txtPhone = getView().findViewById(R.id.id_telefono);
-
                         name.setText(userFirstName);
                         txtLastName.setText(userLastName);
                         txtEmail.setText(userEmail);
+
+                        /**
+                         * Explicacion del por que esta organizado de esta forma las variables,
+                         * views y setText en EditProfile.java linea 135
+                         * */
+                        String userSex = dataSnapshot.child("sexo").getValue().toString();
+                        String userPhone = dataSnapshot.child("telefono").getValue().toString();
+                        txtSex = getView().findViewById(R.id.id_sexo);
+                        txtPhone = getView().findViewById(R.id.id_telefono);
+
                         index = userSex.indexOf(',');
                         userSex = userSex.substring(0, index);
                         txtSex.setText(userSex);
