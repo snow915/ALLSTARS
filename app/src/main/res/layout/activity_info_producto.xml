@@ -9,8 +9,8 @@
 
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="390dp"
+        android:layout_height="724dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -18,8 +18,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
             android:layout_marginTop="15dp"
+            android:layout_marginRight="20dp"
             android:orientation="vertical">
 
             <ImageView
@@ -36,22 +36,22 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="15dp"
                 android:gravity="center"
-                android:textStyle="bold"
                 android:text="@string/app_titulo"
                 android:textColor="@color/negro"
-                android:textSize="35dp" />
+                android:textSize="35dp"
+                android:textStyle="bold" />
 
-                <RatingBar
-                    android:id="@+id/ratingStars"
-                    android:layout_marginTop="10dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:numStars="5"
-                    android:progressTint="@color/colorStars"
-                    android:rating="3.5"
-                    android:scrollbarSize="5dp"
-                    android:stepSize="0.5" />
+            <RatingBar
+                android:id="@+id/ratingStars"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:numStars="5"
+                android:progressTint="@color/colorStars"
+                android:rating="3.5"
+                android:scrollbarSize="5dp"
+                android:stepSize="0.5" />
 
             <Button
                 android:id="@+id/agregar"
@@ -87,7 +87,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="13dp"
                 android:background="@color/colorStars"
-                android:text="@string/btn_precios"
+                android:text="@string/btn_servicios"
                 android:textColor="@color/colorWhite" />
         </LinearLayout>
     </ScrollView>
