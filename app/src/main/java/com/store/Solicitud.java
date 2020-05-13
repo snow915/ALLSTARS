@@ -15,6 +15,7 @@ public class Solicitud {
     private String userFamoso;
     private String userName;
     private String userLastname;
+    private String userID;
 
     public String getUserFamoso() {
         return userFamoso;
@@ -128,5 +129,13 @@ public class Solicitud {
 
     public void setUserLastname(String usertLastname) {
         this.userLastname = usertLastname;
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 }

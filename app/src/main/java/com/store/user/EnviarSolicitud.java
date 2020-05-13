@@ -26,7 +26,7 @@ public class EnviarSolicitud extends AppCompatActivity {
     HashMap<String, String> hashMap;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
-    String username, userFirstName, userLastname;
+    String username, userFirstName, userLastname, userID;
     public Solicitud requestObj;
     private SharedPreferencesApp sharedPreferencesApp;
     @Override
@@ -46,6 +46,7 @@ public class EnviarSolicitud extends AppCompatActivity {
         sharedPreferencesApp = new SharedPreferencesApp(getApplicationContext());
         sharedPreferencesApp.loadPreferences();
         username = sharedPreferencesApp.getUsername();
+        userID = sharedPreferencesApp.getUserID();
         userFirstName = sharedPreferencesApp.getUserFirstName();
         userLastname = sharedPreferencesApp.getUserLastName();
 
@@ -106,11 +107,12 @@ public class EnviarSolicitud extends AppCompatActivity {
                                 requestObj.setUbicacion(hashMap.get("ubicacion"));
                                 requestObj.setLatitud(hashMap.get("latitud"));
                                 requestObj.setLongitud(hashMap.get("longitud"));
+                                //requestObj.setUserID(hashMap.);
 
                                 databaseReference.child("data")
                                         .child(requestObj.getUserFamoso())
                                         .child("solicitudes")
-                                        .child(username)
+                                        .child(userID)
                                         .setValue(requestObj);
                                 sDialog.dismissWithAnimation();
 

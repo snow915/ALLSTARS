@@ -42,7 +42,7 @@ public class InfoProducto extends AppCompatActivity implements
     private RatingBar ratingStars;
     private String imageRoute;
     private String artistUsername;
-    private String usernameSession, artistUsernameSession;
+    private String userID, artistUsernameSession;
     private int stars;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
@@ -53,7 +53,7 @@ public class InfoProducto extends AppCompatActivity implements
 
         SharedPreferencesApp sharedPreferencesApp = new SharedPreferencesApp(getApplicationContext());
         sharedPreferencesApp.loadPreferences();
-        usernameSession = sharedPreferencesApp.getUsername();
+        userID = sharedPreferencesApp.getUserID();
         artistUsernameSession = sharedPreferencesApp.getArtistUsername();
 
         moreInfo = findViewById(R.id.detalles);
@@ -99,7 +99,7 @@ public class InfoProducto extends AppCompatActivity implements
         hire.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (usernameSession != null) {
+                if (userID != null) {
                     Intent intent=new Intent(getApplicationContext(), Contratacion.class);
                     HashMap<String, String> hashMap = new HashMap<String, String>();
                     hashMap.put("rutaImagen", imageRoute);
@@ -160,7 +160,7 @@ public class InfoProducto extends AppCompatActivity implements
 
     public void addFavorites(View v) {
         initFirebase();
-        databaseReference.child("Usuarios").child(usernameSession).child("favoritos").child(artistUsername).setValue(artistUsername);
+        databaseReference.child("Usuarios").child(userID).child("favoritos").child(artistUsername).setValue(artistUsername);
 
         new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
                 .setTitleText("¡Agregado a favoritos!")
