@@ -32,6 +32,35 @@
         </menu>
 
     </item>
+    <item
+        android:id="@+id/nav_services"
+        android:visible="false"
+        android:title="@string/menu_services" >
+        <menu>
+            <item
+                android:visible="false"
+                android:id="@+id/add_service"
+                android:icon="@drawable/ic_add_service"
+                android:title="@string/add_service" />
+            <item
+                android:visible="false"
+                android:id="@+id/see_services"
+                android:icon="@drawable/ic_see_services"
+                android:title="@string/see_services" />
+            <item
+                android:visible="false"
+                android:id="@+id/edit_services"
+                android:icon="@drawable/ic_edit_profile"
+                android:title="@string/edit_services" />
+            <item
+                android:visible="false"
+                android:id="@+id/delete_services"
+                android:icon="@drawable/ic_delete_account"
+                android:title="@string/delete_services" />
+
+        </menu>
+
+    </item>
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
