@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.store.SharedPreferencesApp;
 import com.store.adapters.AdapterDatos;
 import com.store.vo.DatosFavoritosVo;
 import com.store.vo.DatosVo;
@@ -51,7 +52,7 @@ public class Carrito extends Fragment {
     ArrayList<DatosFavoritosVo> list_favorites;
     RecyclerView recycler;
     DatabaseReference reference, referenceFavorites;
-    String user;
+    String userID;
     private OnFragmentInteractionListener mListener;
 
     public Carrito() {
@@ -91,14 +92,11 @@ public class Carrito extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_carrito, container, false);
-        load_preferences();
+        SharedPreferencesApp sharedPreferencesApp = new SharedPreferencesApp(getContext());
+        sharedPreferencesApp.loadPreferences();
+        userID = sharedPreferencesApp.getUserID();
         llenarDatos(v);
         return v;
-    }
-
-    private void load_preferences(){
-        SharedPreferences preferences = getActivity().getSharedPreferences("credentials", Context.MODE_PRIVATE);
-        user = preferences.getString("user_id", null);
     }
 
 
@@ -108,7 +106,7 @@ public class Carrito extends Fragment {
         //////////////////////////////////////////////////////////////////////////////////////////
 
         list_favorites = new ArrayList<DatosFavoritosVo>();
-        referenceFavorites = FirebaseDatabase.getInstance().getReference().child("Usuarios").child(user).child("favoritos");
+        referenceFavorites = FirebaseDatabase.getInstance().getReference().child("Usuarios").child(userID).child("favoritos");
         referenceFavorites.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
@@ -139,7 +137,7 @@ public class Carrito extends Fragment {
                             recycler = view.findViewById(R.id.recycler_id_carrito);
                             recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
-                            AdapterDatos adapter = new AdapterDatos(list_datos, getActivity().getApplicationContext());
+                            AdapterDatos adapter = new AdapterDatos(list_datos, getActivity());
                             recycler.setAdapter(adapter);
                             adapter.setOnClickListener(new View.OnClickListener() {
                                 @Override
