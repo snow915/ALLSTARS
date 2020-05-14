@@ -16,6 +16,7 @@
     <string name="menu_logout">Cerrar sesión</string>
     <string name="menu_favoritos">Favoritos</string>
     <string name="menu_profile">Mi perfil</string>
+    <string name="menu_services">Mis servicios</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
@@ -76,7 +77,7 @@
     <string name="btn_bio">Biografía</string>
     <string name="btn_favoritos">Añadir a favoritos</string>
     <string name="btn_contratar">Contratar</string>
-    <string name="btn_precios">Precios</string>
+    <string name="btn_servicios">Servicios</string>
 
     <string name="profile_title">Perfil</string>
 
@@ -101,7 +102,7 @@
     <string name="edit_artist_chk5">Actriz</string>
     <string name="edit_artist_chk6">Deportista</string>
     <string name="edit_artist_password_hint">Contraseña actual</string>
-    <string name="edit_artist_biography_hint">Descripción actual. Puedes agregar algo más</string>
+    <string name="edit_artist_biography_hint">Biografía actual. Puedes agregar algo más</string>
     <string name="edit_artist_apply_changes_hint">APLICAR CAMBIOS</string>
     <!-- END - Strings for Edit Artist Layout -->
 
@@ -153,6 +154,14 @@
     <string name="edit_profile">Editar perfil</string>
     <string name="delete_account">Eliminar cuenta</string>
     <string name="requests">Mis solicitudes</string>
+
+
+    <!--Services menu block-->
+    <string name="add_service">Agrega un servicio</string>
+    <string name="see_services">Ver servicios</string>
+    <string name="edit_services">Editar servicios</string>
+    <string name="delete_services">Eliminar servicios</string>
+    <!--Services menu block-->
 
     <string name="enviar_solicitud">Enviar solicitud</string>
     <string name="nombre_solicitante">Nombre del solicitante</string>

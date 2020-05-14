@@ -22,6 +22,7 @@ import com.store.ListaCategorias.Cristales;
 import com.store.ListaCategorias.Display;
 import com.store.ListaCategorias.Pantallas;
 import com.store.ListaCategorias.Placas;
+import com.store.famous.AddArtistService;
 import com.store.famous.ArtistProfile;
 import com.store.famous.EditArtistProfile;
 import com.store.famous.FragmentSolicitud;
@@ -100,6 +101,11 @@ public class MainActivity extends AppCompatActivity
             navigationView.getMenu().findItem(R.id.requests).setVisible(false);
         } else if(artistUsername != null) {
             navigationView.getMenu().findItem(R.id.requests).setVisible(true);
+            navigationView.getMenu().findItem(R.id.nav_services).setVisible(true);
+            navigationView.getMenu().findItem(R.id.add_service).setVisible(true);
+            navigationView.getMenu().findItem(R.id.see_services).setVisible(true);
+            navigationView.getMenu().findItem(R.id.edit_services).setVisible(true);
+            navigationView.getMenu().findItem(R.id.delete_services).setVisible(true);
         }
         navigationView.setNavigationItemSelectedListener(this);
         carousel = new Carrusel();
@@ -273,6 +279,16 @@ public class MainActivity extends AppCompatActivity
                 fragmentSelected = true;
             } else {
                 myFragment = new FragmentSolicitud();
+                fragmentSelected = true;
+            }
+        } else if(id == R.id.add_service) {
+            if (carousel != null) {
+                carousel = null;
+                getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().findFragmentById(R.id.content_main_carrusel)).commit();
+                myFragment = new AddArtistService();
+                fragmentSelected = true;
+            } else {
+                myFragment = new AddArtistService();
                 fragmentSelected = true;
             }
         }

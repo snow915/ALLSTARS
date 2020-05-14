@@ -1,9 +1,14 @@
 package com.store;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -12,16 +17,26 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.store.adapters.AdapterServices;
 import com.store.credentials.Login;
 import com.store.global.TimePickerFragment;
 import com.store.user.Contratacion;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -34,7 +49,7 @@ public class InfoProducto extends AppCompatActivity implements
     private Button moreInfo;
     private Button hire;
     private Button btnFavorites;
-    private Button btnPrices;
+    private Button btnServices;
     private TextView txtTitle;
     private ImageView imgImage;
     private String artistName;
@@ -46,6 +61,7 @@ public class InfoProducto extends AppCompatActivity implements
     private int stars;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
+    public static Dialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +75,7 @@ public class InfoProducto extends AppCompatActivity implements
         moreInfo = findViewById(R.id.detalles);
         hire = findViewById(R.id.comprar);
         btnFavorites = findViewById(R.id.agregar);
-        btnPrices = findViewById(R.id.precios);
+        btnServices = findViewById(R.id.precios);
         txtTitle = findViewById(R.id.titulo);
         imgImage = findViewById(R.id.imagen);
         ratingStars = findViewById(R.id.ratingStars);
@@ -126,19 +142,51 @@ public class InfoProducto extends AppCompatActivity implements
             }
         });
 
-        btnPrices.setOnClickListener(new View.OnClickListener() {
+        btnServices.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog dialog = tablePrices();
-                dialog.show();
+                getServices();
             }
         });
     }
 
-    public AlertDialog tablePrices() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setView(R.layout.prices);
-        return builder.create();
+    private void getServices() {
+        final ArrayList<String> itemNames = new ArrayList<>();
+        final ArrayList<String> itemPrices = new ArrayList<>();
+        final ArrayList<String> itemDescriptions = new ArrayList<>();
+        final ArrayList<String> itemMaximumTimes = new ArrayList<>();
+        initFirebase();
+        databaseReference.child("data").child(artistUsername).child("servicios").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot element : dataSnapshot.getChildren()) {
+                    itemNames.add(element.child("nombre").getValue().toString());
+                    itemPrices.add(element.child("precio").getValue().toString());
+                    itemDescriptions.add(element.child("detalles").getValue().toString());
+                    itemMaximumTimes.add(element.child("tiempoMaximo").getValue().toString());
+                }
+                showServices(itemNames, itemPrices, itemDescriptions, itemMaximumTimes);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void showServices(ArrayList itemNames, ArrayList itemPrices, ArrayList itemDescriptions, ArrayList itemMaximumTimes) {
+        dialog = new Dialog(InfoProducto.this);
+        // Definimos el layout del dialogo
+        dialog.setContentView(R.layout.prices);
+        RecyclerView recyclerServices = dialog.findViewById(R.id.services_recycler);
+        AdapterServices adapterServices = new AdapterServices(itemNames, itemPrices, itemDescriptions, itemMaximumTimes, getApplicationContext());
+        recyclerServices.setAdapter(adapterServices);
+        // Es necesario para el scroll horizontal
+        LinearLayoutManager lm = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerServices.setLayoutManager(lm);
+        dialog.show();
+
     }
 
     @Override

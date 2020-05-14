@@ -20,7 +20,8 @@
         android:roundIcon="@drawable/all_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".famous.SolicitudAceptada"></activity>
+        <activity android:name=".Servicios"></activity>
+        <activity android:name=".famous.SolicitudAceptada" />
         <activity android:name=".user.SollicitudEnviada" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
