@@ -153,6 +153,8 @@ public class InfoProducto extends AppCompatActivity implements
     private void getServices() {
         final ArrayList<String> itemNames = new ArrayList<>();
         final ArrayList<String> itemPrices = new ArrayList<>();
+        final ArrayList<String> itemDescriptions = new ArrayList<>();
+        final ArrayList<String> itemMaximumTimes = new ArrayList<>();
         initFirebase();
         databaseReference.child("data").child(artistUsername).child("servicios").addValueEventListener(new ValueEventListener() {
             @Override
@@ -160,8 +162,10 @@ public class InfoProducto extends AppCompatActivity implements
                 for (DataSnapshot element : dataSnapshot.getChildren()) {
                     itemNames.add(element.child("nombre").getValue().toString());
                     itemPrices.add(element.child("precio").getValue().toString());
+                    itemDescriptions.add(element.child("detalles").getValue().toString());
+                    itemMaximumTimes.add(element.child("tiempoMaximo").getValue().toString());
                 }
-                showServices(itemNames, itemPrices);
+                showServices(itemNames, itemPrices, itemDescriptions, itemMaximumTimes);
             }
 
             @Override
@@ -171,12 +175,14 @@ public class InfoProducto extends AppCompatActivity implements
         });
     }
 
-    public void showServices(ArrayList itemNames, ArrayList itemPrices) {
+    public void showServices(ArrayList itemNames, ArrayList itemPrices, ArrayList itemDescriptions, ArrayList itemMaximumTimes) {
         dialog = new Dialog(InfoProducto.this);
+        // Definimos el layout del dialogo
         dialog.setContentView(R.layout.prices);
         RecyclerView recyclerServices = dialog.findViewById(R.id.services_recycler);
-        AdapterServices adapterServices = new AdapterServices(itemNames, itemPrices, getApplicationContext());
+        AdapterServices adapterServices = new AdapterServices(itemNames, itemPrices, itemDescriptions, itemMaximumTimes, getApplicationContext());
         recyclerServices.setAdapter(adapterServices);
+        // Es necesario para el scroll horizontal
         LinearLayoutManager lm = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
         recyclerServices.setLayoutManager(lm);
         dialog.show();
