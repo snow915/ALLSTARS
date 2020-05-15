@@ -10,6 +10,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -42,7 +43,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 public class Login extends AppCompatActivity {
 
     private Button btnSignIn, btnSignUp;
-    private EditText edtxtUser, edtxtPassword;
+    private TextInputLayout edtxtUser, edtxtPassword;
     private CheckBox chboxSignInArtist;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
@@ -77,8 +78,8 @@ public class Login extends AppCompatActivity {
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String userValue = edtxtUser.getText().toString();
-                String passValue = edtxtPassword.getText().toString();
+                String userValue = edtxtUser.getEditText().getText().toString();
+                String passValue = edtxtPassword.getEditText().getText().toString();
                 if(validateFields(userValue, passValue)){
                     if(chboxSignInArtist.isChecked()){
                         userPassExist(userValue, passValue, "artist");

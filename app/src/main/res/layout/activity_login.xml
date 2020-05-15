@@ -7,91 +7,123 @@
     android:layout_height="match_parent"
     tools:context=".credentials.Login">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appBarLayout"
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="156dp"
+        android:layout_height="134dp"
+        android:layout_marginTop="56dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/all_logo" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/editText3"
+        android:layout_width="270dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="56dp"
+        android:ems="10"
+        android:hint="@string/user_input"
+        app:endIconMode="clear_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2"
+        style="@style/ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/editText5"
+        android:layout_width="270dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="40dp"
+        android:ems="10"
+        android:hint="@string/pass_input"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText3"
+        app:endIconMode="password_toggle">
+
+        <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay"/>
+            android:inputType="textPassword"/>
 
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="156dp"
-            android:layout_height="134dp"
-            android:layout_marginTop="72dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
-            app:srcCompat="@drawable/all_logo" />
-
-        <EditText
-            android:id="@+id/editText3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
-            android:ems="10"
-            android:hint="@string/user_input"
-            android:inputType="textPersonName"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
-
-        <EditText
-            android:id="@+id/editText5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:ems="10"
-            android:inputType="textPassword"
-            android:hint="@string/pass_input"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText3" />
+    </com.google.android.material.textfield.TextInputLayout>
 
 
     <Button
         android:id="@+id/id_sign_in"
-        android:layout_width="157dp"
-        android:layout_height="43dp"
-        android:layout_marginTop="40dp"
-        android:background="@color/colorSuccess"
+        android:layout_width="164dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/button_selector"
         android:text="@string/sign_in"
         android:textColor="@color/colorWhite"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText5" />
 
-
     <Button
         android:id="@+id/id_sign_up"
-        android:layout_width="155dp"
-        android:layout_height="44dp"
-        android:layout_marginTop="36dp"
-        android:background="@color/colorInfo2"
+        android:layout_width="126dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="8dp"
         android:text="@string/sign_up"
-        android:textColor="@color/colorWhite"
+        android:textColor="@color/colorInfo2"
+        android:textSize="14dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox_sign_in_artist" />
+        app:layout_constraintTop_toBottomOf="@+id/textView22"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"/>
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/sign_in_google_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_width="164dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="28dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/id_sign_up"/>
+        app:layout_constraintTop_toBottomOf="@+id/id_sign_in" />
 
     <CheckBox
         android:id="@+id/checkBox_sign_in_artist"
         android:layout_width="149dp"
         android:layout_height="36dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="28dp"
         android:text="@string/sign_in_as_artist"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/id_sign_in" />
+        app:layout_constraintTop_toBottomOf="@+id/sign_in_google_button" />
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="24dp"
+        android:background="#16000000"
+        app:layout_constraintTop_toBottomOf="@+id/checkBox_sign_in_artist"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <TextView
+        android:id="@+id/textView22"
+        android:layout_width="226dp"
+        android:layout_height="23dp"
+        android:layout_marginTop="20dp"
+        android:text="¿Aún no tienes cuenta en AllStars?"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view2" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
