@@ -4,12 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class Servicios extends AppCompatActivity {
-    EditText viewServiceName;
-    EditText viewServiceDescription;
-    EditText viewServicePrice;
-    EditText viewServiceMaxTime;
+    TextView viewServiceName;
+    TextView viewServiceDescription;
+    TextView viewServicePrice;
+    TextView viewServiceMaxTime;
     String retrievedServiceName;
     String retrievedServiceDescription;
     String retrievedServicePrice;

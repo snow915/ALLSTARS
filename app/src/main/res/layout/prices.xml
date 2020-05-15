@@ -1,20 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".InfoProducto">
+    android:layout_height="250dp"
+    tools:context=".InfoProducto"
+    android:background="#8F8B8B">
 
-    <androidx.recyclerview.widget.RecyclerView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/services_recycler"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    </androidx.recyclerview.widget.RecyclerView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/recycler_title"
+            android:layout_gravity="center"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/services_recycler"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+        </androidx.recyclerview.widget.RecyclerView>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
 <!--<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
 <!--    android:layout_width="match_parent"-->
 <!--    android:layout_height="match_parent"-->

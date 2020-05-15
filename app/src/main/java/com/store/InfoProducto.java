@@ -183,7 +183,7 @@ public class InfoProducto extends AppCompatActivity implements
         AdapterServices adapterServices = new AdapterServices(itemNames, itemPrices, itemDescriptions, itemMaximumTimes, getApplicationContext());
         recyclerServices.setAdapter(adapterServices);
         // Es necesario para el scroll horizontal
-        LinearLayoutManager lm = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
+        LinearLayoutManager lm = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         recyclerServices.setLayoutManager(lm);
         dialog.show();
 

@@ -94,7 +94,9 @@ public class AddArtistService extends Fragment {
                 String serviceDescription = serviceDescriptionInput.getText().toString();
                 int servicePrice = Integer.valueOf(servicePriceInput.getText().toString());
                 int serviceMaximumTime = Integer.valueOf(serviceMaximumTimeInput.getText().toString());
-                publishService(serviceName, serviceDescription, servicePrice, serviceMaximumTime);
+                if (validations(serviceName, serviceDescription, servicePrice, serviceMaximumTime)) {
+                    publishService(serviceName, serviceDescription, servicePrice, serviceMaximumTime);
+                }
             }
         });
         return view;
@@ -133,5 +135,21 @@ public class AddArtistService extends Fragment {
         preferences.loadPreferences();
         String artistName = preferences.getArtistUsername();
         this.databaseReference = this.firebaseDatabase.getReference("data").child(artistName).child("servicios");
+    }
+    private boolean validations(String serviceName, String serviceDescription, int servicePrice, int serviceMaximumTime) {
+        if (serviceName.isEmpty()) {
+            serviceNameInput.setError("Este campo no puede estar vacío");
+            return false;
+        } else if(serviceDescription.isEmpty()) {
+            serviceDescriptionInput.setError("Este campo no puede estar vacío");
+            return false;
+        } else if(servicePriceInput.getText().toString().isEmpty()) {
+            servicePriceInput.setError("Este campo no puede estar vacío");
+            return false;
+        } else if(serviceMaximumTimeInput.getText().toString().isEmpty()) {
+            serviceMaximumTimeInput.setError("Este campo no puede estar vacío");
+            return false;
+        }
+        return true;
     }
 }

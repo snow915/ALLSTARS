@@ -14,8 +14,9 @@ tools:context=".Servicios">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="Descripción"
+            android:text="@string/label_service_description"
             android:textSize="18sp"
+            android:textColor="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/viewNameService"
@@ -25,8 +26,9 @@ tools:context=".Servicios">
             android:id="@+id/service_price_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Precio"
+            android:text="@string/label_service_price"
             android:textSize="18sp"
+            android:textColor="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/viewServiceDescriptionInput"
@@ -38,7 +40,8 @@ tools:context=".Servicios">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="28dp"
-            android:text="Duración máxima en horas"
+            android:text="@string/label_service_maximum_time"
+            android:textColor="@color/colorPrimary"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
@@ -51,37 +54,37 @@ tools:context=".Servicios">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Nombre"
+            android:text="@string/label_service_name"
+            android:textColor="@color/colorPrimary"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:textStyle="bold" />
 
-        <EditText
+        <TextView
             android:id="@+id/viewNameService"
-            android:layout_width="wrap_content"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:editable="false"
             android:ems="10"
             android:gravity="center"
+            android:textColor="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/add_service_name" />
 
-        <EditText
+        <TextView
             android:id="@+id/viewServiceDescriptionInput"
-            android:layout_width="0dp"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginRight="10dp"
+            android:textColor="@color/colorPrimary"
             android:scrollbars="vertical"
             android:ems="10"
-            android:editable="false"
             android:gravity="center"
-            android:inputType="textMultiLine"
             app:layout_constraintBottom_toTopOf="@+id/service_price_label"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.476"
@@ -91,28 +94,28 @@ tools:context=".Servicios">
             tools:gravity="center"
             tools:layout_marginLeft="10dp" />
 
-        <EditText
+        <TextView
             android:id="@+id/viewServicePriceInput"
-            android:layout_width="wrap_content"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:ems="10"
             android:inputType="number"
             android:gravity="center"
-            android:editable="false"
+            android:textColor="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/service_price_label" />
 
-        <EditText
+        <TextView
             android:id="@+id/viewServiceMaximumTimeInput"
-            android:layout_width="wrap_content"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:ems="10"
             android:gravity="center"
-            android:editable="false"
             android:inputType="number"
+            android:textColor="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/serviceMaximumTime" />
