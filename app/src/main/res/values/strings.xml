@@ -193,4 +193,7 @@
     </string>
     <!-- TODO: Remove or change this placeholder text -->
 
+    <string name="facebook_app_id">564233794475101</string> <string name="fb_login_protocol_scheme">fb564233794475101</string>
+
+
 </resources>
