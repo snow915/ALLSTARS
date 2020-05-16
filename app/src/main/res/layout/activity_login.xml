@@ -61,11 +61,12 @@
 
     <Button
         android:id="@+id/id_sign_in"
-        android:layout_width="164dp"
+        android:layout_width="191dp"
         android:layout_height="40dp"
         android:layout_marginTop="28dp"
         android:background="@drawable/button_selector"
         android:text="@string/sign_in"
+        android:textAllCaps="false"
         android:textColor="@color/colorWhite"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -86,7 +87,7 @@
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/sign_in_google_button"
-        android:layout_width="164dp"
+        android:layout_width="193dp"
         android:layout_height="40dp"
         android:layout_marginTop="28dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -97,11 +98,13 @@
 
     <com.facebook.login.widget.LoginButton
         android:id="@+id/login_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="191dp"
+        android:layout_height="40dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="30dp" />
+        android:layout_marginTop="28dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sign_in_google_button" />
 
     <CheckBox
         android:id="@+id/checkBox_sign_in_artist"
@@ -111,13 +114,13 @@
         android:text="@string/sign_in_as_artist"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sign_in_google_button" />
+        app:layout_constraintTop_toBottomOf="@+id/login_button" />
 
     <View
         android:id="@+id/view2"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="20dp"
         android:background="#16000000"
         app:layout_constraintTop_toBottomOf="@+id/checkBox_sign_in_artist"
         tools:layout_editor_absoluteX="0dp" />

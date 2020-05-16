@@ -7,6 +7,8 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -45,6 +47,10 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class Login extends AppCompatActivity {
@@ -62,6 +68,7 @@ public class Login extends AppCompatActivity {
 
     private CallbackManager mCallbackManager;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,13 +82,13 @@ public class Login extends AppCompatActivity {
 
         mCallbackManager = CallbackManager.Factory.create();
         LoginButton loginButton = findViewById(R.id.login_button);
-        loginButton.setPermissions("email", "public_profile", "user_birthday");
-
+        loginButton.setPermissions("public_profile","email", "user_birthday", "user_gender");
         loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.d(TAG, "facebook:onSuccess:" + loginResult);
                 handleFacebookAccessToken(loginResult.getAccessToken());
+                getUserDetailsFromFB(loginResult.getAccessToken());
             }
 
             @Override
@@ -141,6 +148,39 @@ public class Login extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void getUserDetailsFromFB(AccessToken accessToken) {
+
+        //GrapRequest con el metodo newMeRequest recupera los datos del usuario identificado
+        GraphRequest req=GraphRequest.newMeRequest(accessToken, new GraphRequest.GraphJSONObjectCallback() {
+            @Override
+            public void onCompleted(JSONObject object, GraphResponse response) {
+                Toast.makeText(getApplicationContext(),"graph request completed",Toast.LENGTH_SHORT).show();
+                try{
+                    String email =  object.getString("email");
+                    String gender = object.getString("gender");
+                    String id = object.getString("id");
+                    String photourl =object.getJSONObject("picture").getJSONObject("data").getString("url");
+
+                    Log.w(TAG, "SEXO: " + gender);
+                    Log.w(TAG, "MAIL: " + email);
+                    String name = object.getString("first_name");
+                    String lastname = object.getString("last_name");
+                    Log.w(TAG, "NOMBRE: " + name);
+                    Log.w(TAG, "APELLIDO: " + lastname);
+                }catch (JSONException e)
+                {
+                    Toast.makeText(getApplicationContext(),"graph request error : "+e.getMessage(),Toast.LENGTH_SHORT).show();
+
+                }
+
+            }
+        });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "id,first_name,last_name,email,gender,picture.type(large)");
+        req.setParameters(parameters);
+        req.executeAsync();
     }
 
     // It runs when we click the google button
