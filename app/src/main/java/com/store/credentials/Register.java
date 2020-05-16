@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,7 +30,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class Register extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private Spinner spinSex;
-    private EditText edtxtFirstName, edtxtLastName, edtxtEmail, edtxtPhone, edtxtPass;
+    private TextInputLayout edtxtFirstName, edtxtLastName, edtxtPhone, edtxtEmail, edtxtPass;
     private Button btnSignUp, btnSignUpArtist;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
@@ -66,16 +67,16 @@ public class Register extends AppCompatActivity implements AdapterView.OnItemSel
             @Override
             public void onClick(View v) {
 
-                String email = edtxtEmail.getText().toString();
-                String password = edtxtPass.getText().toString();
+                String email = edtxtEmail.getEditText().getText().toString();
+                String password = edtxtPass.getEditText().getText().toString();
 
                 if(validations()){
                     //This data is for save in Realtime Database
-                    usersObj.setNombre(edtxtFirstName.getText().toString());
-                    usersObj.setApellido(edtxtLastName.getText().toString());
-                    usersObj.setCorreo(edtxtEmail.getText().toString());
-                    usersObj.setTelefono(edtxtPhone.getText().toString());
-                    usersObj.setPass(edtxtPass.getText().toString());
+                    usersObj.setNombre(edtxtFirstName.getEditText().getText().toString());
+                    usersObj.setApellido(edtxtLastName.getEditText().getText().toString());
+                    usersObj.setCorreo(edtxtEmail.getEditText().getText().toString());
+                    usersObj.setTelefono(edtxtPhone.getEditText().getText().toString());
+                    usersObj.setPass(edtxtPass.getEditText().getText().toString());
                     usersObj.setSexo(spinSex.getSelectedItem().toString()+","+ spinSex.getSelectedItemPosition());
                     createUser(email, password);
                 }
@@ -175,32 +176,32 @@ public class Register extends AppCompatActivity implements AdapterView.OnItemSel
     }
 
     private void clearInputs(){
-        edtxtFirstName.setText("");
-        edtxtLastName.setText("");
-        edtxtEmail.setText("");
-        edtxtPhone.setText("");
-        edtxtPass.setText("");
+        edtxtFirstName.setEnabled(false);
+        edtxtLastName.setEnabled(false);
+        edtxtEmail.setEnabled(false);
+        edtxtPhone.setEnabled(false);
+        edtxtPass.setEnabled(false);
         spinSex.setSelection(0);
     }
 
     private boolean validations(){
-        if(edtxtFirstName.getText().toString().equals("")){
+        if(edtxtFirstName.getEditText().getText().toString().equals("")){
             edtxtFirstName.setError("Required");
             return false;
         }
-        if(edtxtLastName.getText().toString().equals("")){
+        if(edtxtLastName.getEditText().getText().toString().equals("")){
             edtxtLastName.setError("Required");
             return false;
         }
-        if(edtxtEmail.getText().toString().equals("")){
+        if(edtxtEmail.getEditText().getText().toString().equals("")){
             edtxtEmail.setError("Required");
             return false;
         }
-        if(edtxtPhone.getText().toString().equals("")){
+        if(edtxtPhone.getEditText().getText().toString().equals("")){
             edtxtPhone.setError("Required");
             return false;
         }
-        if(edtxtPhone.getText().toString().length() < 10){
+        if(edtxtPhone.getEditText().getText().toString().length() < 10){
             edtxtPhone.setError("Missing numbers");
             return false;
         }
@@ -209,11 +210,11 @@ public class Register extends AppCompatActivity implements AdapterView.OnItemSel
             errorTextview.setError("Your Error Message here");
             return false;
         }
-        if(edtxtPass.getText().toString().equals("")){
+        if(edtxtPass.getEditText().getText().toString().equals("")){
             edtxtPass.setError("Required");
             return false;
         }
-        if(edtxtPass.getText().toString().length() < 8){
+        if(edtxtPass.getEditText().getText().toString().length() < 8){
             edtxtPass.setError("8 characters minimum");
             return false;
         }

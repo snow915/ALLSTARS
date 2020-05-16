@@ -46,7 +46,7 @@ public class InfoProducto extends AppCompatActivity implements
         DatePickerDialog.OnDateSetListener,
         TimePickerDialog.OnTimeSetListener {
 
-    private Button moreInfo;
+    private TextView moreInfo;
     private Button hire;
     private Button btnFavorites;
     private Button btnServices;
@@ -95,15 +95,7 @@ public class InfoProducto extends AppCompatActivity implements
                 .into(imgImage);
         ratingStars.setRating(stars);
 
-        moreInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new SweetAlertDialog(InfoProducto.this, SweetAlertDialog.NORMAL_TYPE)
-                        .setTitleText(artistName)
-                        .setContentText(biography)
-                        .show();
-            }
-        });
+        moreInfo.setText(biography);
 
         btnFavorites.setOnClickListener(new View.OnClickListener() {
             @Override
