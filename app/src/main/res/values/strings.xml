@@ -107,16 +107,16 @@
     <!-- END - Strings for Edit Artist Layout -->
 
     <!-- Services block-->
-        <string name="recycler_title">SERVICIOS OFERTADOS</string>
-        <string name="label_service_name">Nombre</string>
-        <string name="label_fragment_title">Nuevo servicio</string>
-        <string name="service_name_input_hint">Algo breve</string>
-        <string name="label_service_name_mini_hint">Ejemplo: Show de comedia</string>
-        <string name="label_service_description">Descripción</string>
-        <string name="service_description_input_hint">Aquí van todos los detalles</string>
-        <string name="label_service_price">Precio</string>
-        <string name="label_service_maximum_time">Duración máxima en horas</string>
-        <string name="btn_publish">Publicar</string>
+    <string name="recycler_title">SERVICIOS OFERTADOS</string>
+    <string name="label_service_name">Nombre</string>
+    <string name="label_fragment_title">Nuevo servicio</string>
+    <string name="service_name_input_hint">Algo breve</string>
+    <string name="label_service_name_mini_hint">Ejemplo: Show de comedia</string>
+    <string name="label_service_description">Descripción</string>
+    <string name="service_description_input_hint">Aquí van todos los detalles</string>
+    <string name="label_service_price">Precio</string>
+    <string name="label_service_maximum_time">Duración máxima en horas</string>
+    <string name="btn_publish">Publicar</string>
     <!-- Services recycler block-->
 
     <string-array name="array_sex">
