@@ -26,6 +26,7 @@ import com.store.famous.AddArtistService;
 import com.store.famous.ArtistProfile;
 import com.store.famous.EditArtistProfile;
 import com.store.famous.FragmentSolicitud;
+import com.store.famous.FragmentViewServices;
 import com.store.user.EditProfile;
 import com.store.user.Profile;
 
@@ -289,6 +290,16 @@ public class MainActivity extends AppCompatActivity
                 fragmentSelected = true;
             } else {
                 myFragment = new AddArtistService();
+                fragmentSelected = true;
+            }
+        }else if(id == R.id.see_services) {
+            if (carousel != null) {
+                carousel = null;
+                getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().findFragmentById(R.id.content_main_carrusel)).commit();
+                myFragment = new FragmentViewServices();
+                fragmentSelected = true;
+            } else {
+                myFragment = new FragmentViewServices();
                 fragmentSelected = true;
             }
         }
