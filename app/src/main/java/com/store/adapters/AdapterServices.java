@@ -1,36 +1,47 @@
 package com.store.adapters;
 import android.content.Context;
 import android.content.Intent;
-import android.text.method.ScrollingMovementMethod;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.store.R;
 import com.store.Servicios;
+import com.store.SharedPreferencesApp;
+import com.store.famous.FragmentDeleteService;
 import java.util.ArrayList;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class AdapterServices extends RecyclerView.Adapter<AdapterServices.ViewHolderService> {
     private ArrayList<String> itemNames = new ArrayList<>();
     private ArrayList<String> itemPrices = new ArrayList<>();
     private ArrayList<String> itemDescriptions = new ArrayList<>();
     private ArrayList<String> itemMaximumTimes = new ArrayList<>();
+    private ArrayList<String> itemIds = new ArrayList<>();
     private Context context;
+    private String stringContext;
 
-    public AdapterServices(ArrayList<String> itemNames, ArrayList<String> itemPrices, ArrayList<String> itemDescriptions, ArrayList<String> itemMaximumTimes, Context context) {
+    public AdapterServices(ArrayList<String> itemNames, ArrayList<String> itemPrices, ArrayList<String> itemDescriptions, ArrayList<String> itemMaximumTimes, ArrayList<String> itemIds, Context context, String CONTEXT) {
         this.itemNames = itemNames;
         this.itemPrices = itemPrices;
         this.itemDescriptions = itemDescriptions;
         this.itemMaximumTimes = itemMaximumTimes;
+        this.itemIds = itemIds;
         this.context = context;
+        this.stringContext = CONTEXT;
     }
 
     @NonNull
@@ -38,18 +49,23 @@ public class AdapterServices extends RecyclerView.Adapter<AdapterServices.ViewHo
     public ViewHolderService onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         int id = 0;
         boolean hasCardOnClickAtached = false;
-        if (String.valueOf(parent.getContext().getClass()).equals("class com.store.MainActivity")) {
+        boolean hasCardDeleteButton = false;
+        if (stringContext.equals("view")) {
             id = R.layout.view_services_item;
-        } else {
+        } else if(stringContext.equals("modal")){
             id = R.layout.service_item;
             hasCardOnClickAtached = true;
+        } else {
+            id = R.layout.delete_services_item;
+            hasCardDeleteButton = true;
         }
         View view = LayoutInflater.from(parent.getContext()).inflate(id, parent, false);
-        return new ViewHolderService(view, hasCardOnClickAtached);
+        return new ViewHolderService(view, hasCardOnClickAtached, hasCardDeleteButton);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolderService holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolderService holder, int position) {
+        final int pos = position;
         holder.serviceName.setText(itemNames.get(position));
         final String serviceName = holder.serviceName.getText().toString();
         holder.servicePrice.setText("$"+itemPrices.get(position));
@@ -71,6 +87,49 @@ public class AdapterServices extends RecyclerView.Adapter<AdapterServices.ViewHo
                     context.startActivity(intent);
                 }
             });
+        } else if(holder.btnDeleteService !=null){
+            holder.btnDeleteService.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final View view = v;
+                    new SweetAlertDialog(v.getContext(), SweetAlertDialog.WARNING_TYPE)
+                            .setTitleText("¿Realmente deseas eliminar este servicio?")
+                            .setContentText("Esta acción no se puede revertir")
+                            .setCancelText("No")
+                            .setConfirmText("Sí")
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    sDialog.dismissWithAnimation();
+                                    String id = itemIds.get(pos);
+                                    SharedPreferencesApp preferencesApp = new SharedPreferencesApp(context);
+                                    preferencesApp.loadPreferences();
+                                    String username = preferencesApp.getArtistUsername();
+                                    itemNames.remove(pos);
+                                    itemDescriptions.remove(pos);
+                                    itemPrices.remove(pos);
+                                    itemMaximumTimes.remove(pos);
+                                    itemIds.remove(pos);
+                                    DatabaseReference df = FirebaseDatabase.getInstance()
+                                            .getReference("data")
+                                            .child(username)
+                                            .child("servicios")
+                                            .child(id);
+                                    df.removeValue();
+                                    notifyDataSetChanged();
+                                    Toast.makeText(context, "Eliminación satisfactoria", Toast.LENGTH_LONG).show();
+                                }
+                            })
+                            .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    sweetAlertDialog.dismissWithAnimation();
+                                }
+                            })
+                            .show();
+
+                }
+            });
         }
     }
 
@@ -88,19 +147,29 @@ public class AdapterServices extends RecyclerView.Adapter<AdapterServices.ViewHo
         TextView serviceDescription;
         TextView serviceMaximumTime;
         @Nullable CardView card;
+        @Nullable Button btnDeleteService;
+        @Nullable Button btnUpdateService;
+        FrameLayout fl;
 
-        public ViewHolderService(@NonNull View itemView, boolean hasCardOnClickAtached) {
+        public ViewHolderService(@NonNull View itemView, boolean hasCardOnClickAtached, boolean hasCardDeleteButton) {
             super(itemView);
             serviceImage = itemView.findViewById(R.id.item_image);
             serviceName = itemView.findViewById(R.id.item_name);
             servicePrice = itemView.findViewById(R.id.item_price);
             serviceDescription = itemView.findViewById(R.id.item_description);
             serviceMaximumTime = itemView.findViewById(R.id.item_maximum_time);
+            card = null;
+            btnDeleteService = null;
+            btnUpdateService = null;
             if (hasCardOnClickAtached) {
                 card = itemView.findViewById(R.id.item_card);
-            } else {
-                card = null;
+            } else if(hasCardDeleteButton) {
+                btnDeleteService = itemView.findViewById(R.id.btnDeleteService);
+                fl = itemView.findViewById(R.id.fl_del_ser);
             }
+//            else {
+//                // btnUpdateService = itemView.findViewById(R.id.btnDeleteService);
+//            }
         }
     }
 }
