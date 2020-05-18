@@ -16,8 +16,13 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.store.R;
 import com.store.Servicios;
 import com.store.SharedPreferencesApp;
@@ -101,23 +106,41 @@ public class AdapterServices extends RecyclerView.Adapter<AdapterServices.ViewHo
                                 @Override
                                 public void onClick(SweetAlertDialog sDialog) {
                                     sDialog.dismissWithAnimation();
-                                    String id = itemIds.get(pos);
+                                    final String name = itemNames.get(pos);
                                     SharedPreferencesApp preferencesApp = new SharedPreferencesApp(context);
                                     preferencesApp.loadPreferences();
-                                    String username = preferencesApp.getArtistUsername();
-                                    itemNames.remove(pos);
-                                    itemDescriptions.remove(pos);
-                                    itemPrices.remove(pos);
-                                    itemMaximumTimes.remove(pos);
-                                    itemIds.remove(pos);
+                                    final String username = preferencesApp.getArtistUsername();
                                     DatabaseReference df = FirebaseDatabase.getInstance()
                                             .getReference("data")
                                             .child(username)
-                                            .child("servicios")
-                                            .child(id);
-                                    df.removeValue();
-                                    notifyDataSetChanged();
-                                    Toast.makeText(context, "Eliminación satisfactoria", Toast.LENGTH_LONG).show();
+                                            .child("servicios");
+//                                    df.removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                        @Override
+//                                        public void onSuccess(Void aVoid) {
+//                                            itemNames.remove(pos);
+//                                            itemDescriptions.remove(pos);
+//                                            itemPrices.remove(pos);
+//                                            itemMaximumTimes.remove(pos);
+//                                            itemIds.remove(pos);
+//                                            notifyDataSetChanged();
+//                                            Toast.makeText(context, "Eliminación satisfactoria", Toast.LENGTH_LONG).show();
+//                                        }
+//                                    });
+                                    Query query = df.orderByChild("nombre").equalTo(name);
+                                    query.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                                                ds.getRef().removeValue();
+                                            }
+                                            Toast.makeText(context, "Eliminación satisfactoria", Toast.LENGTH_LONG).show();
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                        }
+                                    });
                                 }
                             })
                             .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
@@ -149,7 +172,6 @@ public class AdapterServices extends RecyclerView.Adapter<AdapterServices.ViewHo
         @Nullable CardView card;
         @Nullable Button btnDeleteService;
         @Nullable Button btnUpdateService;
-        FrameLayout fl;
 
         public ViewHolderService(@NonNull View itemView, boolean hasCardOnClickAtached, boolean hasCardDeleteButton) {
             super(itemView);
@@ -165,7 +187,6 @@ public class AdapterServices extends RecyclerView.Adapter<AdapterServices.ViewHo
                 card = itemView.findViewById(R.id.item_card);
             } else if(hasCardDeleteButton) {
                 btnDeleteService = itemView.findViewById(R.id.btnDeleteService);
-                fl = itemView.findViewById(R.id.fl_del_ser);
             }
 //            else {
 //                // btnUpdateService = itemView.findViewById(R.id.btnDeleteService);
