@@ -3,6 +3,7 @@ package com.store.famous;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -13,7 +14,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -110,26 +114,38 @@ public class AddArtistService extends Fragment {
         this.service.setDetalles(serviceDescription);
         this.service.setPrecio(servicePrice);
         this.service.setTiempoMaximo(serviceMaximumTime);
-        this.databaseReference.push().setValue(service).addOnSuccessListener(new OnSuccessListener<Void>() {
+        this.databaseReference.push().setValue(service).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
-            public void onSuccess(Void aVoid) {
-                new SweetAlertDialog(getContext(), SweetAlertDialog.SUCCESS_TYPE)
-                        .setTitleText("Excelente!")
-                        .setContentText("Servicio publicado con éxito!")
-                        .setConfirmText("Ok!")
-                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sDialog) {
-                                sDialog.dismissWithAnimation();
+            public void onComplete(@NonNull Task<Void> task) {
+                task.addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        new SweetAlertDialog(getContext(), SweetAlertDialog.SUCCESS_TYPE)
+                                .setTitleText("Excelente!")
+                                .setContentText("Servicio publicado con éxito!")
+                                .setConfirmText("Ok!")
+                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sDialog) {
+                                        sDialog.dismissWithAnimation();
 //                        Fragment index = new index();
 //                        Fragment carousel = new Carrusel();
 //                        AddArtistService current = (AddArtistService) getFragmentManager().findFragmentByTag("Current");
 //                        FragmentTransaction ft = getFragmentManager().beginTransaction();
-                                Intent intent = new Intent(getContext(), MainActivity.class);
-                                startActivity(intent);
-                            }
-                        })
-                        .show();
+                                        Intent intent = new Intent(getContext(), MainActivity.class);
+                                        startActivity(intent);
+                                    }
+                                })
+                                .show();
+                    }
+                });
+                task.addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getContext(), "ERROR", Toast.LENGTH_LONG).show();
+                    }
+                });
+
             }
         });
 
