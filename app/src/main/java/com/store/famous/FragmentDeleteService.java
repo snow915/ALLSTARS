@@ -124,7 +124,7 @@ public class FragmentDeleteService extends Fragment {
 
                                             @Override
                                             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                                                Toast.makeText(view.getContext(), "ERROR "+databaseError.getMessage() , Toast.LENGTH_LONG).show();
                                             }
                                         });
                                     }
