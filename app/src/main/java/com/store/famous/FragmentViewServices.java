@@ -45,7 +45,6 @@ public class FragmentViewServices extends Fragment {
     private DatabaseReference reference;
     private SharedPreferencesApp preferencesApp;
     private String artistUserName;
-    private TextView description;
     public FragmentViewServices() {
         // Required empty public constructor
     }
@@ -88,10 +87,12 @@ public class FragmentViewServices extends Fragment {
 
     private void fillData(View v){
         final View view = v;
+        final String CONTEXT = "view";
         final ArrayList<String> itemNames = new ArrayList<>();
         final ArrayList<String> itemPrices = new ArrayList<>();
         final ArrayList<String> itemDescriptions = new ArrayList<>();
         final ArrayList<String> itemMaximumTimes = new ArrayList<>();
+        final ArrayList<String> itemIds = new ArrayList<>();
         preferencesApp = new SharedPreferencesApp(getContext());
         preferencesApp.loadPreferences();
         artistUserName = preferencesApp.getArtistUsername();
@@ -104,10 +105,11 @@ public class FragmentViewServices extends Fragment {
                     itemPrices.add(element.child("precio").getValue().toString());
                     itemDescriptions.add(element.child("detalles").getValue().toString());
                     itemMaximumTimes.add(element.child("tiempoMaximo").getValue().toString());
+                    itemIds.add(element.getValue().toString());
                 }
                 recycler = view.findViewById(R.id.recycler_list_services);
                 recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-                AdapterServices adapter = new AdapterServices(itemNames, itemPrices, itemDescriptions, itemMaximumTimes, getContext());
+                AdapterServices adapter = new AdapterServices(itemNames, itemPrices, itemDescriptions, itemMaximumTimes, itemIds, getContext(), CONTEXT);
                 recycler.setAdapter(adapter);
             }
 

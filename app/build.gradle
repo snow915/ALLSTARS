@@ -43,7 +43,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage:19.1.0'
     implementation 'com.archit.calendar:awesome-calendar:1.1.6'
     implementation 'com.google.firebase:firebase-auth:19.1.0'
-
+    //This library allows to use FirebaseRecyclerAdapter
+    implementation 'com.firebaseui:firebase-ui-database:6.2.1'
 
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
     implementation 'com.google.android.gms:play-services-location:16.0.0'
