@@ -120,13 +120,13 @@ public class Profile extends Fragment {
                          * views y setText en EditProfile.java linea 135
                          * */
                         String userSex = dataSnapshot.child("sexo").getValue().toString();
-                        String userPhone = dataSnapshot.child("telefono").getValue().toString();
                         txtSex = getView().findViewById(R.id.id_sexo);
-                        txtPhone = getView().findViewById(R.id.id_telefono);
-
                         index = userSex.indexOf(',');
                         userSex = userSex.substring(0, index);
                         txtSex.setText(userSex);
+
+                        String userPhone = dataSnapshot.child("telefono").getValue().toString();
+                        txtPhone = getView().findViewById(R.id.id_telefono);
                         txtPhone.setText(userPhone);
                     } catch (Exception e){}
                 }

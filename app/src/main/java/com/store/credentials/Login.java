@@ -2,7 +2,6 @@ package com.store.credentials;
 
 import android.content.Intent;
 import android.os.Bundle;
-
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -37,42 +36,43 @@ import com.store.MainActivity;
 import com.store.R;
 import com.store.SharedPreferencesApp;
 import com.store.user.Usuarios;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class Login extends AppCompatActivity {
 
+    private static final String TAG = "GoogleActivity";
+    private static final int RC_SIGN_IN = 9001;
+
+    private String firstname, lastname, gender, email;
+    public Usuarios usersObj;
+
     private Button btnSignIn, btnSignUp;
     private TextInputLayout edtxtUser, edtxtPassword;
     private CheckBox chboxSignInArtist;
+
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
     private FirebaseAuth mAuth;
-    private static final String TAG = "GoogleActivity";
-    private static final int RC_SIGN_IN = 9001;
+
     private GoogleSignInClient mGoogleSignInClient;
-    public Usuarios usersObj;
 
     private CallbackManager mCallbackManager;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         //Associate variables with id from activity_login layout
         btnSignIn = findViewById(R.id.id_sign_in);
         btnSignUp = findViewById(R.id.id_sign_up);
@@ -80,42 +80,36 @@ public class Login extends AppCompatActivity {
         edtxtPassword = findViewById(R.id.editText5);
         chboxSignInArtist = findViewById(R.id.checkBox_sign_in_artist);
 
+        //FacebookLogin
         mCallbackManager = CallbackManager.Factory.create();
         LoginButton loginButton = findViewById(R.id.login_button);
         loginButton.setPermissions("public_profile","email", "user_birthday", "user_gender");
         loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Log.d(TAG, "facebook:onSuccess:" + loginResult);
-                handleFacebookAccessToken(loginResult.getAccessToken());
+                //Log.d(TAG, "facebook:onSuccess:" + loginResult);
                 getUserDetailsFromFB(loginResult.getAccessToken());
+                handleFacebookAccessToken(loginResult.getAccessToken());
             }
 
             @Override
-            public void onCancel() {
-                Log.d(TAG, "facebook:onCancel");
-
-            }
+            public void onCancel() {}
 
             @Override
-            public void onError(FacebookException error) {
-                Log.d(TAG, "facebook:onError", error);
-            }
+            public void onError(FacebookException error) {}
         });
-        // [END initialize_fblogin]
 
-
-        // [START config_signin]
-        // Configure Google Sign In
+        // GoogleLogin
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
-        // [END config_signin]
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
         initFirebase();
         mAuth = FirebaseAuth.getInstance();
 
+        //Normal button of Login
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,7 +125,7 @@ public class Login extends AppCompatActivity {
             }
         });
 
-        //GOOGLE BUTTON
+        //Google button
         findViewById(R.id.sign_in_google_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -140,6 +134,7 @@ public class Login extends AppCompatActivity {
             }
         });
 
+        //Registration button
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -150,40 +145,7 @@ public class Login extends AppCompatActivity {
 
     }
 
-    public void getUserDetailsFromFB(AccessToken accessToken) {
-
-        //GrapRequest con el metodo newMeRequest recupera los datos del usuario identificado
-        GraphRequest req=GraphRequest.newMeRequest(accessToken, new GraphRequest.GraphJSONObjectCallback() {
-            @Override
-            public void onCompleted(JSONObject object, GraphResponse response) {
-                Toast.makeText(getApplicationContext(),"graph request completed",Toast.LENGTH_SHORT).show();
-                try{
-                    String email =  object.getString("email");
-                    String gender = object.getString("gender");
-                    String id = object.getString("id");
-                    String photourl =object.getJSONObject("picture").getJSONObject("data").getString("url");
-
-                    Log.w(TAG, "SEXO: " + gender);
-                    Log.w(TAG, "MAIL: " + email);
-                    String name = object.getString("first_name");
-                    String lastname = object.getString("last_name");
-                    Log.w(TAG, "NOMBRE: " + name);
-                    Log.w(TAG, "APELLIDO: " + lastname);
-                }catch (JSONException e)
-                {
-                    Toast.makeText(getApplicationContext(),"graph request error : "+e.getMessage(),Toast.LENGTH_SHORT).show();
-
-                }
-
-            }
-        });
-        Bundle parameters = new Bundle();
-        parameters.putString("fields", "id,first_name,last_name,email,gender,picture.type(large)");
-        req.setParameters(parameters);
-        req.executeAsync();
-    }
-
-    // It runs when we click the google button
+    // It runs when we click the google button of the facebook button
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -203,22 +165,42 @@ public class Login extends AppCompatActivity {
         }
     }
 
+    //=============FACEBOOK AUTH CODE==============================
+    //// Start firebase with Facebook data
     private void handleFacebookAccessToken(AccessToken token) {
-        Log.d(TAG, "handleFacebookAccessToken:" + token);
+        //Log.d(TAG, "handleFacebookAccessToken:" + token);
 
-
-        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        final AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithCredential:success");
+                            //Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            //Aqui guardar en firebase ?
+                            String userID = user.getUid(); //me da el id de firebase
+                            usersObj = new Usuarios();
+                            usersObj.setNombre(firstname);
+                            usersObj.setApellido(lastname);
+                            usersObj.setCorreo(email);
+                            usersObj.setSexo(gender);
+
+                            //SAVE INFO IN FIREBASE REALTIME
+                            databaseReference.child("Usuarios").child(userID).setValue(usersObj);
+                            //SAVE INFO IN FIREBASE REALTIME
+
+                            //INIT ....
+                            SharedPreferencesApp sharedPreferencesApp = new SharedPreferencesApp(getApplicationContext());
+                            sharedPreferencesApp.saveLoginData(usersObj.getNombre(), usersObj.getApellido(), usersObj.getCorreo() ,userID, "user");
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(intent);
+                            finishAffinity();
+
                         } else {
                             // ME IMPRIMIO ERROR PORQUE YA EXISTIA CUENTA CON MISMO CORREO
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                            //Log.w(TAG, "signInWithCredential:failure", task.getException());
                             Toast.makeText(Login.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -226,9 +208,40 @@ public class Login extends AppCompatActivity {
                     }
                 });
     }
-    // [END auth_with_facebook]
 
-    // start firebase_auth_with_google
+    //Here it retrieves data from Facebook
+    public void getUserDetailsFromFB(AccessToken accessToken) {
+        //GrapRequest con el metodo newMeRequest recupera los datos del usuario identificado
+        GraphRequest req=GraphRequest.newMeRequest(accessToken, new GraphRequest.GraphJSONObjectCallback() {
+            @Override
+            public void onCompleted(JSONObject object, GraphResponse response) {
+                try{
+
+                    firstname = object.getString("first_name");
+                    lastname = object.getString("last_name");
+                    email =  object.getString("email");
+                    gender = object.getString("gender");
+                    if(gender.equals("male")){
+                        gender = "Masculino, 1";
+                    } else if (gender.equals("female")){
+                        gender = "Femenino, 2";
+                    }
+                    //String id = object.getString("id");
+                    //String photourl =object.getJSONObject("picture").getJSONObject("data").getString("url");
+
+                }catch (JSONException e)
+                {}
+            }
+        });
+        Bundle parameters = new Bundle();
+        //parameters.putString("fields", "id,first_name,last_name,email,gender,picture.type(large)");
+        parameters.putString("fields", "first_name,last_name,email,gender");
+        req.setParameters(parameters);
+        req.executeAsync();
+    }
+
+    //=============GOOGLE AUTH CODE==============================
+    // Start firebase with Google data
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
 
         usersObj = new Usuarios();
@@ -257,13 +270,14 @@ public class Login extends AppCompatActivity {
                             finishAffinity();
 
                         } else {
-                            Log.e(TAG, "signInWithCredential:failure", task.getException());
+                            //Log.e(TAG, "signInWithCredential:failure", task.getException());
                         }
                     }
                 });
     }
 
 
+    //=============NORMAL AUTH CODE==============================
     private void signIn(String email, String password, final String userType) {
 
         mAuth.signInWithEmailAndPassword(email, password)
@@ -312,19 +326,12 @@ public class Login extends AppCompatActivity {
                 });
     }
 
-    private void initFirebase(){
-        FirebaseApp.initializeApp(this);
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference();
-    }
-
     private void retrieveDataRealtimeDB(final String userID, final String userType) {
         if (userType.equals("user")) {
             databaseReference = FirebaseDatabase.getInstance().getReference().child("Usuarios").child(userID);
         } else {
             databaseReference = FirebaseDatabase.getInstance().getReference().child("data").child(userID);
         }
-
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -353,7 +360,7 @@ public class Login extends AppCompatActivity {
         });
     }
 
-
+    //=============THIS IS ONLY FOR ARTISTS FOR THE MOMENT==============================
     private void userPassExist(final String userValue, final String passValue, final String userType){
         if (userType.equals("user")) {
             databaseReference = FirebaseDatabase.getInstance().getReference().child("Usuarios").child(userValue);
@@ -390,6 +397,12 @@ public class Login extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) { }
         });
+    }
+
+    private void initFirebase(){
+        FirebaseApp.initializeApp(this);
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
     }
 
     private boolean validateFields(String user, String pass){

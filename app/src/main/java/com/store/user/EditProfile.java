@@ -142,9 +142,6 @@ public class EditProfile extends Fragment{
                         los datos en pantalla
                         */
                         String userSex = dataSnapshot.child("sexo").getValue().toString();
-                        String userPhone = dataSnapshot.child("telefono").getValue().toString();
-                        String pass = dataSnapshot.child("pass").getValue().toString();
-
                         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                                 R.array.array_sex, android.R.layout.simple_spinner_item);
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -153,6 +150,10 @@ public class EditProfile extends Fragment{
                         int index = userSex.indexOf(",");
                         int item_pos = Integer.parseInt(userSex.substring(index+1));
                         spinSex.setSelection(item_pos);
+
+                        String userPhone = dataSnapshot.child("telefono").getValue().toString();
+                        String pass = dataSnapshot.child("pass").getValue().toString();
+
                         edtxtPhone.setText(userPhone);
                         edtxtPass.setText(pass);
                     } catch (Exception e){

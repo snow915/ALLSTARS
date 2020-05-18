@@ -6,6 +6,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
+
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -196,7 +199,8 @@ public class MainActivity extends AppCompatActivity
                 reload();
             }
             else if (username != null){
-                FirebaseAuth.getInstance().signOut();
+                FirebaseAuth.getInstance().signOut(); //Close session for Firebase and Google
+                LoginManager.getInstance().logOut(); //Close session for Facebook
                 sharedPreferencesApp.cleanPreferences();
                 reload();
             }
