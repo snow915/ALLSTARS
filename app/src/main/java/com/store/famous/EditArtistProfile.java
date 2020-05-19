@@ -24,6 +24,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.Continuation;
@@ -38,6 +39,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.store.MainActivity;
 import com.store.R;
 
 import java.io.ByteArrayOutputStream;
@@ -68,7 +70,6 @@ public class EditArtistProfile extends Fragment {
     public static String artist_id;
     public static String artist_image_route;
     public static ConstraintLayout edit_artist_layout;
-    private static final int GALLERY_INTENT = 1;
     public static Uri uri = null;
     public static boolean image_picked = false;
     public EditArtistProfile() {
@@ -227,38 +228,22 @@ public class EditArtistProfile extends Fragment {
                             }
                         }
                         final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("data").child(artist_id);
-                        final Artistas artista = new Artistas();
-                        artista.setNombre(artist_name_val);
-                        artista.setPass(artist_password_val);
-                        artista.setBiografia(artist_biography_val);
-                        artista.setCategoria(categories);
-                        artista.setUser(artist_id);
-                        artista.setImagen(downloadUri.toString());
-                        ref.setValue(artista);
-                        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                new SweetAlertDialog(getContext(), SweetAlertDialog.SUCCESS_TYPE)
-                                        .setTitleText("Congratulations!")
-                                        .setContentText("Data updated successfully!")
-                                        .setConfirmText("Ok!")
-                                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                            @Override
-                                            public void onClick(SweetAlertDialog sDialog) {
-                                                sDialog.dismissWithAnimation();
-                                                EditArtistProfile myFragment = (EditArtistProfile)getFragmentManager().findFragmentByTag("Current");
-                                                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                                                ft.detach(myFragment).attach(myFragment).commit();
-                                            }
-                                        })
-                                        .show();
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
+                        ref.child("biografia").setValue(artist_biography_val);
+                        ref.child("categoria").setValue(categories);
+                        ref.child("imagen").setValue(downloadUri.toString());
+                        ref.child("nombre").setValue(artist_name_val);
+                        ref.child("pass").setValue(artist_password_val);
+                        Toast.makeText(getContext(), "Updated", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getContext(), MainActivity.class);
+                        startActivity(intent);
+//                        final Artistas artista = new Artistas();
+//                        artista.setNombre(artist_name_val);
+//                        artista.setPass(artist_password_val);
+//                        artista.setBiografia(artist_biography_val);
+//                        artista.setCategoria(categories);
+//                        artista.setUser(artist_id);
+//                        artista.setImagen(downloadUri.toString());
+//                        ref.setValue(artista);
                     } else {
                         // Handle failures
                         // ...
@@ -276,38 +261,13 @@ public class EditArtistProfile extends Fragment {
                 }
             }
             final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("data").child(artist_id);
-            final Artistas artista = new Artistas();
-            artista.setNombre(artist_name_val);
-            artista.setPass(artist_password_val);
-            artista.setBiografia(artist_biography_val);
-            artista.setCategoria(categories);
-            artista.setUser(artist_id);
-            artista.setImagen(artist_image_route);
-            ref.setValue(artista);
-            ref.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    new SweetAlertDialog(getContext(), SweetAlertDialog.SUCCESS_TYPE)
-                            .setTitleText("Congratulations!")
-                            .setContentText("Data updated successfully!")
-                            .setConfirmText("Ok!")
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sDialog) {
-                                    sDialog.dismissWithAnimation();
-                                    EditArtistProfile myFragment = (EditArtistProfile)getFragmentManager().findFragmentByTag("Current");
-                                    FragmentTransaction ft = getFragmentManager().beginTransaction();
-                                    ft.detach(myFragment).attach(myFragment).commit();
-                                }
-                            })
-                            .show();
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
+            ref.child("biografia").setValue(artist_biography_val);
+            ref.child("categoria").setValue(categories);
+            ref.child("nombre").setValue(artist_name_val);
+            ref.child("pass").setValue(artist_password_val);
+            Toast.makeText(getContext(), "Updated", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getContext(), MainActivity.class);
+            startActivity(intent);
         }
     }
 

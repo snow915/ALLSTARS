@@ -108,25 +108,30 @@ public class FragmentDeleteService extends Fragment {
                                     @Override
                                     public void onClick(SweetAlertDialog sDialog) {
                                         sDialog.dismissWithAnimation();
-                                        DatabaseReference df = FirebaseDatabase.getInstance()
-                                                .getReference("data")
-                                                .child(artistUserName)
-                                                .child("servicios");
-                                        Query query = df.orderByChild("nombre").equalTo(name);
-                                        query.addListenerForSingleValueEvent(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                                                    ds.getRef().removeValue();
+                                        try {
+                                            DatabaseReference df = FirebaseDatabase.getInstance()
+                                                    .getReference("data")
+                                                    .child(artistUserName)
+                                                    .child("servicios");
+                                            Query query = df.orderByChild("nombre").equalTo(name);
+                                            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                    for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                                                        ds.getRef().removeValue();
+                                                    }
+                                                    Toast.makeText(view.getContext(), "Eliminación satisfactoria", Toast.LENGTH_LONG).show();
                                                 }
-                                                Toast.makeText(view.getContext(), "Eliminación satisfactoria", Toast.LENGTH_LONG).show();
-                                            }
 
-                                            @Override
-                                            public void onCancelled(@NonNull DatabaseError databaseError) {
-                                                Toast.makeText(view.getContext(), "ERROR "+databaseError.getMessage() , Toast.LENGTH_LONG).show();
-                                            }
-                                        });
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                                    Toast.makeText(view.getContext(), "ERROR "+databaseError.getMessage() , Toast.LENGTH_LONG).show();
+                                                }
+                                            });
+                                        } catch (Error error) {
+                                            Toast.makeText(getContext(), "Error"+error.getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+
                                     }
                                 })
                                 .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
