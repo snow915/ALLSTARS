@@ -16,6 +16,7 @@ public class Solicitud {
     private String userName;
     private String userLastname;
     private String userID;
+    private String solicitudID;
 
     public String getUserFamoso() {
         return userFamoso;
@@ -137,5 +138,13 @@ public class Solicitud {
 
     public void setUserID(String userID) {
         this.userID = userID;
+    }
+
+    public String getSolicitudID() {
+        return solicitudID;
+    }
+
+    public void setSolicitudID(String solicitudID) {
+        this.solicitudID = solicitudID;
     }
 }

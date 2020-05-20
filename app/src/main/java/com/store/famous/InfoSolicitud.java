@@ -1,5 +1,6 @@
 package com.store.famous;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -9,7 +10,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.store.R;
 
 import java.util.HashMap;
@@ -22,6 +31,8 @@ public class InfoSolicitud extends AppCompatActivity {
             txtEventType, txtDetails, txtName;
     private Button btnDeny, btnAccept;
     public HashMap<String, String> hashMapArtist;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,38 +64,71 @@ public class InfoSolicitud extends AppCompatActivity {
         btnDeny.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                denyHiring();
             }
         });
 
         btnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final EditText inputCost = new EditText(InfoSolicitud.this);
-                inputCost.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_CLASS_NUMBER);
-                inputCost.setHint("$");
-                new SweetAlertDialog(InfoSolicitud.this, SweetAlertDialog.NORMAL_TYPE)
-                        .setTitleText("¿Cuanto vas a cobrar?")
-                        .setConfirmText("Aceptar")
-                        .setCustomView(inputCost)
-                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                String cost = inputCost.getText().toString();
-                                if (cost.equals("") || cost.equals(null)) {
-                                    inputCost.setError("Escribe un monto");
-                                } else {
-                                    Intent intent = new Intent(InfoSolicitud.this, SolicitudAceptada.class);
-                                    startActivity(intent);
-                                    finishAffinity();
-                                    finish();
-                                }
-
-                            }
-                        })
-                        .show();
+                acceptHiring();
             }
         });
+    }
+
+    private void acceptHiring(){
+        new SweetAlertDialog(InfoSolicitud.this, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText("ACEPTAR")
+                .setContentText("¿Realmente quieres aceptar el servicio?")
+                .setCancelText("No")
+                .setConfirmText("Sí")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        sDialog.dismissWithAnimation();
+
+                        //CODE FOR SEND DATA TO FIREBASE
+                        initFirebase();
+
+
+                    }
+                })
+                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        sweetAlertDialog.dismissWithAnimation();
+                    }
+                })
+                .show();
+    }
+
+    private void denyHiring(){
+        new SweetAlertDialog(InfoSolicitud.this, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText("RECHAZAR")
+                .setContentText("¿Realmente quieres rechazar el servicio?")
+                .setCancelText("No")
+                .setConfirmText("Sí")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        sDialog.dismissWithAnimation();
+                        //CODE FOR SEND DATA TO FIREBASE
+
+                    }
+                })
+                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        sweetAlertDialog.dismissWithAnimation();
+                    }
+                })
+                .show();
+    }
+
+    private void initFirebase(){
+        FirebaseApp.initializeApp(this);
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
     }
 
 }

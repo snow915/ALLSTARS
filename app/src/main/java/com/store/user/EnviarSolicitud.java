@@ -107,13 +107,27 @@ public class EnviarSolicitud extends AppCompatActivity {
                                 requestObj.setUbicacion(hashMap.get("ubicacion"));
                                 requestObj.setLatitud(hashMap.get("latitud"));
                                 requestObj.setLongitud(hashMap.get("longitud"));
+                                requestObj.setUserID(userID);
                                 //requestObj.setUserID(hashMap.);
+
+                                String key = databaseReference.child("solicitudes").push().getKey();
+                                requestObj.setSolicitudID(key);
+                                databaseReference.child("solicitudes")
+                                        .child(key)
+                                        .setValue(requestObj);
 
                                 databaseReference.child("data")
                                         .child(requestObj.getUserFamoso())
                                         .child("solicitudes")
+                                        .child(key)
+                                        .setValue(key);
+                                sDialog.dismissWithAnimation();
+
+                                databaseReference.child("Usuarios")
                                         .child(userID)
-                                        .setValue(requestObj);
+                                        .child("solicitudes")
+                                        .child(key)
+                                        .setValue(key);
                                 sDialog.dismissWithAnimation();
 
                                 Intent intent = new Intent(getApplicationContext(), SollicitudEnviada.class);

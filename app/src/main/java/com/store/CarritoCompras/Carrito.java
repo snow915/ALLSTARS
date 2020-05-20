@@ -105,7 +105,7 @@ public class Carrito extends Fragment {
 
         //////////////////////////////////////////////////////////////////////////////////////////
 
-        list_favorites = new ArrayList<DatosFavoritosVo>();
+        list_datos = new ArrayList<DatosVo>();
         referenceFavorites = FirebaseDatabase.getInstance().getReference().child("Usuarios").child(userID).child("favoritos");
         referenceFavorites.addValueEventListener(new ValueEventListener() {
             @Override
@@ -115,7 +115,7 @@ public class Carrito extends Fragment {
                     final String favorite = dataSnapshot1.getValue().toString();
                     //System.out.println("HEY: "+favorite);
 
-                    list_datos = new ArrayList<DatosVo>();
+                    //list_datos = new ArrayList<DatosVo>();
                     reference = FirebaseDatabase.getInstance().getReference().child("data");
                     reference.addValueEventListener(new ValueEventListener() {
                         @Override
