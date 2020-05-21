@@ -159,6 +159,7 @@
     <string name="tipoPublico">Tipo de público</string>
     <string name="tipoShow">Tipo de evento</string>
     <string name="detalles">Detalles extras</string>
+    <string name="servicio">Servicio</string>
 
     <string name="iraMapas">Elegir ubicación</string>
     <string name="ubicacion">Ubicación</string>

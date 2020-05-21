@@ -17,6 +17,8 @@ public class Solicitud {
     private String userLastname;
     private String userID;
     private String solicitudID;
+    private String nombreServicio;
+    private String precioServicio;
 
     public String getUserFamoso() {
         return userFamoso;
@@ -146,5 +148,21 @@ public class Solicitud {
 
     public void setSolicitudID(String solicitudID) {
         this.solicitudID = solicitudID;
+    }
+
+    public String getNombreServicio() {
+        return nombreServicio;
+    }
+
+    public void setNombreServicio(String nombreServicio) {
+        this.nombreServicio = nombreServicio;
+    }
+
+    public String getPrecioServicio() {
+        return precioServicio;
+    }
+
+    public void setPrecioServicio(String precioServicio) {
+        this.precioServicio = precioServicio;
     }
 }

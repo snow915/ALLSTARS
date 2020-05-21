@@ -1,5 +1,6 @@
 package com.store.user;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
@@ -7,6 +8,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -16,11 +18,21 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.store.global.DatePickerFragment;
 import com.store.Map;
 import com.store.R;
 import com.store.global.TimePickerFragment;
+import com.store.vo.ServiciosVo;
+
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
@@ -31,7 +43,7 @@ public class Contratacion extends AppCompatActivity implements
         AdapterView.OnItemSelectedListener{
 
     private EditText startDate, finishDate, startTime, finishTime, details;
-    private Spinner audienceType, eventType;
+    private Spinner audienceType, eventType, services;
     private String currentDateString;
     private Button maps;
     private boolean statusStartDate = false;
@@ -39,11 +51,20 @@ public class Contratacion extends AppCompatActivity implements
     private boolean statusStartTime = false;
     private boolean statusFinishTime = false;
     public HashMap<String, String> hashMap;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
+
+    private String serviceName;
+    private String servicePrice;
+
+    private static final String TAG = "ContratacionActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contratacion);
 
+        initFirebase();
         hashMap = (HashMap<String, String>) getIntent().getSerializableExtra("mapValues");
 
         startDate = findViewById(R.id.fechaInicio);
@@ -54,6 +75,7 @@ public class Contratacion extends AppCompatActivity implements
         audienceType = findViewById(R.id.idPublico);
         eventType = findViewById(R.id.idEvento);
         maps = findViewById(R.id.idMaps);
+        services = findViewById(R.id.idServicio);
 
         startDate.setOnClickListener(this);
         finishDate.setOnClickListener(this);
@@ -72,6 +94,42 @@ public class Contratacion extends AppCompatActivity implements
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         eventType.setAdapter(adapter2);
         eventType.setOnItemSelectedListener(this);
+
+        //CODIGO SPINNER SERVICIOS
+        final ArrayList<ServiciosVo> listServices = new ArrayList<ServiciosVo>();
+        listServices.add(new ServiciosVo("Elige un servicio", ""));
+        databaseReference.child("data").child(hashMap.get("usernameFamoso")).child("servicios").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot element: dataSnapshot.getChildren()){
+                    //listServices.add(element.child("nombre").getValue().toString() + " - $" + element.child("precio").getValue().toString());
+                    String serviceName = element.child("nombre").getValue().toString();
+                    String servicePrice = element.child("precio").getValue().toString();
+                    listServices.add(new ServiciosVo(serviceName, servicePrice));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
+        });
+
+        ArrayAdapter<ServiciosVo> adapter3 = new ArrayAdapter<ServiciosVo>(this, android.R.layout.simple_spinner_item, listServices);
+        adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        services.setAdapter(adapter3);
+        services.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ServiciosVo service = (ServiciosVo) parent.getSelectedItem();
+                serviceName = service.getNombreServicio();
+                servicePrice = service.getPrecioServicio();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        //CODIGO SPINNER SERVICIOS
 
     }
 
@@ -140,6 +198,8 @@ public class Contratacion extends AppCompatActivity implements
                 hashMap.put("fechaInicio", startDate.getText().toString());
                 hashMap.put("fechaFin", finishDate.getText().toString());
                 hashMap.put("detalles", details.getText().toString());
+                hashMap.put("nombreServicio", serviceName);
+                hashMap.put("precioServicio", servicePrice);
 
                 Intent intent = new Intent(getApplicationContext(), Map.class);
                 intent.putExtra("mapValues", hashMap);
@@ -152,6 +212,7 @@ public class Contratacion extends AppCompatActivity implements
         String required = getString(R.string.requerido);
         TextView errorTextviewAudience = (TextView) audienceType.getSelectedView();
         TextView errorTextviewEvents = (TextView) eventType.getSelectedView();
+        TextView errorTextviewServices = (TextView) services.getSelectedView();
 
         if(startDate.getText().toString().equals("")){
             startDate.setError(required);
@@ -186,6 +247,10 @@ public class Contratacion extends AppCompatActivity implements
         if(eventType.getSelectedItem().toString().equals("Evento")) {
             errorTextviewEvents.setError(required);
             return false;
+        }
+        if(services.getSelectedItem().toString().equals("Elige un servicio")){
+            errorTextviewServices.setError(required);
+            return false;
         } else {
             errorTextviewEvents.setError(required, null);
         }
@@ -202,4 +267,10 @@ public class Contratacion extends AppCompatActivity implements
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {}
+
+    private void initFirebase(){
+        FirebaseApp.initializeApp(this);
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
+    }
 }

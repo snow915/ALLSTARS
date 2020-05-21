@@ -108,6 +108,8 @@ public class EnviarSolicitud extends AppCompatActivity {
                                 requestObj.setLatitud(hashMap.get("latitud"));
                                 requestObj.setLongitud(hashMap.get("longitud"));
                                 requestObj.setUserID(userID);
+                                requestObj.setNombreServicio(hashMap.get("nombreServicio"));
+                                requestObj.setPrecioServicio(hashMap.get("precioServicio"));
                                 //requestObj.setUserID(hashMap.);
 
                                 String key = databaseReference.child("solicitudes").push().getKey();
@@ -121,13 +123,14 @@ public class EnviarSolicitud extends AppCompatActivity {
                                         .child("solicitudes")
                                         .child(key)
                                         .setValue(key);
-                                sDialog.dismissWithAnimation();
+
 
                                 databaseReference.child("Usuarios")
                                         .child(userID)
                                         .child("solicitudes")
                                         .child(key)
                                         .setValue(key);
+
                                 sDialog.dismissWithAnimation();
 
                                 Intent intent = new Intent(getApplicationContext(), SollicitudEnviada.class);
