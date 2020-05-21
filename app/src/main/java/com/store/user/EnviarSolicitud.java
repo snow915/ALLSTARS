@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -29,6 +30,7 @@ public class EnviarSolicitud extends AppCompatActivity {
     String username, userFirstName, userLastname, userID;
     public Solicitud requestObj;
     private SharedPreferencesApp sharedPreferencesApp;
+    private static final String TAG = "EnviarSolicitudActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,29 +116,31 @@ public class EnviarSolicitud extends AppCompatActivity {
 
                                 String key = databaseReference.child("solicitudes").push().getKey();
                                 requestObj.setSolicitudID(key);
+
                                 databaseReference.child("solicitudes")
                                         .child(key)
                                         .setValue(requestObj);
-
+                                Log.w(TAG, "SE GUARDO SOLICITUD");
                                 databaseReference.child("data")
                                         .child(requestObj.getUserFamoso())
                                         .child("solicitudes")
                                         .child(key)
                                         .setValue(key);
-
+                                Log.w(TAG, "SE GUARDO SOLICITUD FAMOSO");
 
                                 databaseReference.child("Usuarios")
                                         .child(userID)
                                         .child("solicitudes")
                                         .child(key)
                                         .setValue(key);
+                                Log.w(TAG, "SE GUARDO SOLICITUD USUARIO");
 
                                 sDialog.dismissWithAnimation();
-
-                                Intent intent = new Intent(getApplicationContext(), SollicitudEnviada.class);
+                                Log.w(TAG, "SE CIERRA EL DIALOG");
+                                Intent intent = new Intent(EnviarSolicitud.this, SollicitudEnviada.class);
                                 startActivity(intent);
                                 finishAffinity();
-                                finish();
+                                Log.w(TAG, "SE INICIO SOLICITUD ENVIADA");
                             }
                         })
                         .show();

@@ -274,11 +274,25 @@ public class Login extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
-                            String userID = user.getUid(); //me da el id de firebase
+                            final String userID = user.getUid(); //me da el id de firebase
+                            databaseReference = FirebaseDatabase.getInstance().getReference().child("Usuarios").child(userID);
+                            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    if(!dataSnapshot.exists()){
+                                        //SAVE INFO IN FIREBASE REALTIME
+                                        databaseReference.setValue(usersObj);
+                                        //SAVE INFO IN FIREBASE REALTIME
+                                    } else {
+                                        //AQUI SI EXISTE
+                                    }
+                                }
 
-                            //SAVE INFO IN FIREBASE REALTIME
-                            databaseReference.child("Usuarios").child(userID).setValue(usersObj);
-                            //SAVE INFO IN FIREBASE REALTIME
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
 
                             //INIT ....
                             SharedPreferencesApp sharedPreferencesApp = new SharedPreferencesApp(getApplicationContext());

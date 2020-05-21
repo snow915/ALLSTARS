@@ -129,6 +129,7 @@ public class Register extends AppCompatActivity implements AdapterView.OnItemSel
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
+                            usersObj.setUid(userID);
                             //Save data in Realtime Database
                             databaseReference.child("Usuarios").child(userID).setValue(usersObj);
                             clearInputs();
