@@ -3,6 +3,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
@@ -72,6 +73,7 @@ public class MainActivity extends AppCompatActivity
     private DrawerLayout drawer;
     private NavigationView navigationView;
     private SharedPreferencesApp sharedPreferencesApp;
+    private SearchView searchBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +121,21 @@ public class MainActivity extends AppCompatActivity
         getSupportFragmentManager().beginTransaction().add(R.id.content_main, myFragment).commit();
         //Here i put index, in the content_main.xml
         getSupportFragmentManager().beginTransaction().add(R.id.content_main_carrusel, carousel).commit();
+        searchBar = findViewById(R.id.searchBar);
+        searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Intent intent = new Intent(getApplicationContext(), ActivitySearchResult.class);
+                intent.putExtra("query", query);
+                startActivity(intent);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
     }
 
     @Override
