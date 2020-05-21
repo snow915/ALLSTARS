@@ -31,6 +31,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.store.MainActivity;
 import com.store.R;
@@ -180,20 +181,37 @@ public class Login extends AppCompatActivity {
                             //Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             //Aqui guardar en firebase ?
-                            String userID = user.getUid(); //me da el id de firebase
-                            usersObj = new Usuarios();
-                            usersObj.setNombre(firstname);
-                            usersObj.setApellido(lastname);
-                            usersObj.setCorreo(email);
-                            usersObj.setSexo(gender);
+                            final String userID = user.getUid(); //me da el id de firebase
+                            //databaseReference.child("Usuarios").child(userID);
+                            databaseReference = FirebaseDatabase.getInstance().getReference().child("Usuarios").child(userID);
+                            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    if(!dataSnapshot.exists()){
+                                        usersObj = new Usuarios();
+                                        usersObj.setNombre(firstname);
+                                        usersObj.setApellido(lastname);
+                                        usersObj.setCorreo(email);
+                                        usersObj.setSexo(gender);
+                                        usersObj.setUid(userID);
+                                        Log.w(TAG, "CORREO: " + usersObj.getCorreo());
+                                        //SAVE INFO IN FIREBASE REALTIME
+                                        databaseReference.setValue(usersObj);
+                                        //SAVE INFO IN FIREBASE REALTIME
+                                    } else {
+                                        //AQUI SI EXISTE YA EN REALTIME DB
+                                    }
+                                }
 
-                            //SAVE INFO IN FIREBASE REALTIME
-                            databaseReference.child("Usuarios").child(userID).setValue(usersObj);
-                            //SAVE INFO IN FIREBASE REALTIME
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
 
                             //INIT ....
                             SharedPreferencesApp sharedPreferencesApp = new SharedPreferencesApp(getApplicationContext());
-                            sharedPreferencesApp.saveLoginData(usersObj.getNombre(), usersObj.getApellido(), usersObj.getCorreo() ,userID, "user");
+                            sharedPreferencesApp.saveLoginData(firstname, lastname, email ,userID, "user");
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             startActivity(intent);
                             finishAffinity();
