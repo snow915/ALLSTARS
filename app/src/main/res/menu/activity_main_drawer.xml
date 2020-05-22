@@ -23,15 +23,35 @@
                 android:id="@+id/delete_account"
                 android:icon="@drawable/ic_delete_account"
                 android:title="@string/delete_account" />
+        </menu>
+
+    </item>
+
+    <item
+        android:id="@+id/nav_requests"
+        android:visible="false"
+        android:title="@string/requests" >
+        <menu>
             <item
                 android:visible="false"
                 android:id="@+id/requests"
-                android:icon="@drawable/ic_request"
-                android:title="@string/requests" />
+                android:icon="@drawable/ic_pending24dp"
+                android:title="@string/pending_requests" />
+            <item
+                android:visible="false"
+                android:id="@+id/accepted_requests"
+                android:icon="@drawable/ic_accept24dp"
+                android:title="@string/accepted_requests" />
+            <item
+                android:visible="false"
+                android:id="@+id/rejected_requests"
+                android:icon="@drawable/ic_rejected24dp"
+                android:title="@string/rejected_requests" />
 
         </menu>
 
     </item>
+
     <item
         android:id="@+id/nav_services"
         android:visible="false"

@@ -168,6 +168,9 @@
     <string name="edit_profile">Editar perfil</string>
     <string name="delete_account">Eliminar cuenta</string>
     <string name="requests">Mis solicitudes</string>
+    <string name="pending_requests">Solicitudes pendientes</string>
+    <string name="accepted_requests">Solicitudes aceptadas</string>
+    <string name="rejected_requests">Solicitudes rechazadas</string>
 
 
     <!--Services menu block-->
