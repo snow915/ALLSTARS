@@ -163,6 +163,10 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.action_settings) {
             AlertDialog dialog = makeDialog();
             dialog.show();
+        } else if(id == R.id.searchIcon) {
+
+            Intent intent = new Intent(getApplicationContext(), ActivitySearchResult.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
@@ -362,10 +366,5 @@ public class MainActivity extends AppCompatActivity
                     }
                 })
                 .show();
-    }
-
-    public void perra(MenuItem item) {
-        Intent intent = new Intent(getApplicationContext(), ActivitySearchResult.class);
-        startActivity(intent);
     }
 }
