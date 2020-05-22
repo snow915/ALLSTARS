@@ -62,9 +62,9 @@ public class ActivitySearchResult extends AppCompatActivity {
                 Boolean found;
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
                     String name = ds.child("nombre").getValue(String.class);
-                    found = name.toLowerCase().contains(search);
+                    String categories = ds.child("categoria").getValue(String.class);
+                    found = name.toLowerCase().contains(search) || categories.toLowerCase().contains(search);
                     if(found) {
-                        String categories = ds.child("categoria").getValue(String.class);
                         String imageRoute = ds.child("imagen").getValue(String.class);
                         int score = ds.child("puntaje").getValue(Integer.class);
                         listData.add(new DatosVo(name, categories, "", imageRoute, score, ""));
@@ -80,28 +80,5 @@ public class ActivitySearchResult extends AppCompatActivity {
             }
         };
         reference.addListenerForSingleValueEvent(eventListener);
-//        options = new FirebaseRecyclerOptions.Builder<Artistas>().setQuery(firebaseQuery, Artistas.class).build();
-//        adapter = new FirebaseRecyclerAdapter<Artistas, ViewHolderArtistas>(options) {
-//            @Override
-//            protected void onBindViewHolder(@NonNull ViewHolderArtistas holder, int position, @NonNull Artistas model) {
-//                holder.nombre.setText(model.getNombre());
-//                holder.precio.setText(model.getCategoria());
-//                holder.stars.setRating(model.getPuntaje());
-//                Glide.with(getApplicationContext())
-//                        .load(model.getImagen())
-//                        .fitCenter()
-//                        .centerCrop()
-//                        .into(holder.imagen);
-//            }
-//
-//            @NonNull
-//            @Override
-//            public ViewHolderArtistas onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//                View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list, parent, false);
-//                return new ViewHolderArtistas(v);
-//            }
-//        };
-//        adapter.startListening();
-//        recycler.setAdapter(adapter);
     }
 }
