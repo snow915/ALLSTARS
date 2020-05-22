@@ -123,7 +123,8 @@ public class FragmentSolicitud extends Fragment {
                                         postSnapshotHiring.child("precioServicio").getValue().toString(),
                                         postSnapshotHiring.child("nombreFamoso").getValue().toString(),
                                         postSnapshotHiring.child("userFamoso").getValue().toString(),
-                                        postSnapshotHiring.child("userID").getValue().toString()
+                                        postSnapshotHiring.child("userID").getValue().toString(),
+                                        postSnapshotHiring.child("imagenFamoso").getValue().toString()
                                 )
                         );
                     }
@@ -156,6 +157,7 @@ public class FragmentSolicitud extends Fragment {
                         String nombreFamoso = listData.get(recycler.getChildAdapterPosition(v)).getNombreFamoso();
                         String userFamoso = listData.get(recycler.getChildAdapterPosition(v)).getUserFamoso();
                         String userID = listData.get(recycler.getChildAdapterPosition(v)).getUserID();
+                        String imagenFamoso = listData.get(recycler.getChildAdapterPosition(v)).getImagenFamoso();
 
                         //Tal vez con un for?
                         hashMapArtist.put("solicitudID", solicitudID);
@@ -176,6 +178,7 @@ public class FragmentSolicitud extends Fragment {
                         hashMapArtist.put("nombreFamoso", nombreFamoso);
                         hashMapArtist.put("userFamoso", userFamoso);
                         hashMapArtist.put("userID", userID);
+                        hashMapArtist.put("imagenFamoso", imagenFamoso);
 
                         saveLocationData(ubicacion, latitud, longitud);
 

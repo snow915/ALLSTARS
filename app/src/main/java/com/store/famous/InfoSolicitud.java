@@ -183,6 +183,7 @@ public class InfoSolicitud extends AppCompatActivity implements View.OnClickList
         datosObj.setUserID(hashMapArtist.get("userID"));
         datosObj.setUserLastname(hashMapArtist.get("userLastname"));
         datosObj.setUserName(hashMapArtist.get("userName"));
+        datosObj.setImagenFamoso(hashMapArtist.get("imagenFamoso"));
     }
 
     private void associateIds(){

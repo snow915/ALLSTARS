@@ -20,6 +20,7 @@ public class DatosSolicitudVo {
     private String nombreFamoso;
     private String userFamoso;
     private String userID;
+    private String imagenFamoso;
 
     public DatosSolicitudVo(){}
 
@@ -40,7 +41,8 @@ public class DatosSolicitudVo {
                             String precioServicio,
                             String nombreFamoso,
                             String userFamoso,
-                            String userID) {
+                            String userID,
+                            String imagenFamoso) {
         this.solicitudID = idSolicitud;
         this.fechaInicio = fechaInicio;
         this.horaInicio = horaInicio;
@@ -59,6 +61,7 @@ public class DatosSolicitudVo {
         this.nombreFamoso = nombreFamoso;
         this.userFamoso = userFamoso;
         this.userID = userID;
+        this.imagenFamoso = imagenFamoso;
     }
 
     public String getFechaInicio() {
@@ -203,5 +206,13 @@ public class DatosSolicitudVo {
 
     public void setUserID(String userID) {
         this.userID = userID;
+    }
+
+    public String getImagenFamoso() {
+        return imagenFamoso;
+    }
+
+    public void setImagenFamoso(String imagenFamoso) {
+        this.imagenFamoso = imagenFamoso;
     }
 }

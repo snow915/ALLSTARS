@@ -40,12 +40,12 @@ public class AdapterDatosSolicitudUsuario extends RecyclerView.Adapter<AdapterDa
         holder.nombreFamoso.setText(list_datos.get(position).getNombreFamoso());
         holder.fechaInicio.setText(list_datos.get(position).getFechaInicio());
         holder.horaInicio.setText(list_datos.get(position).getHoraInicio());
-        /*Glide.with(context)
-                .load(list_datos.get(position).)
+        Glide.with(context)
+                .load(list_datos.get(position).getImagenFamoso())
                 .fitCenter()
                 .centerCrop()
                 .into(holder.imagen);
-        //holder.imagen.setImageResource(list_datos.get(position).getRutaImagen());*/
+        //holder.imagen.setImageResource(list_datos.get(position).getRutaImagen());
     }
 
     @Override
@@ -69,14 +69,14 @@ public class AdapterDatosSolicitudUsuario extends RecyclerView.Adapter<AdapterDa
         TextView nombreFamoso;
         TextView fechaInicio;
         TextView horaInicio;
-        //ImageView imagen;
+        ImageView imagen;
 
         public ViewHolderDatos(@NonNull View itemView) {
             super(itemView);
             nombreFamoso = itemView.findViewById(R.id.idFechaInicio);
             fechaInicio = itemView.findViewById(R.id.idHoraInicio);
             horaInicio = itemView.findViewById(R.id.idTipoEvento);
-            //imagen = itemView.findViewById(R.id.idImagen);
+            imagen = itemView.findViewById(R.id.idImagen);
         }
     }
 }

@@ -113,6 +113,7 @@ public class InfoProducto extends AppCompatActivity implements
                     hashMap.put("rutaImagen", imageRoute);
                     hashMap.put("nombreFamoso", artistName);
                     hashMap.put("usernameFamoso" , artistUsername);
+                    hashMap.put("rutaImagen", imageRoute);
                     intent.putExtra("mapValues", hashMap);
                     startActivity(intent);
                 } else if (artistUsernameSession != null) {
