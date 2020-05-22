@@ -5,11 +5,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -17,7 +22,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.store.MainActivity;
 import com.store.R;
+import com.store.SharedPreferencesApp;
+import com.store.vo.DatosSolicitudVo;
+
 import java.util.HashMap;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -29,7 +38,9 @@ public class InfoSolicitud extends AppCompatActivity implements View.OnClickList
     public HashMap<String, String> hashMapArtist;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
+    private DatosSolicitudVo datosObj;
 
+    private static final String TAG = "InfoSolicitud";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +49,6 @@ public class InfoSolicitud extends AppCompatActivity implements View.OnClickList
 
         associateIds();
         setValuesLayout();
-
         btnDeny.setOnClickListener(this);
         btnAccept.setOnClickListener(this);
 
@@ -57,8 +67,31 @@ public class InfoSolicitud extends AppCompatActivity implements View.OnClickList
 
                         //CODE FOR SEND DATA TO FIREBASE
                         initFirebase();
+                        setValuesDatosSolicitud();
 
+                        //Pasa la solicitud a solicitudes_aceptadas
+                        databaseReference.child("solicitudes_aceptadas")
+                                .child(datosObj.getSolicitudID())
+                                .setValue(datosObj)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        task.addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
 
+                                                //Esto borra la solicitud de solicitudes
+                                                databaseReference.child("solicitudes")
+                                                        .child(datosObj.getSolicitudID())
+                                                        .setValue(null);
+
+                                                Intent intent = new Intent(InfoSolicitud.this, SolicitudAceptada.class);
+                                                startActivity(intent);
+                                                finishAffinity();
+                                            }
+                                        });
+                                    }
+                                });
                     }
                 })
                 .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
@@ -72,8 +105,8 @@ public class InfoSolicitud extends AppCompatActivity implements View.OnClickList
 
     private void denyHiring(){
         new SweetAlertDialog(InfoSolicitud.this, SweetAlertDialog.WARNING_TYPE)
-                .setTitleText("RECHAZAR")
-                .setContentText("¿Realmente quieres rechazar el servicio?")
+                .setTitleText("¿Realmente quieres rechazar el servicio?")
+                .setContentText("Esta acción no se puede revertir")
                 .setCancelText("No")
                 .setConfirmText("Sí")
                 .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
@@ -81,7 +114,31 @@ public class InfoSolicitud extends AppCompatActivity implements View.OnClickList
                     public void onClick(SweetAlertDialog sDialog) {
                         sDialog.dismissWithAnimation();
                         //CODE FOR SEND DATA TO FIREBASE
+                        initFirebase();
+                        setValuesDatosSolicitud();
+                        //Pasa la solicitud a solicitudes_rechazadas
+                        databaseReference.child("solicitudes_rechazadas")
+                                .child(datosObj.getSolicitudID())
+                                .setValue(datosObj)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        task.addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
 
+                                                //Esto borra la solicitud de solicitudes
+                                                databaseReference.child("solicitudes")
+                                                        .child(datosObj.getSolicitudID())
+                                                        .setValue(null);
+
+                                                Intent intent = new Intent(InfoSolicitud.this, SolicitudRechazada.class);
+                                                startActivity(intent);
+                                                finishAffinity();
+                                            }
+                                        });
+                                    }
+                                });
                     }
                 })
                 .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
@@ -94,16 +151,38 @@ public class InfoSolicitud extends AppCompatActivity implements View.OnClickList
     }
 
     private void setValuesLayout(){
-        txtStartDate.setText(hashMapArtist.get("startDate"));
-        txtFinishDate.setText(hashMapArtist.get("finishDate"));
-        txtStartTime.setText(hashMapArtist.get("startTime"));
-        txtFinishTime.setText(hashMapArtist.get("finishTime"));
-        txtAudienceType.setText(hashMapArtist.get("audienceType"));
-        txtEventType.setText(hashMapArtist.get("eventType"));
-        txtDetails.setText(hashMapArtist.get("details"));
-        txtName.setText(hashMapArtist.get("applicantsFirstname") + " " + hashMapArtist.get("applicantsLastname"));
-        txtNameSevice.setText(hashMapArtist.get("nameService"));
-        txtPriceService.setText("$" + hashMapArtist.get("priceService"));
+        txtStartDate.setText(hashMapArtist.get("fechaInicio"));
+        txtFinishDate.setText(hashMapArtist.get("fechaFin"));
+        txtStartTime.setText(hashMapArtist.get("horaInicio"));
+        txtFinishTime.setText(hashMapArtist.get("horaFin"));
+        txtAudienceType.setText(hashMapArtist.get("tipoPublico"));
+        txtEventType.setText(hashMapArtist.get("tipoEvento"));
+        txtDetails.setText(hashMapArtist.get("detalles"));
+        txtName.setText(hashMapArtist.get("userName") + " " + hashMapArtist.get("userLastname"));
+        txtNameSevice.setText(hashMapArtist.get("nombreServicio"));
+        txtPriceService.setText("$" + hashMapArtist.get("precioServicio"));
+    }
+
+    private void setValuesDatosSolicitud(){
+        datosObj = new DatosSolicitudVo();
+        datosObj.setDetalles(hashMapArtist.get("detalles"));
+        datosObj.setFechaFin(hashMapArtist.get("fechaFin"));
+        datosObj.setFechaInicio(hashMapArtist.get("fechaInicio"));
+        datosObj.setHoraFin(hashMapArtist.get("horaFin"));
+        datosObj.setHoraInicio(hashMapArtist.get("horaInicio"));
+        datosObj.setLatitud(hashMapArtist.get("latitud"));
+        datosObj.setLongitud(hashMapArtist.get("longitud"));
+        datosObj.setNombreFamoso(hashMapArtist.get("nombreFamoso"));
+        datosObj.setNombreServicio(hashMapArtist.get("nombreServicio"));
+        datosObj.setPrecioServicio(hashMapArtist.get("precioServicio"));
+        datosObj.setSolicitudID(hashMapArtist.get("solicitudID"));
+        datosObj.setTipoEvento(hashMapArtist.get("tipoEvento"));
+        datosObj.setTipoPublico(hashMapArtist.get("tipoPublico"));
+        datosObj.setUbicacion(hashMapArtist.get("ubicacion"));
+        datosObj.setUserFamoso(hashMapArtist.get("userFamoso"));
+        datosObj.setUserID(hashMapArtist.get("userID"));
+        datosObj.setUserLastname(hashMapArtist.get("userLastname"));
+        datosObj.setUserName(hashMapArtist.get("userName"));
     }
 
     private void associateIds(){

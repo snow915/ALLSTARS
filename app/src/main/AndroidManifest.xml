@@ -20,7 +20,10 @@
         android:roundIcon="@drawable/all_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ActivitySearchResult" android:launchMode="singleTop"></activity>
+        <activity android:name=".famous.SolicitudRechazada"></activity>
+        <activity
+            android:name=".ActivitySearchResult"
+            android:launchMode="singleTop" />
         <activity android:name=".Servicios" />
         <activity android:name=".famous.SolicitudAceptada" />
         <activity android:name=".user.SollicitudEnviada" />

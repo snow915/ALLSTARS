@@ -9,15 +9,22 @@ public class DatosSolicitudVo {
     private String horaFin;
     private String tipoPublico;
     private String detalles;
-    private String nombreUbicacion;
+    private String ubicacion;
     private String latitud;
     private String longitud;
-    private String nombreSolicitante;
-    private String apellidoSolicitante;
+    private String userName;
+    private String userLastname;
     private String nombreServicio;
     private String precioServicio;
+    private String solicitudID;
+    private String nombreFamoso;
+    private String userFamoso;
+    private String userID;
 
-    public DatosSolicitudVo(String fechaInicio,
+    public DatosSolicitudVo(){}
+
+    public DatosSolicitudVo(String idSolicitud,
+                            String fechaInicio,
                             String horaInicio,
                             String tipoEvento,
                             String fechaFin,
@@ -30,7 +37,11 @@ public class DatosSolicitudVo {
                             String nombreSolicitante,
                             String apellidoSolicitante,
                             String nombreServicio,
-                            String precioServicio) {
+                            String precioServicio,
+                            String nombreFamoso,
+                            String userFamoso,
+                            String userID) {
+        this.solicitudID = idSolicitud;
         this.fechaInicio = fechaInicio;
         this.horaInicio = horaInicio;
         this.tipoEvento = tipoEvento;
@@ -38,13 +49,16 @@ public class DatosSolicitudVo {
         this.horaFin = horaFin;
         this.tipoPublico = tipoPublico;
         this.detalles = detalles;
-        this.nombreUbicacion = nombreUbicacion;
+        this.ubicacion = nombreUbicacion;
         this.latitud = latitud;
         this.longitud = longitud;
-        this.nombreSolicitante = nombreSolicitante;
-        this.apellidoSolicitante = apellidoSolicitante;
+        this.userName = nombreSolicitante;
+        this.userLastname = apellidoSolicitante;
         this.nombreServicio = nombreServicio;
         this.precioServicio = precioServicio;
+        this.nombreFamoso = nombreFamoso;
+        this.userFamoso = userFamoso;
+        this.userID = userID;
     }
 
     public String getFechaInicio() {
@@ -103,12 +117,12 @@ public class DatosSolicitudVo {
         this.detalles = detalles;
     }
 
-    public String getNombreUbicacion() {
-        return nombreUbicacion;
+    public String getUbicacion() {
+        return ubicacion;
     }
 
-    public void setNombreUbicacion(String nombreUbicacion) {
-        this.nombreUbicacion = nombreUbicacion;
+    public void setUbicacion(String ubicacion) {
+        this.ubicacion = ubicacion;
     }
 
     public String getLatitud() {
@@ -127,20 +141,20 @@ public class DatosSolicitudVo {
         this.longitud = longitud;
     }
 
-    public String getNombreSolicitante() {
-        return nombreSolicitante;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setNombreSolicitante(String nombreSolicitante) {
-        this.nombreSolicitante = nombreSolicitante;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public String getApellidoSolicitante() {
-        return apellidoSolicitante;
+    public String getUserLastname() {
+        return userLastname;
     }
 
-    public void setApellidoSolicitante(String apellidoSolicitante) {
-        this.apellidoSolicitante = apellidoSolicitante;
+    public void setUserLastname(String userLastname) {
+        this.userLastname = userLastname;
     }
 
     public String getNombreServicio() {
@@ -157,5 +171,37 @@ public class DatosSolicitudVo {
 
     public void setPrecioServicio(String precioServicio) {
         this.precioServicio = precioServicio;
+    }
+
+    public String getSolicitudID() {
+        return solicitudID;
+    }
+
+    public void setSolicitudID(String solicitudID) {
+        this.solicitudID = solicitudID;
+    }
+
+    public String getNombreFamoso() {
+        return nombreFamoso;
+    }
+
+    public void setNombreFamoso(String nombreFamoso) {
+        this.nombreFamoso = nombreFamoso;
+    }
+
+    public String getUserFamoso() {
+        return userFamoso;
+    }
+
+    public void setUserFamoso(String userFamoso) {
+        this.userFamoso = userFamoso;
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 }

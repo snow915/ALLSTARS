@@ -192,10 +192,15 @@
         ¡Solicitud aceptada! \n \n
         Te haremos saber cuando el usuario realice el pago, tiene 24 horas para realizarlo
     </string>
+
+    <string name="solicitud_rechazada">
+        ¡Solicitud rechazada!
+    </string>
     <!-- TODO: Remove or change this placeholder text -->
 
     <string name="facebook_app_id">564233794475101</string>
     <string name="fb_login_protocol_scheme">fb564233794475101</string>
+    <string name="ir_inicio">Ir al inicio</string>
 
 
 </resources>

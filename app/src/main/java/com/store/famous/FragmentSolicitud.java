@@ -106,7 +106,8 @@ public class FragmentSolicitud extends Fragment {
                 for(DataSnapshot postSnapshotHiring : dataSnapshot2.getChildren()){
                     if(idSolicitud.equals(postSnapshotHiring.child("solicitudID").getValue().toString())){
                         listData.add(
-                                new DatosSolicitudVo(postSnapshotHiring.child("fechaInicio").getValue().toString(),
+                                new DatosSolicitudVo(postSnapshotHiring.child("solicitudID").getValue().toString(),
+                                        postSnapshotHiring.child("fechaInicio").getValue().toString(),
                                         postSnapshotHiring.child("horaInicio").getValue().toString(),
                                         postSnapshotHiring.child("tipoEvento").getValue().toString(),
                                         postSnapshotHiring.child("fechaFin").getValue().toString(),
@@ -119,7 +120,10 @@ public class FragmentSolicitud extends Fragment {
                                         postSnapshotHiring.child("userName").getValue().toString(),
                                         postSnapshotHiring.child("userLastname").getValue().toString(),
                                         postSnapshotHiring.child("nombreServicio").getValue().toString(),
-                                        postSnapshotHiring.child("precioServicio").getValue().toString()
+                                        postSnapshotHiring.child("precioServicio").getValue().toString(),
+                                        postSnapshotHiring.child("nombreFamoso").getValue().toString(),
+                                        postSnapshotHiring.child("userFamoso").getValue().toString(),
+                                        postSnapshotHiring.child("userID").getValue().toString()
                                 )
                         );
                     }
@@ -134,38 +138,46 @@ public class FragmentSolicitud extends Fragment {
                     @Override
                     public void onClick(View v) {
 
-                        String startDate = listData.get(recycler.getChildAdapterPosition(v)).getFechaInicio();
-                        String finishDate = listData.get(recycler.getChildAdapterPosition(v)).getFechaFin();
-                        String startTime = listData.get(recycler.getChildAdapterPosition(v)).getHoraInicio();
-                        String finishTime = listData.get(recycler.getChildAdapterPosition(v)).getHoraFin();
-                        String eventType = listData.get(recycler.getChildAdapterPosition(v)).getTipoEvento();
-                        String audienceType = listData.get(recycler.getChildAdapterPosition(v)).getTipoPublico();
-                        String details = listData.get(recycler.getChildAdapterPosition(v)).getDetalles();
-                        String location = listData.get(recycler.getChildAdapterPosition(v)).getNombreUbicacion();
-                        String latitude = listData.get(recycler.getChildAdapterPosition(v)).getLatitud();
-                        String longitude = listData.get(recycler.getChildAdapterPosition(v)).getLongitud();
-                        String applicantsFirstname = listData.get(recycler.getChildAdapterPosition(v)).getNombreSolicitante();
-                        String applicantsLastname = listData.get(recycler.getChildAdapterPosition(v)).getApellidoSolicitante();
-                        String nameService = listData.get(recycler.getChildAdapterPosition(v)).getNombreServicio();
-                        String priceService = listData.get(recycler.getChildAdapterPosition(v)).getPrecioServicio();
+                        String solicitudID = listData.get(recycler.getChildAdapterPosition(v)).getSolicitudID();
+                        String fechaInicio = listData.get(recycler.getChildAdapterPosition(v)).getFechaInicio();
+                        String fechaFin = listData.get(recycler.getChildAdapterPosition(v)).getFechaFin();
+                        String horaInicio = listData.get(recycler.getChildAdapterPosition(v)).getHoraInicio();
+                        String horaFin = listData.get(recycler.getChildAdapterPosition(v)).getHoraFin();
+                        String tipoEvento = listData.get(recycler.getChildAdapterPosition(v)).getTipoEvento();
+                        String tipoPublico = listData.get(recycler.getChildAdapterPosition(v)).getTipoPublico();
+                        String detalles = listData.get(recycler.getChildAdapterPosition(v)).getDetalles();
+                        String ubicacion = listData.get(recycler.getChildAdapterPosition(v)).getUbicacion();
+                        String latitud = listData.get(recycler.getChildAdapterPosition(v)).getLatitud();
+                        String longitud = listData.get(recycler.getChildAdapterPosition(v)).getLongitud();
+                        String userName = listData.get(recycler.getChildAdapterPosition(v)).getUserName();
+                        String userLastname = listData.get(recycler.getChildAdapterPosition(v)).getUserLastname();
+                        String nombreServicio = listData.get(recycler.getChildAdapterPosition(v)).getNombreServicio();
+                        String precioServicio = listData.get(recycler.getChildAdapterPosition(v)).getPrecioServicio();
+                        String nombreFamoso = listData.get(recycler.getChildAdapterPosition(v)).getNombreFamoso();
+                        String userFamoso = listData.get(recycler.getChildAdapterPosition(v)).getUserFamoso();
+                        String userID = listData.get(recycler.getChildAdapterPosition(v)).getUserID();
 
                         //Tal vez con un for?
-                        hashMapArtist.put("startDate", startDate);
-                        hashMapArtist.put("finishDate", finishDate);
-                        hashMapArtist.put("startTime", startTime);
-                        hashMapArtist.put("finishTime", finishTime);
-                        hashMapArtist.put("eventType", eventType);
-                        hashMapArtist.put("audienceType", audienceType);
-                        hashMapArtist.put("details", details);
-                        hashMapArtist.put("location", location);
-                        hashMapArtist.put("latitude", latitude);
-                        hashMapArtist.put("longitude", longitude);
-                        hashMapArtist.put("applicantsFirstname", applicantsFirstname);
-                        hashMapArtist.put("applicantsLastname", applicantsLastname);
-                        hashMapArtist.put("nameService", nameService);
-                        hashMapArtist.put("priceService", priceService);
+                        hashMapArtist.put("solicitudID", solicitudID);
+                        hashMapArtist.put("fechaInicio", fechaInicio);
+                        hashMapArtist.put("fechaFin", fechaFin);
+                        hashMapArtist.put("horaInicio", horaInicio);
+                        hashMapArtist.put("horaFin", horaFin);
+                        hashMapArtist.put("tipoEvento", tipoEvento);
+                        hashMapArtist.put("tipoPublico", tipoPublico);
+                        hashMapArtist.put("detalles", detalles);
+                        hashMapArtist.put("ubicacion", ubicacion);
+                        hashMapArtist.put("latitud", latitud);
+                        hashMapArtist.put("longitud", longitud);
+                        hashMapArtist.put("userName", userName);
+                        hashMapArtist.put("userLastname", userLastname);
+                        hashMapArtist.put("nombreServicio", nombreServicio);
+                        hashMapArtist.put("precioServicio", precioServicio);
+                        hashMapArtist.put("nombreFamoso", nombreFamoso);
+                        hashMapArtist.put("userFamoso", userFamoso);
+                        hashMapArtist.put("userID", userID);
 
-                        saveLocationData(location, latitude, longitude);
+                        saveLocationData(ubicacion, latitud, longitud);
 
                         Intent infoSolicitud = new Intent(getActivity(), InfoSolicitud.class);
                         infoSolicitud.putExtra("mapValuesArtist", hashMapArtist);
