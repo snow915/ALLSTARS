@@ -117,7 +117,9 @@ public class FragmentSolicitud extends Fragment {
                                         postSnapshotHiring.child("latitud").getValue().toString(),
                                         postSnapshotHiring.child("longitud").getValue().toString(),
                                         postSnapshotHiring.child("userName").getValue().toString(),
-                                        postSnapshotHiring.child("userLastname").getValue().toString()
+                                        postSnapshotHiring.child("userLastname").getValue().toString(),
+                                        postSnapshotHiring.child("nombreServicio").getValue().toString(),
+                                        postSnapshotHiring.child("precioServicio").getValue().toString()
                                 )
                         );
                     }
@@ -144,7 +146,10 @@ public class FragmentSolicitud extends Fragment {
                         String longitude = listData.get(recycler.getChildAdapterPosition(v)).getLongitud();
                         String applicantsFirstname = listData.get(recycler.getChildAdapterPosition(v)).getNombreSolicitante();
                         String applicantsLastname = listData.get(recycler.getChildAdapterPosition(v)).getApellidoSolicitante();
+                        String nameService = listData.get(recycler.getChildAdapterPosition(v)).getNombreServicio();
+                        String priceService = listData.get(recycler.getChildAdapterPosition(v)).getPrecioServicio();
 
+                        //Tal vez con un for?
                         hashMapArtist.put("startDate", startDate);
                         hashMapArtist.put("finishDate", finishDate);
                         hashMapArtist.put("startTime", startTime);
@@ -157,6 +162,8 @@ public class FragmentSolicitud extends Fragment {
                         hashMapArtist.put("longitude", longitude);
                         hashMapArtist.put("applicantsFirstname", applicantsFirstname);
                         hashMapArtist.put("applicantsLastname", applicantsLastname);
+                        hashMapArtist.put("nameService", nameService);
+                        hashMapArtist.put("priceService", priceService);
 
                         saveLocationData(location, latitude, longitude);
 

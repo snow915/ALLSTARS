@@ -14,6 +14,8 @@ public class DatosSolicitudVo {
     private String longitud;
     private String nombreSolicitante;
     private String apellidoSolicitante;
+    private String nombreServicio;
+    private String precioServicio;
 
     public DatosSolicitudVo(String fechaInicio,
                             String horaInicio,
@@ -26,7 +28,9 @@ public class DatosSolicitudVo {
                             String latitud,
                             String longitud,
                             String nombreSolicitante,
-                            String apellidoSolicitante) {
+                            String apellidoSolicitante,
+                            String nombreServicio,
+                            String precioServicio) {
         this.fechaInicio = fechaInicio;
         this.horaInicio = horaInicio;
         this.tipoEvento = tipoEvento;
@@ -39,6 +43,8 @@ public class DatosSolicitudVo {
         this.longitud = longitud;
         this.nombreSolicitante = nombreSolicitante;
         this.apellidoSolicitante = apellidoSolicitante;
+        this.nombreServicio = nombreServicio;
+        this.precioServicio = precioServicio;
     }
 
     public String getFechaInicio() {
@@ -135,5 +141,21 @@ public class DatosSolicitudVo {
 
     public void setApellidoSolicitante(String apellidoSolicitante) {
         this.apellidoSolicitante = apellidoSolicitante;
+    }
+
+    public String getNombreServicio() {
+        return nombreServicio;
+    }
+
+    public void setNombreServicio(String nombreServicio) {
+        this.nombreServicio = nombreServicio;
+    }
+
+    public String getPrecioServicio() {
+        return precioServicio;
+    }
+
+    public void setPrecioServicio(String precioServicio) {
+        this.precioServicio = precioServicio;
     }
 }
