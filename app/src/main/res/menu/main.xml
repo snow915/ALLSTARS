@@ -10,7 +10,5 @@
         android:id="@+id/searchIcon"
         android:icon="@drawable/ic_search"
         android:title="Search"
-        app:showAsAction="ifRoom|collapseActionView"
-        app:actionViewClass="androidx.appcompat.widget.SearchView"
-        android:onClick="perra"/>
+        app:showAsAction="ifRoom|collapseActionView" />
 </menu>
