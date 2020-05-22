@@ -6,4 +6,11 @@
         android:orderInCategory="100"
         android:title="@string/about"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/searchIcon"
+        android:icon="@drawable/ic_search"
+        android:title="Search"
+        app:showAsAction="ifRoom|collapseActionView"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        android:onClick="perra"/>
 </menu>

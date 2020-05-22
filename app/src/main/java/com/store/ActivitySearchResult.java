@@ -5,23 +5,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import androidx.appcompat.widget.SearchView;
-import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.store.adapters.AdapterDatos;
-import com.store.famous.Artistas;
-import com.store.viewHolders.ViewHolderArtistas;
 import com.store.vo.DatosVo;
 
 import java.util.ArrayList;
@@ -41,7 +33,6 @@ public class ActivitySearchResult extends AppCompatActivity {
         setContentView(R.layout.activity_search_result);
         searchBar = findViewById(R.id.searchResultBar);
         recycler = findViewById(R.id.recyclerQueryResults);
-        retrievedQuery = getIntent().getStringExtra("query");
         reference = FirebaseDatabase.getInstance().getReference().child("data");
         searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -55,12 +46,6 @@ public class ActivitySearchResult extends AppCompatActivity {
                 return false;
             }
         });
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        searchArtists(retrievedQuery);
     }
 
     private void searchArtists(String query) {

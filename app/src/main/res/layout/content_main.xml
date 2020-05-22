@@ -12,20 +12,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <androidx.appcompat.widget.SearchView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:queryHint="Busca un artista"
-            android:id="@+id/searchBar"
-            android:background="#E3CACA"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:id="@+id/content_main_carrusel">
-
     </LinearLayout>
 
     <LinearLayout

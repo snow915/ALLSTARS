@@ -3,11 +3,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.SearchView;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
-
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.google.android.material.navigation.NavigationView;
@@ -34,15 +32,12 @@ import com.store.famous.FragmentSolicitud;
 import com.store.famous.FragmentViewServices;
 import com.store.user.EditProfile;
 import com.store.user.Profile;
-
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import android.view.Menu;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class MainActivity extends AppCompatActivity
@@ -73,7 +68,7 @@ public class MainActivity extends AppCompatActivity
     private DrawerLayout drawer;
     private NavigationView navigationView;
     private SharedPreferencesApp sharedPreferencesApp;
-    private SearchView searchBar;
+    private MenuItem search;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,21 +116,7 @@ public class MainActivity extends AppCompatActivity
         getSupportFragmentManager().beginTransaction().add(R.id.content_main, myFragment).commit();
         //Here i put index, in the content_main.xml
         getSupportFragmentManager().beginTransaction().add(R.id.content_main_carrusel, carousel).commit();
-        searchBar = findViewById(R.id.searchBar);
-        searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                Intent intent = new Intent(getApplicationContext(), ActivitySearchResult.class);
-                intent.putExtra("query", query);
-                startActivity(intent);
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
+        search = findViewById(R.id.searchIcon);
     }
 
     @Override
@@ -383,4 +364,8 @@ public class MainActivity extends AppCompatActivity
                 .show();
     }
 
+    public void perra(MenuItem item) {
+        Intent intent = new Intent(getApplicationContext(), ActivitySearchResult.class);
+        startActivity(intent);
+    }
 }
