@@ -16,7 +16,7 @@
         <androidx.appcompat.widget.SearchView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:queryHint="Busca alguna mamada perra"
+            app:queryHint="@string/search_hint"
             android:id="@+id/searchResultBar"/>
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
