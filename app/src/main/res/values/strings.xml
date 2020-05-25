@@ -209,8 +209,13 @@
     <string name="fb_login_protocol_scheme">fb564233794475101</string>
     <string name="ir_inicio">Ir al inicio</string>
 
-    <!--SEARCHVIEW BLOCK-->
+    <!--SEARCH BAR BLOCK-->
     <string name="search_hint">Busca un artista o categoría</string>
-    <!--SEARCHVIEW BLOCK-->
+    <string-array name="array_filters">
+        <item>Ranking</item>
+        <item>Número de solicitudes</item>
+        <item>Precio</item>
+    </string-array>
+    <!--SEARCH BAR BLOCK-->
 
 </resources>

@@ -4,10 +4,17 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
+
 import androidx.appcompat.widget.SearchView;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,11 +28,10 @@ import java.util.ArrayList;
 public class ActivitySearchResult extends AppCompatActivity {
 
     private SearchView searchBar;
+    private LinearLayout layoutFilter;
     private RecyclerView recycler;
-    private String retrievedQuery;
     private DatabaseReference reference;
-    private FirebaseRecyclerAdapter adapter;
-    private FirebaseRecyclerOptions options;
+    private Spinner spinnerFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +39,9 @@ public class ActivitySearchResult extends AppCompatActivity {
         setContentView(R.layout.activity_search_result);
         searchBar = findViewById(R.id.searchResultBar);
         recycler = findViewById(R.id.recyclerQueryResults);
+        spinnerFilter = findViewById(R.id.spinner_filter);
+        layoutFilter = findViewById(R.id.layout_filter);
+        final Context context = this;
         reference = FirebaseDatabase.getInstance().getReference().child("data");
         searchBar.setIconifiedByDefault(true);
         searchBar.setFocusable(true);
@@ -41,7 +50,7 @@ public class ActivitySearchResult extends AppCompatActivity {
         searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                searchArtists(query);
+                searchArtists(query, context);
                 return true;
             }
 
@@ -52,7 +61,7 @@ public class ActivitySearchResult extends AppCompatActivity {
         });
     }
 
-    private void searchArtists(String query) {
+    private void searchArtists(String query, final Context context) {
         final ArrayList<DatosVo> listData = new ArrayList<DatosVo>();
         final String search = query.toLowerCase().trim();
         recycler.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
@@ -72,6 +81,24 @@ public class ActivitySearchResult extends AppCompatActivity {
                 }
                 AdapterDatos adapter = new AdapterDatos(listData, getApplicationContext());
                 recycler.setAdapter(adapter);
+                ArrayAdapter<CharSequence> filterAdapter = ArrayAdapter.createFromResource(
+                        getApplicationContext(),
+                        R.array.array_filters,
+                        android.R.layout.simple_spinner_item);
+                filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinnerFilter.setAdapter(filterAdapter);
+                layoutFilter.setVisibility(View.VISIBLE);
+                spinnerFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
             }
 
             @Override
