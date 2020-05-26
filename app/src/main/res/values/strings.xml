@@ -106,6 +106,13 @@
     <string name="edit_artist_apply_changes_hint">APLICAR CAMBIOS</string>
     <!-- END - Strings for Edit Artist Layout -->
 
+    <!-- VIEW PROFILE BLOCK-->
+        <string name="view_artist_biography">Biografía actual</string>
+        <string name="view_artist_ranking">Ranking actual</string>
+        <string name="view_artist_subtitle">Información actual</string>
+    <!-- VIEW PROFILE BLOCK-->
+
+
     <!-- Services block-->
     <string name="recycler_title">SERVICIOS OFERTADOS</string>
     <string name="label_service_name">Nombre</string>
@@ -205,5 +212,13 @@
     <string name="fb_login_protocol_scheme">fb564233794475101</string>
     <string name="ir_inicio">Ir al inicio</string>
 
+    <!--SEARCH BAR BLOCK-->
+    <string name="search_hint">Busca un artista o categoría</string>
+    <string-array name="array_filters">
+        <item>Ranking</item>
+        <item>Número de solicitudes</item>
+        <item>Precio</item>
+    </string-array>
+    <!--SEARCH BAR BLOCK-->
 
 </resources>
