@@ -23,7 +23,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.store.R;
 import com.store.SharedPreferencesApp;
 import com.store.adapters.AdapterDatosSolicitudUsuario;
-import com.store.famous.InfoSolicitud;
 import com.store.vo.DatosSolicitudVo;
 
 import java.util.ArrayList;
@@ -37,7 +36,7 @@ public class FragmentSolicitudUsuario extends Fragment {
     private DatabaseReference reference, referenceHiring;
     private String userID;
     private SharedPreferencesApp sharedPreferencesApp;
-    public HashMap<String, String> hashMapArtist = new HashMap<String, String>();
+    public HashMap<String, String> hashMapRequest = new HashMap<String, String>();
 
     public FragmentSolicitudUsuario() {}
 
@@ -77,8 +76,7 @@ public class FragmentSolicitudUsuario extends Fragment {
     }
 
     private void showPendingsRequests(View v, final String typeRequest){
-        Toast.makeText(getActivity(),"SOLICITUDES PENDIENTES", Toast.LENGTH_SHORT).show();
-
+        hashMapRequest.put("tipoSolicitud", typeRequest);
         final View view = v;
         listData = new ArrayList<DatosSolicitudVo>();
         reference = FirebaseDatabase.getInstance().getReference().child("Usuarios").child(userID).child("solicitudes");
@@ -107,7 +105,7 @@ public class FragmentSolicitudUsuario extends Fragment {
     }
 
     private void showAcceptedRequests(View v, final String typeRequest){
-        Toast.makeText(getActivity(),"SOLICITUDES ACEPTADAS", Toast.LENGTH_SHORT).show();
+        hashMapRequest.put("tipoSolicitud", typeRequest);
 
         final View view = v;
         listData = new ArrayList<DatosSolicitudVo>();
@@ -137,7 +135,7 @@ public class FragmentSolicitudUsuario extends Fragment {
     }
 
     private void showRejectedRequests(View v, final String typeRequest){
-        Toast.makeText(getActivity(),"SOLICITUDES RECHAZADAS", Toast.LENGTH_SHORT).show();
+        hashMapRequest.put("tipoSolicitud", typeRequest);
 
         final View view = v;
         listData = new ArrayList<DatosSolicitudVo>();
@@ -235,30 +233,30 @@ public class FragmentSolicitudUsuario extends Fragment {
                             String imagenFamoso = listData.get(recycler.getChildAdapterPosition(v)).getImagenFamoso();
 
                             //Tal vez con un for?
-                            hashMapArtist.put("solicitudID", solicitudID);
-                            hashMapArtist.put("fechaInicio", fechaInicio);
-                            hashMapArtist.put("fechaFin", fechaFin);
-                            hashMapArtist.put("horaInicio", horaInicio);
-                            hashMapArtist.put("horaFin", horaFin);
-                            hashMapArtist.put("tipoEvento", tipoEvento);
-                            hashMapArtist.put("tipoPublico", tipoPublico);
-                            hashMapArtist.put("detalles", detalles);
-                            hashMapArtist.put("ubicacion", ubicacion);
-                            hashMapArtist.put("latitud", latitud);
-                            hashMapArtist.put("longitud", longitud);
-                            hashMapArtist.put("userName", userName);
-                            hashMapArtist.put("userLastname", userLastname);
-                            hashMapArtist.put("nombreServicio", nombreServicio);
-                            hashMapArtist.put("precioServicio", precioServicio);
-                            hashMapArtist.put("nombreFamoso", nombreFamoso);
-                            hashMapArtist.put("userFamoso", userFamoso);
-                            hashMapArtist.put("userID", userID);
-                            hashMapArtist.put("imagenFamoso", imagenFamoso);
+                            hashMapRequest.put("solicitudID", solicitudID);
+                            hashMapRequest.put("fechaInicio", fechaInicio);
+                            hashMapRequest.put("fechaFin", fechaFin);
+                            hashMapRequest.put("horaInicio", horaInicio);
+                            hashMapRequest.put("horaFin", horaFin);
+                            hashMapRequest.put("tipoEvento", tipoEvento);
+                            hashMapRequest.put("tipoPublico", tipoPublico);
+                            hashMapRequest.put("detalles", detalles);
+                            hashMapRequest.put("ubicacion", ubicacion);
+                            hashMapRequest.put("latitud", latitud);
+                            hashMapRequest.put("longitud", longitud);
+                            hashMapRequest.put("userName", userName);
+                            hashMapRequest.put("userLastname", userLastname);
+                            hashMapRequest.put("nombreServicio", nombreServicio);
+                            hashMapRequest.put("precioServicio", precioServicio);
+                            hashMapRequest.put("nombreFamoso", nombreFamoso);
+                            hashMapRequest.put("userFamoso", userFamoso);
+                            hashMapRequest.put("userID", userID);
+                            hashMapRequest.put("imagenFamoso", imagenFamoso);
 
                             saveLocationData(ubicacion, latitud, longitud);
 
-                            Intent infoSolicitud = new Intent(getActivity(), InfoSolicitud.class);
-                            infoSolicitud.putExtra("mapValuesArtist", hashMapArtist);
+                            Intent infoSolicitud = new Intent(getActivity(), InfoSolicitudERUsuario.class);
+                            infoSolicitud.putExtra("mapValuesRequest", hashMapRequest);
                             startActivity(infoSolicitud);
                         }
                     });
