@@ -7,13 +7,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.store.R;
+import com.store.famous.InfoSolicitud;
 
 import java.util.HashMap;
 
-public class InfoSolicitudERUsuario extends AppCompatActivity {
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
+public class InfoSolicitudERUsuario extends AppCompatActivity implements View.OnClickListener {
 
     private TextView title, price, artistFirstName, startDate, finishDate, startTime, finishTime,
     eventType, audienceType, details, status;
@@ -26,8 +30,17 @@ public class InfoSolicitudERUsuario extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info_solicitud_e_r_usuario);
         hashMapRequest = (HashMap<String, String>) getIntent().getSerializableExtra("mapValuesRequest");
+        if(hashMapRequest.get("tipoSolicitud").equals("ACCEPTED")){
+            new SweetAlertDialog(InfoSolicitudERUsuario.this, SweetAlertDialog.SUCCESS_TYPE)
+                    .setTitleText("Felicidades")
+                    .setContentText("Tu solicitud fue aceptada, tienes solo 24 horas para realizar el pago correspondiente")
+                    .setConfirmText("Entendido")
+                    .show();
+        }
         associateIDs();
         setValuesLayout();
+
+        pay.setOnClickListener(this);
     }
 
     private void associateIDs(){
@@ -78,5 +91,13 @@ public class InfoSolicitudERUsuario extends AppCompatActivity {
                 .fitCenter()
                 .centerCrop()
                 .into(image);
+    }
+
+    @Override
+    public void onClick(View v) {
+        int i = v.getId();
+        if(i == R.id.id_pagar){
+            Toast.makeText(getApplicationContext(), "PAGO", Toast.LENGTH_SHORT).show();
+        }
     }
 }
