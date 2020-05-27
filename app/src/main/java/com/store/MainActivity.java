@@ -30,6 +30,7 @@ import com.store.famous.EditArtistProfile;
 import com.store.famous.FragmentDeleteService;
 import com.store.famous.FragmentSolicitud;
 import com.store.famous.FragmentViewServices;
+import com.store.famous.RequestsAccepted;
 import com.store.user.EditProfile;
 import com.store.user.FragmentSolicitudUsuario;
 import com.store.user.Profile;
@@ -305,7 +306,8 @@ public class MainActivity extends AppCompatActivity
             if(username != null){
                 myFragment = new FragmentSolicitudUsuario();
             } else {
-                myFragment = new FragmentSolicitud();
+                //myFragment = new FragmentSolicitud();
+                myFragment = new RequestsAccepted();
             }
             Bundle b = new Bundle();
             b.putString("typeRequest", "accepted");
