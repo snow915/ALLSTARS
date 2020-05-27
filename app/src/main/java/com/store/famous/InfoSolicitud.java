@@ -161,6 +161,10 @@ public class InfoSolicitud extends AppCompatActivity implements View.OnClickList
         txtName.setText(hashMapArtist.get("userName") + " " + hashMapArtist.get("userLastname"));
         txtNameSevice.setText(hashMapArtist.get("nombreServicio"));
         txtPriceService.setText("$" + hashMapArtist.get("precioServicio"));
+        if(!hashMapArtist.get("tipoSolicitud").equals("PENDING")){
+            btnAccept.setVisibility(View.GONE);
+            btnDeny.setVisibility(View.GONE);
+        }
     }
 
     private void setValuesDatosSolicitud(){

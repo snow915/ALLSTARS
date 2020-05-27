@@ -38,6 +38,7 @@ public class FragmentSolicitud extends Fragment {
     private String artistUser;
     private SharedPreferencesApp sharedPreferencesApp;
     public HashMap<String, String> hashMapArtist = new HashMap<String, String>();
+    private String typeRequest;
 
     public FragmentSolicitud() {}
 
@@ -53,10 +54,8 @@ public class FragmentSolicitud extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        Bundle b = this.getArguments();
+        typeRequest = b.getString("typeRequest");
     }
 
     @Override
@@ -66,11 +65,11 @@ public class FragmentSolicitud extends Fragment {
         sharedPreferencesApp.loadPreferences();
         artistUser = sharedPreferencesApp.getArtistUsername();
         View v = inflater.inflate(R.layout.fragment_solicitud, container, false);
-        fillData(v);
+        fillData(v, typeRequest.toUpperCase());
         return v;
     }
 
-    private void fillData(View v){
+    private void fillData(View v, final String typeRequest){
         final View view = v;
         listData = new ArrayList<DatosSolicitudVo>();
         reference = FirebaseDatabase.getInstance().getReference().child("data").child(artistUser).child("solicitudes");
@@ -81,7 +80,7 @@ public class FragmentSolicitud extends Fragment {
                     for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
 
                         final String idHiring = postSnapshot.getValue().toString();
-                        retrieveHirings(view, idHiring);
+                        retrieveHirings(view, idHiring, typeRequest);
                     }
 
                 } else {
@@ -98,8 +97,15 @@ public class FragmentSolicitud extends Fragment {
 
     }
 
-    private void retrieveHirings(final View view, final String idSolicitud){
-        referenceHiring = FirebaseDatabase.getInstance().getReference().child("solicitudes");
+    private void retrieveHirings(final View view, final String idSolicitud, String typeRequest){
+        hashMapArtist.put("tipoSolicitud", typeRequest);
+        if(typeRequest.equals("PENDING")){
+            referenceHiring = FirebaseDatabase.getInstance().getReference().child("solicitudes");
+        } else if(typeRequest.equals("ACCEPTED")){
+            referenceHiring = FirebaseDatabase.getInstance().getReference().child("solicitudes_aceptadas");
+        } else if(typeRequest.equals("REJECTED")){
+            referenceHiring = FirebaseDatabase.getInstance().getReference().child("solicitudes_rechazadas");
+        }
         referenceHiring.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
@@ -132,61 +138,62 @@ public class FragmentSolicitud extends Fragment {
 
                 recycler = view.findViewById(R.id.recycler_id_solicitud);
                 recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+                try{
+                    AdapterDatosSolicitud adapter = new AdapterDatosSolicitud(listData, getActivity());
+                    recycler.setAdapter(adapter);
+                    adapter.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
 
-                AdapterDatosSolicitud adapter = new AdapterDatosSolicitud(listData, getActivity().getApplicationContext());
-                recycler.setAdapter(adapter);
-                adapter.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                            String solicitudID = listData.get(recycler.getChildAdapterPosition(v)).getSolicitudID();
+                            String fechaInicio = listData.get(recycler.getChildAdapterPosition(v)).getFechaInicio();
+                            String fechaFin = listData.get(recycler.getChildAdapterPosition(v)).getFechaFin();
+                            String horaInicio = listData.get(recycler.getChildAdapterPosition(v)).getHoraInicio();
+                            String horaFin = listData.get(recycler.getChildAdapterPosition(v)).getHoraFin();
+                            String tipoEvento = listData.get(recycler.getChildAdapterPosition(v)).getTipoEvento();
+                            String tipoPublico = listData.get(recycler.getChildAdapterPosition(v)).getTipoPublico();
+                            String detalles = listData.get(recycler.getChildAdapterPosition(v)).getDetalles();
+                            String ubicacion = listData.get(recycler.getChildAdapterPosition(v)).getUbicacion();
+                            String latitud = listData.get(recycler.getChildAdapterPosition(v)).getLatitud();
+                            String longitud = listData.get(recycler.getChildAdapterPosition(v)).getLongitud();
+                            String userName = listData.get(recycler.getChildAdapterPosition(v)).getUserName();
+                            String userLastname = listData.get(recycler.getChildAdapterPosition(v)).getUserLastname();
+                            String nombreServicio = listData.get(recycler.getChildAdapterPosition(v)).getNombreServicio();
+                            String precioServicio = listData.get(recycler.getChildAdapterPosition(v)).getPrecioServicio();
+                            String nombreFamoso = listData.get(recycler.getChildAdapterPosition(v)).getNombreFamoso();
+                            String userFamoso = listData.get(recycler.getChildAdapterPosition(v)).getUserFamoso();
+                            String userID = listData.get(recycler.getChildAdapterPosition(v)).getUserID();
+                            String imagenFamoso = listData.get(recycler.getChildAdapterPosition(v)).getImagenFamoso();
 
-                        String solicitudID = listData.get(recycler.getChildAdapterPosition(v)).getSolicitudID();
-                        String fechaInicio = listData.get(recycler.getChildAdapterPosition(v)).getFechaInicio();
-                        String fechaFin = listData.get(recycler.getChildAdapterPosition(v)).getFechaFin();
-                        String horaInicio = listData.get(recycler.getChildAdapterPosition(v)).getHoraInicio();
-                        String horaFin = listData.get(recycler.getChildAdapterPosition(v)).getHoraFin();
-                        String tipoEvento = listData.get(recycler.getChildAdapterPosition(v)).getTipoEvento();
-                        String tipoPublico = listData.get(recycler.getChildAdapterPosition(v)).getTipoPublico();
-                        String detalles = listData.get(recycler.getChildAdapterPosition(v)).getDetalles();
-                        String ubicacion = listData.get(recycler.getChildAdapterPosition(v)).getUbicacion();
-                        String latitud = listData.get(recycler.getChildAdapterPosition(v)).getLatitud();
-                        String longitud = listData.get(recycler.getChildAdapterPosition(v)).getLongitud();
-                        String userName = listData.get(recycler.getChildAdapterPosition(v)).getUserName();
-                        String userLastname = listData.get(recycler.getChildAdapterPosition(v)).getUserLastname();
-                        String nombreServicio = listData.get(recycler.getChildAdapterPosition(v)).getNombreServicio();
-                        String precioServicio = listData.get(recycler.getChildAdapterPosition(v)).getPrecioServicio();
-                        String nombreFamoso = listData.get(recycler.getChildAdapterPosition(v)).getNombreFamoso();
-                        String userFamoso = listData.get(recycler.getChildAdapterPosition(v)).getUserFamoso();
-                        String userID = listData.get(recycler.getChildAdapterPosition(v)).getUserID();
-                        String imagenFamoso = listData.get(recycler.getChildAdapterPosition(v)).getImagenFamoso();
+                            //Tal vez con un for?
+                            hashMapArtist.put("solicitudID", solicitudID);
+                            hashMapArtist.put("fechaInicio", fechaInicio);
+                            hashMapArtist.put("fechaFin", fechaFin);
+                            hashMapArtist.put("horaInicio", horaInicio);
+                            hashMapArtist.put("horaFin", horaFin);
+                            hashMapArtist.put("tipoEvento", tipoEvento);
+                            hashMapArtist.put("tipoPublico", tipoPublico);
+                            hashMapArtist.put("detalles", detalles);
+                            hashMapArtist.put("ubicacion", ubicacion);
+                            hashMapArtist.put("latitud", latitud);
+                            hashMapArtist.put("longitud", longitud);
+                            hashMapArtist.put("userName", userName);
+                            hashMapArtist.put("userLastname", userLastname);
+                            hashMapArtist.put("nombreServicio", nombreServicio);
+                            hashMapArtist.put("precioServicio", precioServicio);
+                            hashMapArtist.put("nombreFamoso", nombreFamoso);
+                            hashMapArtist.put("userFamoso", userFamoso);
+                            hashMapArtist.put("userID", userID);
+                            hashMapArtist.put("imagenFamoso", imagenFamoso);
 
-                        //Tal vez con un for?
-                        hashMapArtist.put("solicitudID", solicitudID);
-                        hashMapArtist.put("fechaInicio", fechaInicio);
-                        hashMapArtist.put("fechaFin", fechaFin);
-                        hashMapArtist.put("horaInicio", horaInicio);
-                        hashMapArtist.put("horaFin", horaFin);
-                        hashMapArtist.put("tipoEvento", tipoEvento);
-                        hashMapArtist.put("tipoPublico", tipoPublico);
-                        hashMapArtist.put("detalles", detalles);
-                        hashMapArtist.put("ubicacion", ubicacion);
-                        hashMapArtist.put("latitud", latitud);
-                        hashMapArtist.put("longitud", longitud);
-                        hashMapArtist.put("userName", userName);
-                        hashMapArtist.put("userLastname", userLastname);
-                        hashMapArtist.put("nombreServicio", nombreServicio);
-                        hashMapArtist.put("precioServicio", precioServicio);
-                        hashMapArtist.put("nombreFamoso", nombreFamoso);
-                        hashMapArtist.put("userFamoso", userFamoso);
-                        hashMapArtist.put("userID", userID);
-                        hashMapArtist.put("imagenFamoso", imagenFamoso);
+                            saveLocationData(ubicacion, latitud, longitud);
 
-                        saveLocationData(ubicacion, latitud, longitud);
-
-                        Intent infoSolicitud = new Intent(getActivity(), InfoSolicitud.class);
-                        infoSolicitud.putExtra("mapValuesArtist", hashMapArtist);
-                        startActivity(infoSolicitud);
-                    }
-                });
+                            Intent infoSolicitud = new Intent(getActivity(), InfoSolicitud.class);
+                            infoSolicitud.putExtra("mapValuesArtist", hashMapArtist);
+                            startActivity(infoSolicitud);
+                        }
+                    });
+                } catch(Exception e){}
             }
 
             @Override

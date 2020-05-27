@@ -206,7 +206,7 @@ public class FragmentSolicitudUsuario extends Fragment {
                 recycler = view.findViewById(R.id.recycler_id_solicitud_usuario);
                 recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
                 try{
-                    AdapterDatosSolicitudUsuario adapter = new AdapterDatosSolicitudUsuario(listData, getActivity().getApplicationContext());
+                    AdapterDatosSolicitudUsuario adapter = new AdapterDatosSolicitudUsuario(listData, getActivity());
                     recycler.setAdapter(adapter);
                     adapter.setOnClickListener(new View.OnClickListener() {
                         @Override

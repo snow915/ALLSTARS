@@ -297,7 +297,6 @@ public class MainActivity extends AppCompatActivity
             b.putString("typeRequest", "pending");
             myFragment.setArguments(b);
             fragmentSelected = true;
-            fragmentSelected = true;
         } else if (id == R.id.accepted_requests) {
             if(carousel != null){
                 carousel = null;
