@@ -97,15 +97,18 @@ public class FragmentSolicitud extends Fragment {
 
     }
 
-    private void retrieveHirings(final View view, final String idSolicitud, String typeRequest){
+    private void retrieveHirings(final View view, final String idSolicitud, final String typeRequest){
         hashMapArtist.put("tipoSolicitud", typeRequest);
         if(typeRequest.equals("PENDING")){
             referenceHiring = FirebaseDatabase.getInstance().getReference().child("solicitudes");
         } else if(typeRequest.equals("ACCEPTED")){
-            referenceHiring = FirebaseDatabase.getInstance().getReference().child("solicitudes_aceptadas");
+            referenceHiring = FirebaseDatabase.getInstance().getReference().child("solicitudes_aceptadas").child("solicitudes_en_proceso");
         } else if(typeRequest.equals("REJECTED")){
             referenceHiring = FirebaseDatabase.getInstance().getReference().child("solicitudes_rechazadas");
+        } else {
+            referenceHiring = FirebaseDatabase.getInstance().getReference().child("solicitudes_aceptadas").child("solicitudes_pagadas");
         }
+
         referenceHiring.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
@@ -139,7 +142,7 @@ public class FragmentSolicitud extends Fragment {
                 recycler = view.findViewById(R.id.recycler_id_solicitud);
                 recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
                 try{
-                    AdapterDatosSolicitud adapter = new AdapterDatosSolicitud(listData, getActivity());
+                    AdapterDatosSolicitud adapter = new AdapterDatosSolicitud(listData, getActivity(), typeRequest);
                     recycler.setAdapter(adapter);
                     adapter.setOnClickListener(new View.OnClickListener() {
                         @Override

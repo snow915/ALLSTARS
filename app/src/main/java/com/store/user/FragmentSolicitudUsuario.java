@@ -168,9 +168,11 @@ public class FragmentSolicitudUsuario extends Fragment {
         if(typeRequest.equals("PENDING")){
             referenceHiring = FirebaseDatabase.getInstance().getReference().child("solicitudes");
         } else if(typeRequest.equals("ACCEPTED")){
-            referenceHiring = FirebaseDatabase.getInstance().getReference().child("solicitudes_aceptadas");
+            referenceHiring = FirebaseDatabase.getInstance().getReference().child("solicitudes_aceptadas").child("solicitudes_en_proceso");
         } else if(typeRequest.equals("REJECTED")){
             referenceHiring = FirebaseDatabase.getInstance().getReference().child("solicitudes_rechazadas");
+        } else {
+            referenceHiring = FirebaseDatabase.getInstance().getReference().child("solicitudes_aceptadas").child("solicitudes_pagadas");
         }
 
         referenceHiring.addValueEventListener(new ValueEventListener() {

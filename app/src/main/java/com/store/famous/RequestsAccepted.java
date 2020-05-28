@@ -66,7 +66,11 @@ public class RequestsAccepted extends Fragment {
                     myFragment.setArguments(b);
                     return myFragment;
                 case 1:
-                    return new index();
+                    Fragment myFragment2 = new FragmentSolicitud();
+                    Bundle b2 = new Bundle();
+                    b2.putString("typeRequest", "payed");
+                    myFragment2.setArguments(b2);
+                    return myFragment2;
             }
             return null;
         }

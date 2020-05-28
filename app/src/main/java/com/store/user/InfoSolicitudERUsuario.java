@@ -1,7 +1,9 @@
 package com.store.user;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,8 +12,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.store.R;
 import com.store.famous.InfoSolicitud;
+import com.store.famous.SolicitudAceptada;
+import com.store.vo.DatosSolicitudVo;
 
 import java.util.HashMap;
 
@@ -24,6 +34,9 @@ public class InfoSolicitudERUsuario extends AppCompatActivity implements View.On
     private ImageView image;
     private Button pay;
     public HashMap<String, String> hashMapRequest;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
+    private DatosSolicitudVo datosObj;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,11 +106,69 @@ public class InfoSolicitudERUsuario extends AppCompatActivity implements View.On
                 .into(image);
     }
 
+    private void setValuesDatosSolicitud(){
+        datosObj = new DatosSolicitudVo();
+        datosObj.setDetalles(hashMapRequest.get("detalles"));
+        datosObj.setFechaFin(hashMapRequest.get("fechaFin"));
+        datosObj.setFechaInicio(hashMapRequest.get("fechaInicio"));
+        datosObj.setHoraFin(hashMapRequest.get("horaFin"));
+        datosObj.setHoraInicio(hashMapRequest.get("horaInicio"));
+        datosObj.setLatitud(hashMapRequest.get("latitud"));
+        datosObj.setLongitud(hashMapRequest.get("longitud"));
+        datosObj.setNombreFamoso(hashMapRequest.get("nombreFamoso"));
+        datosObj.setNombreServicio(hashMapRequest.get("nombreServicio"));
+        datosObj.setPrecioServicio(hashMapRequest.get("precioServicio"));
+        datosObj.setSolicitudID(hashMapRequest.get("solicitudID"));
+        datosObj.setTipoEvento(hashMapRequest.get("tipoEvento"));
+        datosObj.setTipoPublico(hashMapRequest.get("tipoPublico"));
+        datosObj.setUbicacion(hashMapRequest.get("ubicacion"));
+        datosObj.setUserFamoso(hashMapRequest.get("userFamoso"));
+        datosObj.setUserID(hashMapRequest.get("userID"));
+        datosObj.setUserLastname(hashMapRequest.get("userLastname"));
+        datosObj.setUserName(hashMapRequest.get("userName"));
+        datosObj.setImagenFamoso(hashMapRequest.get("imagenFamoso"));
+    }
+
+    private void initFirebase(){
+        FirebaseApp.initializeApp(this);
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
+    }
+
+    private void paymentCompleteFirebase(){
+        initFirebase();
+        setValuesDatosSolicitud();
+
+        //Pasa la solicitud a solicitudes_aceptadas
+        databaseReference.child("solicitudes_aceptadas").child("solicitudes_pagadas")
+                .child(datosObj.getSolicitudID())
+                .setValue(datosObj)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        task.addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+
+                                databaseReference.child("solicitudes_aceptadas").child("solicitudes_en_proceso")
+                                        .child(datosObj.getSolicitudID())
+                                        .setValue(null);
+
+                                new SweetAlertDialog(InfoSolicitudERUsuario.this, SweetAlertDialog.SUCCESS_TYPE)
+                                        .setTitleText("Pago realizado")
+                                        .setConfirmText("Entendido")
+                                        .show();
+                            }
+                        });
+                    }
+                });
+    }
+
     @Override
     public void onClick(View v) {
         int i = v.getId();
         if(i == R.id.id_pagar){
-            Toast.makeText(getApplicationContext(), "PAGO", Toast.LENGTH_SHORT).show();
+            paymentCompleteFirebase();
         }
     }
 }
