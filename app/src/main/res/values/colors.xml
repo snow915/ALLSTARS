@@ -14,4 +14,6 @@
     <color name="colorBlue">#2196F3</color>
     <color name="colorStars">#FFC107</color>
     <color name="colorCancel">#FF0707</color>
+    <color name="colorPalid">#66444444</color>
+    <color name="colorGray">#F3F3F3</color>
 </resources>

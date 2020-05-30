@@ -211,10 +211,15 @@
 
     <!--SEARCH BAR BLOCK-->
     <string name="search_hint">Busca un artista o categoría</string>
-    <string-array name="array_filters">
-        <item>Ranking</item>
-        <item>Número de solicitudes</item>
-        <item>Precio</item>
+    <string name="groupRanking">Ranking</string>
+    <string name="groupRequests">Solicitudes</string>
+    <string-array name="groupRanking">
+        <item>Min</item>
+        <item>Max</item>
+    </string-array>
+    <string-array name="groupRequests">
+        <item>Min</item>
+        <item>Max</item>
     </string-array>
     <!--SEARCH BAR BLOCK-->
 

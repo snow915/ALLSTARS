@@ -2,28 +2,27 @@ package com.store;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.view.ViewGroup;
+import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
-
 import androidx.appcompat.widget.SearchView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.michael.easydialog.EasyDialog;
 import com.store.adapters.AdapterDatos;
+import com.store.adapters.AdapterFiltros;
 import com.store.vo.DatosVo;
-
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class ActivitySearchResult extends AppCompatActivity {
 
@@ -31,26 +30,28 @@ public class ActivitySearchResult extends AppCompatActivity {
     private LinearLayout layoutFilter;
     private RecyclerView recycler;
     private DatabaseReference reference;
-    private Spinner spinnerFilter;
-
+    private ConstraintLayout modal;
+    private List<String> listGroup;
+    private HashMap<String, List<String>> listItem;
+    private AdapterFiltros adapterFiltros;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_result);
         searchBar = findViewById(R.id.searchResultBar);
         recycler = findViewById(R.id.recyclerQueryResults);
-        spinnerFilter = findViewById(R.id.spinner_filter);
         layoutFilter = findViewById(R.id.layout_filter);
-        final Context context = this;
+        modal = findViewById(R.id.modal);
         reference = FirebaseDatabase.getInstance().getReference().child("data");
         searchBar.setIconifiedByDefault(true);
         searchBar.setFocusable(true);
         searchBar.setIconified(false);
         searchBar.requestFocusFromTouch();
+        final View v = this.getLayoutInflater().inflate(R.layout.modal_filters_app, null);
         searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                searchArtists(query, context);
+                searchArtists(query, v);
                 return true;
             }
 
@@ -61,7 +62,8 @@ public class ActivitySearchResult extends AppCompatActivity {
         });
     }
 
-    private void searchArtists(String query, final Context context) {
+    private void searchArtists(String query, View modalView) {
+        final View modal = modalView;
         final ArrayList<DatosVo> listData = new ArrayList<DatosVo>();
         final String search = query.toLowerCase().trim();
         recycler.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
@@ -81,22 +83,42 @@ public class ActivitySearchResult extends AppCompatActivity {
                 }
                 AdapterDatos adapter = new AdapterDatos(listData, getApplicationContext());
                 recycler.setAdapter(adapter);
-                ArrayAdapter<CharSequence> filterAdapter = ArrayAdapter.createFromResource(
-                        getApplicationContext(),
-                        R.array.array_filters,
-                        android.R.layout.simple_spinner_item);
-                filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spinnerFilter.setAdapter(filterAdapter);
                 layoutFilter.setVisibility(View.VISIBLE);
-                spinnerFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                layoutFilter.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-
+                    public void onClick(View v) {
+                        final View v2 = v;
+                        new EasyDialog(v2.getContext())
+                                .setLayout(modal)
+                                .setBackgroundColor(v2.getContext().getResources().getColor(R.color.colorWhite))
+                                .setLocationByAttachedView(layoutFilter)
+                                .setGravity(EasyDialog.GRAVITY_BOTTOM)
+                                .setMatchParent(false)
+                                .setMarginLeftAndRight(24, 24)
+                                .setTouchOutsideDismiss(true)
+                                .setOutsideColor(v2.getContext().getResources().getColor(R.color.colorPalid))
+                                .setOnEasyDialogShow(new EasyDialog.OnEasyDialogShow() {
+                                    @Override
+                                    public void onShow() {
+                                        ExpandableListView filtersList = modal.findViewById(R.id.filters_list);
+                                        Filter ranking = new Filter("Ranking");
+                                        ranking.filterTypes.add("range");
+                                        Filter requests = new Filter("Solicitudes");
+                                        requests.filterTypes.add("range");
+                                        ArrayList<Filter> allFilters = new ArrayList<>();
+                                        allFilters.add(requests);
+                                        allFilters.add(ranking);
+                                        AdapterFiltros adapterFiltros = new AdapterFiltros(v2.getContext(), allFilters);
+                                        filtersList.setAdapter(adapterFiltros);
+                                    }
+                                })
+                                .setOnEasyDialogDismissed(new EasyDialog.OnEasyDialogDismissed() {
+                                    @Override
+                                    public void onDismissed() {
+                                        ((ViewGroup)modal.getParent()).removeView(modal);
+                                    }
+                                })
+                                .show();
                     }
                 });
             }
