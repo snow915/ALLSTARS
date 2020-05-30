@@ -1,19 +1,20 @@
-package com.store.famous;
+package com.store.user;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,33 +22,26 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.store.R;
 import com.store.SharedPreferencesApp;
-import com.store.adapters.AdapterDatosSolicitud;
+import com.store.adapters.AdapterDatosSolicitudUsuario;
 import com.store.vo.DatosSolicitudVo;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class FragmentSolicitud extends Fragment {
-    private static final String TAG = "FragmentSolicitud";
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-    private String mParam1;
-    private String mParam2;
+public class FragmentSolicitudUsuario extends Fragment {
+
+    private String typeRequest;
     ArrayList<DatosSolicitudVo> listData;
     private RecyclerView recycler;
     private DatabaseReference reference, referenceHiring;
-    private String artistUser;
+    private String userID;
     private SharedPreferencesApp sharedPreferencesApp;
-    public HashMap<String, String> hashMapArtist = new HashMap<String, String>();
-    private String typeRequest;
+    public HashMap<String, String> hashMapRequest = new HashMap<String, String>();
 
-    public FragmentSolicitud() {}
+    public FragmentSolicitudUsuario() {}
 
-    public static FragmentSolicitud newInstance(String param1, String param2) {
-        FragmentSolicitud fragment = new FragmentSolicitud();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+    public static FragmentSolicitudUsuario newInstance(String param1, String param2) {
+        FragmentSolicitudUsuario fragment = new FragmentSolicitudUsuario();
         return fragment;
     }
 
@@ -61,18 +55,31 @@ public class FragmentSolicitud extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         sharedPreferencesApp = new SharedPreferencesApp(getContext());
         sharedPreferencesApp.loadPreferences();
-        artistUser = sharedPreferencesApp.getArtistUsername();
-        View v = inflater.inflate(R.layout.fragment_solicitud, container, false);
-        fillData(v, typeRequest.toUpperCase());
+        userID = sharedPreferencesApp.getUserID();
+
+        View v = inflater.inflate(R.layout.fragment_solicitud_usuario, container, false);
+        switch (typeRequest.toUpperCase()){
+            case "PENDING" :
+                showPendingsRequests(v, typeRequest.toUpperCase());
+                break;
+            case "ACCEPTED":
+                showAcceptedRequests(v, typeRequest.toUpperCase());
+                break;
+            case "REJECTED":
+                showRejectedRequests(v, typeRequest.toUpperCase());
+                break;
+        }
         return v;
     }
 
-    private void fillData(View v, final String typeRequest){
+    private void showPendingsRequests(View v, final String typeRequest){
+        hashMapRequest.put("tipoSolicitud", typeRequest);
         final View view = v;
         listData = new ArrayList<DatosSolicitudVo>();
-        reference = FirebaseDatabase.getInstance().getReference().child("data").child(artistUser).child("solicitudes");
+        reference = FirebaseDatabase.getInstance().getReference().child("Usuarios").child(userID).child("solicitudes");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -97,8 +104,67 @@ public class FragmentSolicitud extends Fragment {
 
     }
 
-    private void retrieveHirings(final View view, final String idSolicitud, final String typeRequest){
-        hashMapArtist.put("tipoSolicitud", typeRequest);
+    private void showAcceptedRequests(View v, final String typeRequest){
+        hashMapRequest.put("tipoSolicitud", typeRequest);
+
+        final View view = v;
+        listData = new ArrayList<DatosSolicitudVo>();
+        reference = FirebaseDatabase.getInstance().getReference().child("Usuarios").child(userID).child("solicitudes");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
+
+                        final String idHiring = postSnapshot.getValue().toString();
+                        retrieveHirings(view, idHiring, typeRequest);
+                    }
+
+                } else {
+                    Toast.makeText(getActivity(), "Nothing", Toast.LENGTH_LONG).show();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private void showRejectedRequests(View v, final String typeRequest){
+        hashMapRequest.put("tipoSolicitud", typeRequest);
+
+        final View view = v;
+        listData = new ArrayList<DatosSolicitudVo>();
+        reference = FirebaseDatabase.getInstance().getReference().child("Usuarios").child(userID).child("solicitudes");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
+
+                        final String idHiring = postSnapshot.getValue().toString();
+                        retrieveHirings(view, idHiring, typeRequest);
+                    }
+
+                } else {
+                    Toast.makeText(getActivity(), "Nothing", Toast.LENGTH_LONG).show();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private void retrieveHirings(final View view, final String idSolicitud, String typeRequest){
         if(typeRequest.equals("PENDING")){
             referenceHiring = FirebaseDatabase.getInstance().getReference().child("solicitudes");
         } else if(typeRequest.equals("ACCEPTED")){
@@ -139,10 +205,10 @@ public class FragmentSolicitud extends Fragment {
                     }
                 }
 
-                recycler = view.findViewById(R.id.recycler_id_solicitud);
+                recycler = view.findViewById(R.id.recycler_id_solicitud_usuario);
                 recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
                 try{
-                    AdapterDatosSolicitud adapter = new AdapterDatosSolicitud(listData, getActivity(), typeRequest);
+                    AdapterDatosSolicitudUsuario adapter = new AdapterDatosSolicitudUsuario(listData, getActivity());
                     recycler.setAdapter(adapter);
                     adapter.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -169,34 +235,37 @@ public class FragmentSolicitud extends Fragment {
                             String imagenFamoso = listData.get(recycler.getChildAdapterPosition(v)).getImagenFamoso();
 
                             //Tal vez con un for?
-                            hashMapArtist.put("solicitudID", solicitudID);
-                            hashMapArtist.put("fechaInicio", fechaInicio);
-                            hashMapArtist.put("fechaFin", fechaFin);
-                            hashMapArtist.put("horaInicio", horaInicio);
-                            hashMapArtist.put("horaFin", horaFin);
-                            hashMapArtist.put("tipoEvento", tipoEvento);
-                            hashMapArtist.put("tipoPublico", tipoPublico);
-                            hashMapArtist.put("detalles", detalles);
-                            hashMapArtist.put("ubicacion", ubicacion);
-                            hashMapArtist.put("latitud", latitud);
-                            hashMapArtist.put("longitud", longitud);
-                            hashMapArtist.put("userName", userName);
-                            hashMapArtist.put("userLastname", userLastname);
-                            hashMapArtist.put("nombreServicio", nombreServicio);
-                            hashMapArtist.put("precioServicio", precioServicio);
-                            hashMapArtist.put("nombreFamoso", nombreFamoso);
-                            hashMapArtist.put("userFamoso", userFamoso);
-                            hashMapArtist.put("userID", userID);
-                            hashMapArtist.put("imagenFamoso", imagenFamoso);
+                            hashMapRequest.put("solicitudID", solicitudID);
+                            hashMapRequest.put("fechaInicio", fechaInicio);
+                            hashMapRequest.put("fechaFin", fechaFin);
+                            hashMapRequest.put("horaInicio", horaInicio);
+                            hashMapRequest.put("horaFin", horaFin);
+                            hashMapRequest.put("tipoEvento", tipoEvento);
+                            hashMapRequest.put("tipoPublico", tipoPublico);
+                            hashMapRequest.put("detalles", detalles);
+                            hashMapRequest.put("ubicacion", ubicacion);
+                            hashMapRequest.put("latitud", latitud);
+                            hashMapRequest.put("longitud", longitud);
+                            hashMapRequest.put("userName", userName);
+                            hashMapRequest.put("userLastname", userLastname);
+                            hashMapRequest.put("nombreServicio", nombreServicio);
+                            hashMapRequest.put("precioServicio", precioServicio);
+                            hashMapRequest.put("nombreFamoso", nombreFamoso);
+                            hashMapRequest.put("userFamoso", userFamoso);
+                            hashMapRequest.put("userID", userID);
+                            hashMapRequest.put("imagenFamoso", imagenFamoso);
 
                             saveLocationData(ubicacion, latitud, longitud);
 
-                            Intent infoSolicitud = new Intent(getActivity(), InfoSolicitud.class);
-                            infoSolicitud.putExtra("mapValuesArtist", hashMapArtist);
+                            Intent infoSolicitud = new Intent(getActivity(), InfoSolicitudERUsuario.class);
+                            infoSolicitud.putExtra("mapValuesRequest", hashMapRequest);
                             startActivity(infoSolicitud);
                         }
                     });
-                } catch(Exception e){}
+                } catch (Exception e){
+
+                }
+
             }
 
             @Override

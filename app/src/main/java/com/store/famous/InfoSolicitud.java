@@ -33,7 +33,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 public class InfoSolicitud extends AppCompatActivity implements View.OnClickListener {
 
     private TextView txtStartDate, txtFinishDate, txtStartTime, txtFinishTime, txtAudienceType,
-            txtEventType, txtDetails, txtName, txtNameSevice, txtPriceService;
+            txtEventType, txtDetails, txtName, txtNameSevice, txtPriceService, txtTitleTypeRequest;
     private Button btnDeny, btnAccept;
     public HashMap<String, String> hashMapArtist;
     private FirebaseDatabase firebaseDatabase;
@@ -70,7 +70,7 @@ public class InfoSolicitud extends AppCompatActivity implements View.OnClickList
                         setValuesDatosSolicitud();
 
                         //Pasa la solicitud a solicitudes_aceptadas
-                        databaseReference.child("solicitudes_aceptadas")
+                        databaseReference.child("solicitudes_aceptadas").child("solicitudes_en_proceso")
                                 .child(datosObj.getSolicitudID())
                                 .setValue(datosObj)
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -161,6 +161,18 @@ public class InfoSolicitud extends AppCompatActivity implements View.OnClickList
         txtName.setText(hashMapArtist.get("userName") + " " + hashMapArtist.get("userLastname"));
         txtNameSevice.setText(hashMapArtist.get("nombreServicio"));
         txtPriceService.setText("$" + hashMapArtist.get("precioServicio"));
+        if(!hashMapArtist.get("tipoSolicitud").equals("PENDING")){
+            btnAccept.setVisibility(View.GONE);
+            btnDeny.setVisibility(View.GONE);
+
+            if(hashMapArtist.get("tipoSolicitud").equals("ACCEPTED")){
+                txtTitleTypeRequest.setText("Solicitud en proceso");
+            } else if (hashMapArtist.get("tipoSolicitud").equals("PAYED")){
+                txtTitleTypeRequest.setText("Solicitud pagada");
+            } else if (hashMapArtist.get("tipoSolicitud").equals("REJECTED")){
+                txtTitleTypeRequest.setText("Solicitud rechazada");
+            }
+        }
     }
 
     private void setValuesDatosSolicitud(){
@@ -183,6 +195,7 @@ public class InfoSolicitud extends AppCompatActivity implements View.OnClickList
         datosObj.setUserID(hashMapArtist.get("userID"));
         datosObj.setUserLastname(hashMapArtist.get("userLastname"));
         datosObj.setUserName(hashMapArtist.get("userName"));
+        datosObj.setImagenFamoso(hashMapArtist.get("imagenFamoso"));
     }
 
     private void associateIds(){
@@ -196,6 +209,7 @@ public class InfoSolicitud extends AppCompatActivity implements View.OnClickList
         txtName = findViewById(R.id.idNombre);
         txtNameSevice = findViewById(R.id.idNombreServicio);
         txtPriceService = findViewById(R.id.idPrecioServicio);
+        txtTitleTypeRequest = findViewById(R.id.titulo_tipo_solicitud);
         btnAccept = findViewById(R.id.aceptar);
         btnDeny = findViewById(R.id.rechazar);
     }

@@ -30,7 +30,9 @@ import com.store.famous.EditArtistProfile;
 import com.store.famous.FragmentDeleteService;
 import com.store.famous.FragmentSolicitud;
 import com.store.famous.FragmentViewServices;
+import com.store.famous.RequestsAccepted;
 import com.store.user.EditProfile;
+import com.store.user.FragmentSolicitudUsuario;
 import com.store.user.Profile;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
@@ -98,16 +100,19 @@ public class MainActivity extends AppCompatActivity
             navigationView.getMenu().findItem(R.id.edit_profile).setVisible(true);
             navigationView.getMenu().findItem(R.id.delete_account).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_profile).setVisible(true);
-        }
-        if(username != null){
-            navigationView.getMenu().findItem(R.id.requests).setVisible(false);
-        } else if(artistUsername != null) {
+
+            navigationView.getMenu().findItem(R.id.nav_requests).setVisible(true);
             navigationView.getMenu().findItem(R.id.requests).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_services).setVisible(true);
-            navigationView.getMenu().findItem(R.id.add_service).setVisible(true);
-            navigationView.getMenu().findItem(R.id.see_services).setVisible(true);
-            navigationView.getMenu().findItem(R.id.edit_services).setVisible(true);
-            navigationView.getMenu().findItem(R.id.delete_services).setVisible(true);
+            navigationView.getMenu().findItem(R.id.accepted_requests).setVisible(true);
+            navigationView.getMenu().findItem(R.id.rejected_requests).setVisible(true);
+
+            if(artistUsername != null) {
+                navigationView.getMenu().findItem(R.id.nav_services).setVisible(true);
+                navigationView.getMenu().findItem(R.id.add_service).setVisible(true);
+                navigationView.getMenu().findItem(R.id.see_services).setVisible(true);
+                navigationView.getMenu().findItem(R.id.edit_services).setVisible(true);
+                navigationView.getMenu().findItem(R.id.delete_services).setVisible(true);
+            }
         }
         navigationView.setNavigationItemSelectedListener(this);
         carousel = new Carrusel();
@@ -280,15 +285,48 @@ public class MainActivity extends AppCompatActivity
                     })
                     .show();
         } else if (id == R.id.requests) {
-            if (carousel != null) {
+            if(carousel != null){
                 carousel = null;
                 getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().findFragmentById(R.id.content_main_carrusel)).commit();
-                myFragment = new FragmentSolicitud();
-                fragmentSelected = true;
+            }
+            if(username != null){
+                myFragment = new FragmentSolicitudUsuario();
             } else {
                 myFragment = new FragmentSolicitud();
-                fragmentSelected = true;
             }
+            Bundle b = new Bundle();
+            b.putString("typeRequest", "pending");
+            myFragment.setArguments(b);
+            fragmentSelected = true;
+        } else if (id == R.id.accepted_requests) {
+            if(carousel != null){
+                carousel = null;
+                getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().findFragmentById(R.id.content_main_carrusel)).commit();
+            }
+            if(username != null){
+                myFragment = new FragmentSolicitudUsuario();
+            } else {
+                //myFragment = new FragmentSolicitud();
+                myFragment = new RequestsAccepted();
+            }
+            Bundle b = new Bundle();
+            b.putString("typeRequest", "accepted");
+            myFragment.setArguments(b);
+            fragmentSelected = true;
+        } else if (id == R.id.rejected_requests) {
+            if(carousel != null){
+                carousel = null;
+                getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().findFragmentById(R.id.content_main_carrusel)).commit();
+            }
+            if(username != null){
+                myFragment = new FragmentSolicitudUsuario();
+            } else {
+                myFragment = new FragmentSolicitud();
+            }
+            Bundle b = new Bundle();
+            b.putString("typeRequest", "rejected");
+            myFragment.setArguments(b);
+            fragmentSelected = true;
         } else if(id == R.id.add_service) {
             if (carousel != null) {
                 carousel = null;

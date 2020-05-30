@@ -19,6 +19,7 @@ public class Solicitud {
     private String solicitudID;
     private String nombreServicio;
     private String precioServicio;
+    private String imagenFamoso;
 
     public String getUserFamoso() {
         return userFamoso;
@@ -164,5 +165,13 @@ public class Solicitud {
 
     public void setPrecioServicio(String precioServicio) {
         this.precioServicio = precioServicio;
+    }
+
+    public String getImagenFamoso() {
+        return imagenFamoso;
+    }
+
+    public void setImagenFamoso(String imagenFamoso) {
+        this.imagenFamoso = imagenFamoso;
     }
 }

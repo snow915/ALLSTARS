@@ -112,6 +112,7 @@ public class EnviarSolicitud extends AppCompatActivity {
                                 requestObj.setUserID(userID);
                                 requestObj.setNombreServicio(hashMap.get("nombreServicio"));
                                 requestObj.setPrecioServicio(hashMap.get("precioServicio"));
+                                requestObj.setImagenFamoso(hashMap.get("rutaImagen"));
                                 //requestObj.setUserID(hashMap.);
 
                                 String key = databaseReference.child("solicitudes").push().getKey();
