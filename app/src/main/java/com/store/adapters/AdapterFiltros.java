@@ -93,16 +93,14 @@ public class AdapterFiltros extends BaseExpandableListAdapter implements Filtera
             public void onClick(View v) {
                 int min = Integer.valueOf(minimum.getText().toString());
                 int max = Integer.valueOf(maximum.getText().toString());
-                if (min < 0) {
-                    minimum.setError("Solo valores positivos");
-                } else if (min >= max || min > 5) {
-                    minimum.setError("Mínimo excedido");
-                } else if (max < min) {
-                    maximum.setError("El valor es menor al mínimo");
-                }else if (max > 5) {
-                    maximum.setError("Máximo excedido");
-                }else {
-                    if (filterType.equals("rankingRange")) {
+                if (filterType.equals("rankingRange")) {
+                    if (min < 0 || max < 0) {
+                        minimum.setError("Solo valores positivos");
+                    } else if (min > max || min > 5) {
+                        minimum.setError("Mínimo excedido");
+                    }else if (max > 5) {
+                        maximum.setError("Máximo excedido");
+                    }else {
                         getFilter().filter(minimum.getText().toString()+','+maximum.getText().toString());
                     }
                 }
@@ -126,9 +124,9 @@ public class AdapterFiltros extends BaseExpandableListAdapter implements Filtera
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             ArrayList<DatosVo> filteredList = new ArrayList<DatosVo>();
-            int separator = constraint.toString().indexOf(',');
-            int min = Integer.parseInt(constraint.toString().substring(0,separator));
-            int max = Integer.parseInt(constraint.toString().substring(separator+1));
+            int separatorIndex = constraint.toString().indexOf(',');
+            int min = Integer.parseInt(constraint.toString().substring(0,separatorIndex));
+            int max = Integer.parseInt(constraint.toString().substring(separatorIndex+1));
             for (DatosVo item: adapter.list_datos) {
                 if (item.getStars() >= min && item.getStars() <= max) {
                     filteredList.add(item);
