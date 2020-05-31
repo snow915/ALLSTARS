@@ -1,47 +1,51 @@
 package com.store.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.Filterable.*;
+import android.widget.Filterable;
 import android.widget.TextView;
-
-import com.store.Filter;
+import com.store.FilterApp;
 import com.store.R;
+import com.store.vo.DatosVo;
 import java.util.ArrayList;
 
-
-public class AdapterFiltros extends BaseExpandableListAdapter {
+public class AdapterFiltros extends BaseExpandableListAdapter implements Filterable {
     private Context context;
-    private ArrayList<Filter> filters;
+    private ArrayList<FilterApp> filterApps;
+    private AdapterDatos adapter;
 
-    public AdapterFiltros(Context context, ArrayList<Filter> filters) {
+    public AdapterFiltros(Context context, ArrayList<FilterApp> filterApps, AdapterDatos adapter) {
         this.context = context;
-        this.filters = filters;
+        this.filterApps = filterApps;
+        this.adapter = adapter;
     }
 
     @Override
     public int getGroupCount() {
-        return filters.size();
+        return filterApps.size();
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return filters.get(groupPosition).filterTypes.size();
+        return filterApps.get(groupPosition).filterTypes.size();
     }
 
     @Override
     public Object getGroup(int groupPosition) {
-        return this.filters.get(groupPosition);
+        return this.filterApps.get(groupPosition);
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return filters.get(groupPosition).filterTypes.get(childPosition);
+        return filterApps.get(groupPosition).filterTypes.get(childPosition);
     }
 
     @Override
@@ -66,7 +70,7 @@ public class AdapterFiltros extends BaseExpandableListAdapter {
                     this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.expandible_list_group, null);
         }
-        Filter f = (Filter) getGroup(groupPosition);
+        FilterApp f = (FilterApp) getGroup(groupPosition);
         TextView groupName = convertView.findViewById(R.id.group_name);
         groupName.setText(f.filterName);
         convertView.setBackgroundColor(convertView.getResources().getColor(R.color.colorWhite));
@@ -80,17 +84,30 @@ public class AdapterFiltros extends BaseExpandableListAdapter {
                     this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.expandible_list_item, null);
         }
+        final String filterType = (String) getChild(groupPosition, childPosition);
         final EditText minimum = convertView.findViewById(R.id.edtxt_minimum);
         final EditText maximum = convertView.findViewById(R.id.edtxt_maximum);
         Button btnApplyFilter = convertView.findViewById(R.id.btn_apply_filter);
         btnApplyFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.w("MINIMUM VALUE", minimum.getText().toString());
-                Log.w("MAXIMUM VALUE", maximum.getText().toString());
+                int min = Integer.valueOf(minimum.getText().toString());
+                int max = Integer.valueOf(maximum.getText().toString());
+                if (min < 0) {
+                    minimum.setError("Solo valores positivos");
+                } else if (min >= max || min > 5) {
+                    minimum.setError("Mínimo excedido");
+                } else if (max < min) {
+                    maximum.setError("El valor es menor al mínimo");
+                }else if (max > 5) {
+                    maximum.setError("Máximo excedido");
+                }else {
+                    if (filterType.equals("rankingRange")) {
+                        getFilter().filter(minimum.getText().toString()+','+maximum.getText().toString());
+                    }
+                }
             }
         });
-        String filterName = getGroup(groupPosition).toString();
 
         return convertView;
     }
@@ -99,4 +116,34 @@ public class AdapterFiltros extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
+
+    @Override
+    public android.widget.Filter getFilter() {
+        return filter;
+    }
+    private Filter filter = new Filter() {
+        @SuppressLint("LongLogTag")
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            ArrayList<DatosVo> filteredList = new ArrayList<DatosVo>();
+            int separator = constraint.toString().indexOf(',');
+            int min = Integer.parseInt(constraint.toString().substring(0,separator));
+            int max = Integer.parseInt(constraint.toString().substring(separator+1));
+            for (DatosVo item: adapter.list_datos) {
+                if (item.getStars() >= min && item.getStars() <= max) {
+                    filteredList.add(item);
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            adapter.list_datos.clear();
+            adapter.list_datos.addAll((ArrayList<DatosVo>)results.values);
+            adapter.notifyDataSetChanged();
+        }
+    };
 }

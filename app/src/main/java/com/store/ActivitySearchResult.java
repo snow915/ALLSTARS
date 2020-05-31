@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
 import androidx.appcompat.widget.SearchView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,6 +33,7 @@ public class ActivitySearchResult extends AppCompatActivity {
     private RecyclerView recycler;
     private DatabaseReference reference;
     private ConstraintLayout modal;
+    private TextView filterLabel;
     private List<String> listGroup;
     private HashMap<String, List<String>> listItem;
     private AdapterFiltros adapterFiltros;
@@ -38,6 +41,7 @@ public class ActivitySearchResult extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_result);
+        filterLabel = findViewById(R.id.filter_label);
         searchBar = findViewById(R.id.searchResultBar);
         recycler = findViewById(R.id.recyclerQueryResults);
         layoutFilter = findViewById(R.id.layout_filter);
@@ -81,7 +85,7 @@ public class ActivitySearchResult extends AppCompatActivity {
                         listData.add(new DatosVo(name, categories, "", imageRoute, score, ""));
                     }
                 }
-                AdapterDatos adapter = new AdapterDatos(listData, getApplicationContext());
+                final AdapterDatos adapter = new AdapterDatos(listData, getApplicationContext());
                 recycler.setAdapter(adapter);
                 layoutFilter.setVisibility(View.VISIBLE);
                 layoutFilter.setOnClickListener(new View.OnClickListener() {
@@ -101,14 +105,14 @@ public class ActivitySearchResult extends AppCompatActivity {
                                     @Override
                                     public void onShow() {
                                         ExpandableListView filtersList = modal.findViewById(R.id.filters_list);
-                                        Filter ranking = new Filter("Ranking");
-                                        ranking.filterTypes.add("range");
-                                        Filter requests = new Filter("Solicitudes");
-                                        requests.filterTypes.add("range");
-                                        ArrayList<Filter> allFilters = new ArrayList<>();
-                                        allFilters.add(requests);
-                                        allFilters.add(ranking);
-                                        AdapterFiltros adapterFiltros = new AdapterFiltros(v2.getContext(), allFilters);
+                                        FilterApp ranking = new FilterApp("Ranking");
+                                        ranking.filterTypes.add("rankingRange");
+                                        FilterApp requests = new FilterApp("Solicitudes");
+                                        requests.filterTypes.add("requestRange");
+                                        ArrayList<FilterApp> allFilterApps = new ArrayList<>();
+                                        allFilterApps.add(requests);
+                                        allFilterApps.add(ranking);
+                                        AdapterFiltros adapterFiltros = new AdapterFiltros(v2.getContext(), allFilterApps, adapter);
                                         filtersList.setAdapter(adapterFiltros);
                                     }
                                 })

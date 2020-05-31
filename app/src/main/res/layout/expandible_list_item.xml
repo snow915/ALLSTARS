@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/edtxt_minimum"
             android:hint="Mínimo"
+            android:inputType="number"
             android:layout_weight="1"
             android:gravity="center"
             android:textColor="@color/colorPrimary">
@@ -29,6 +30,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/edtxt_maximum"
             android:hint="Máximo"
+            android:inputType="number"
             android:layout_weight="1"
             android:gravity="center"
             android:textColor="@color/colorPrimary">

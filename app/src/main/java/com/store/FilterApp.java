@@ -2,12 +2,12 @@ package com.store;
 
 import java.util.ArrayList;
 
-public class Filter {
+public class FilterApp {
 
     public String filterName;
     public ArrayList<String> filterTypes = new ArrayList<>();
 
-    public Filter(String filterName) {
+    public FilterApp(String filterName) {
         this.filterName = filterName;
     }
 }
