@@ -40,13 +40,19 @@
             <item
                 android:visible="false"
                 android:id="@+id/accepted_requests"
-                android:icon="@drawable/ic_accept24dp"
+                android:icon="@drawable/ic_payment_black_24dp"
                 android:title="@string/accepted_requests" />
             <item
                 android:visible="false"
                 android:id="@+id/rejected_requests"
                 android:icon="@drawable/ic_rejected24dp"
                 android:title="@string/rejected_requests" />
+
+            <item
+                android:visible="false"
+                android:id="@+id/done_requests"
+                android:icon="@drawable/ic_accept24dp"
+                android:title="@string/done_requests" />
 
         </menu>
 

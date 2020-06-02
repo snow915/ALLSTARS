@@ -105,6 +105,7 @@ public class MainActivity extends AppCompatActivity
             navigationView.getMenu().findItem(R.id.requests).setVisible(true);
             navigationView.getMenu().findItem(R.id.accepted_requests).setVisible(true);
             navigationView.getMenu().findItem(R.id.rejected_requests).setVisible(true);
+            navigationView.getMenu().findItem(R.id.done_requests).setVisible(true);
 
             if(artistUsername != null) {
                 navigationView.getMenu().findItem(R.id.nav_services).setVisible(true);
@@ -325,6 +326,20 @@ public class MainActivity extends AppCompatActivity
             }
             Bundle b = new Bundle();
             b.putString("typeRequest", "rejected");
+            myFragment.setArguments(b);
+            fragmentSelected = true;
+        } else if (id == R.id.done_requests) {
+            if(carousel != null){
+                carousel = null;
+                getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().findFragmentById(R.id.content_main_carrusel)).commit();
+            }
+            if(username != null){
+                myFragment = new FragmentSolicitudUsuario();
+            } else {
+                myFragment = new FragmentSolicitud();
+            }
+            Bundle b = new Bundle();
+            b.putString("typeRequest", "done");
             myFragment.setArguments(b);
             fragmentSelected = true;
         } else if(id == R.id.add_service) {

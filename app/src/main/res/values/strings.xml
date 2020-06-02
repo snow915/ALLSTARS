@@ -178,6 +178,7 @@
     <string name="pending_requests">Solicitudes pendientes</string>
     <string name="accepted_requests">Solicitudes aceptadas</string>
     <string name="rejected_requests">Solicitudes rechazadas</string>
+    <string name="done_requests">Solicitudes completadas</string>
 
 
     <!--Services menu block-->

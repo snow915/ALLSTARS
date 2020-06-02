@@ -61,50 +61,11 @@ public class FragmentSolicitudUsuario extends Fragment {
         userID = sharedPreferencesApp.getUserID();
 
         View v = inflater.inflate(R.layout.fragment_solicitud_usuario, container, false);
-        switch (typeRequest.toUpperCase()){
-            case "PENDING" :
-                showPendingsRequests(v, typeRequest.toUpperCase());
-                break;
-            case "ACCEPTED":
-                showAcceptedRequests(v, typeRequest.toUpperCase());
-                break;
-            case "REJECTED":
-                showRejectedRequests(v, typeRequest.toUpperCase());
-                break;
-        }
+        fillData(v, typeRequest.toUpperCase());
         return v;
     }
 
-    private void showPendingsRequests(View v, final String typeRequest){
-        hashMapRequest.put("tipoSolicitud", typeRequest);
-        final View view = v;
-        listData = new ArrayList<DatosSolicitudVo>();
-        reference = FirebaseDatabase.getInstance().getReference().child("Usuarios").child(userID).child("solicitudes");
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
-
-                        final String idHiring = postSnapshot.getValue().toString();
-                        retrieveHirings(view, idHiring, typeRequest);
-                    }
-
-                } else {
-                    Toast.makeText(getActivity(), "Nothing", Toast.LENGTH_LONG).show();
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-    }
-
-    private void showAcceptedRequests(View v, final String typeRequest){
+    private void fillData(View v, final String typeRequest){
         hashMapRequest.put("tipoSolicitud", typeRequest);
 
         final View view = v;
@@ -131,37 +92,6 @@ public class FragmentSolicitudUsuario extends Fragment {
 
             }
         });
-
-    }
-
-    private void showRejectedRequests(View v, final String typeRequest){
-        hashMapRequest.put("tipoSolicitud", typeRequest);
-
-        final View view = v;
-        listData = new ArrayList<DatosSolicitudVo>();
-        reference = FirebaseDatabase.getInstance().getReference().child("Usuarios").child(userID).child("solicitudes");
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
-
-                        final String idHiring = postSnapshot.getValue().toString();
-                        retrieveHirings(view, idHiring, typeRequest);
-                    }
-
-                } else {
-                    Toast.makeText(getActivity(), "Nothing", Toast.LENGTH_LONG).show();
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
     }
 
     private void retrieveHirings(final View view, final String idSolicitud, String typeRequest){
@@ -171,11 +101,13 @@ public class FragmentSolicitudUsuario extends Fragment {
             referenceHiring = FirebaseDatabase.getInstance().getReference().child("solicitudes_aceptadas").child("solicitudes_en_proceso");
         } else if(typeRequest.equals("REJECTED")){
             referenceHiring = FirebaseDatabase.getInstance().getReference().child("solicitudes_rechazadas");
+        } else if(typeRequest.equals("DONE")){
+            referenceHiring = FirebaseDatabase.getInstance().getReference().child("solicitudes_terminadas");
         } else {
             referenceHiring = FirebaseDatabase.getInstance().getReference().child("solicitudes_aceptadas").child("solicitudes_pagadas");
         }
 
-        referenceHiring.addValueEventListener(new ValueEventListener() {
+        referenceHiring.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
                 for(DataSnapshot postSnapshotHiring : dataSnapshot2.getChildren()){

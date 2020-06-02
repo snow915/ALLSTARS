@@ -244,6 +244,9 @@ public class InfoSolicitud extends AppCompatActivity implements View.OnClickList
             } else if (hashMapArtist.get("tipoSolicitud").equals("REJECTED")){
                 sta.setVisibility(View.GONE);
                 txtTitleTypeRequest.setText("Solicitud rechazada");
+            } else if (hashMapArtist.get("tipoSolicitud").equals("DONE")){
+                sta.setVisibility(View.GONE);
+                txtTitleTypeRequest.setText("Evento terminado");
             }
         }
     }
