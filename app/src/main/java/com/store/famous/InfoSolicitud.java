@@ -63,9 +63,29 @@ public class InfoSolicitud extends AppCompatActivity implements View.OnClickList
 
     private void startFinishEvent(){
         initFirebase();
-        if(statusSlider.equals("1")){
-            sta.setText("Terminar evento");
-        }
+        databaseReference = databaseReference.child("solicitudes_aceptadas").child("solicitudes_pagadas").child(hashMapArtist.get("solicitudID"));
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    try{
+                        statusSlider = dataSnapshot.child("statusEvent").getValue().toString();
+                        if(statusSlider.equals("1")){
+                            sta.setText("Terminar evento");
+                        }
+                    } catch(Exception e){
+                        statusSlider = "0";
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        initFirebase();
         sta.setOnSlideCompleteListener(new SlideToActView.OnSlideCompleteListener() {
             @Override
             public void onSlideComplete(SlideToActView slideToActView) {
@@ -77,10 +97,28 @@ public class InfoSolicitud extends AppCompatActivity implements View.OnClickList
                             .child(hashMapArtist.get("solicitudID"))
                             .child("statusEvent").setValue("1");
                 } else {
-                    new SweetAlertDialog(InfoSolicitud.this, SweetAlertDialog.SUCCESS_TYPE)
-                            .setTitleText("Felicidades, completaste el evento")
-                            .setConfirmText("Entendido")
-                            .show();
+                    setValuesDatosSolicitud();
+                    databaseReference.child("solicitudes_terminadas")
+                            .child(datosObj.getSolicitudID())
+                            .setValue(datosObj)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    task.addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            databaseReference.child("solicitudes_aceptadas")
+                                                    .child("solicitudes_pagadas")
+                                                    .child(datosObj.getSolicitudID())
+                                                    .setValue(null);
+
+                                            Intent intent = new Intent(InfoSolicitud.this, EventoTerminado.class);
+                                            startActivity(intent);
+                                            finishAffinity();
+                                        }
+                                    });
+                                }
+                            });
                 }
             }
         });

@@ -107,9 +107,9 @@
     <!-- END - Strings for Edit Artist Layout -->
 
     <!-- VIEW PROFILE BLOCK-->
-        <string name="view_artist_biography">Biografía actual</string>
-        <string name="view_artist_ranking">Ranking actual</string>
-        <string name="view_artist_subtitle">Información actual</string>
+    <string name="view_artist_biography">Biografía actual</string>
+    <string name="view_artist_ranking">Ranking actual</string>
+    <string name="view_artist_subtitle">Información actual</string>
     <!-- VIEW PROFILE BLOCK-->
 
 
@@ -203,6 +203,9 @@
         Te haremos saber cuando el usuario realice el pago, tiene 24 horas para realizarlo
     </string>
 
+    <string name="evento_terminado">
+        ¡Finalizaste el evento!
+    </string>
     <string name="solicitud_rechazada">
         ¡Solicitud rechazada!
     </string>

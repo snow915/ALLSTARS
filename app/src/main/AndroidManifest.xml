@@ -20,7 +20,8 @@
         android:roundIcon="@drawable/all_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".user.InfoSolicitudERUsuario"></activity>
+        <activity android:name=".famous.EventoTerminado"></activity>
+        <activity android:name=".user.InfoSolicitudERUsuario" />
         <activity android:name=".famous.SolicitudRechazada" />
         <activity
             android:name=".ActivitySearchResult"
