@@ -168,16 +168,15 @@
             android:id="@+id/rechazar"
             android:layout_width="114dp"
             android:layout_height="48dp"
+            android:layout_marginStart="80dp"
+            android:layout_marginLeft="80dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/button_deny"
             android:text="@string/rechazar"
             android:textColor="@color/colorWhite"
             android:textStyle="bold"
-            android:layout_marginStart="80dp"
-            android:layout_marginLeft="80dp"
-            android:layout_marginTop="20dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/idDetalles"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/idDetalles" />
 
         <Button
             android:id="@+id/aceptar"
@@ -295,6 +294,18 @@
             app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/idNombreServicio" />
+
+        <com.ncorti.slidetoact.SlideToActView
+            android:id="@+id/id_slider"
+            android:layout_width="328dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.493"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/idDetalles"
+            app:text="Iniciar evento"
+            app:text_style="bold"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

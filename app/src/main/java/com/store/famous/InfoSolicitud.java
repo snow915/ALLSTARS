@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.ncorti.slidetoact.SlideToActView;
 import com.store.MainActivity;
 import com.store.R;
 import com.store.SharedPreferencesApp;
@@ -39,6 +41,9 @@ public class InfoSolicitud extends AppCompatActivity implements View.OnClickList
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
     private DatosSolicitudVo datosObj;
+    private SlideToActView sta;
+    private String statusSlider = "0";
+    private boolean viewSlider = false;
 
     private static final String TAG = "InfoSolicitud";
     @Override
@@ -51,7 +56,34 @@ public class InfoSolicitud extends AppCompatActivity implements View.OnClickList
         setValuesLayout();
         btnDeny.setOnClickListener(this);
         btnAccept.setOnClickListener(this);
+        if(viewSlider){
+            startFinishEvent();
+        }
+    }
 
+    private void startFinishEvent(){
+        initFirebase();
+        if(statusSlider.equals("1")){
+            sta.setText("Terminar evento");
+        }
+        sta.setOnSlideCompleteListener(new SlideToActView.OnSlideCompleteListener() {
+            @Override
+            public void onSlideComplete(SlideToActView slideToActView) {
+                if(statusSlider.equals("0")){
+                    sta.resetSlider();
+                    sta.setText("Terminar evento");
+                    databaseReference.child("solicitudes_aceptadas")
+                            .child("solicitudes_pagadas")
+                            .child(hashMapArtist.get("solicitudID"))
+                            .child("statusEvent").setValue("1");
+                } else {
+                    new SweetAlertDialog(InfoSolicitud.this, SweetAlertDialog.SUCCESS_TYPE)
+                            .setTitleText("Felicidades, completaste el evento")
+                            .setConfirmText("Entendido")
+                            .show();
+                }
+            }
+        });
     }
 
     private void acceptHiring(){
@@ -167,9 +199,12 @@ public class InfoSolicitud extends AppCompatActivity implements View.OnClickList
 
             if(hashMapArtist.get("tipoSolicitud").equals("ACCEPTED")){
                 txtTitleTypeRequest.setText("Solicitud en proceso");
+                sta.setVisibility(View.GONE);
             } else if (hashMapArtist.get("tipoSolicitud").equals("PAYED")){
                 txtTitleTypeRequest.setText("Solicitud pagada");
+                viewSlider = true;
             } else if (hashMapArtist.get("tipoSolicitud").equals("REJECTED")){
+                sta.setVisibility(View.GONE);
                 txtTitleTypeRequest.setText("Solicitud rechazada");
             }
         }
@@ -212,6 +247,7 @@ public class InfoSolicitud extends AppCompatActivity implements View.OnClickList
         txtTitleTypeRequest = findViewById(R.id.titulo_tipo_solicitud);
         btnAccept = findViewById(R.id.aceptar);
         btnDeny = findViewById(R.id.rechazar);
+        sta = findViewById(R.id.id_slider);
     }
 
     private void initFirebase(){

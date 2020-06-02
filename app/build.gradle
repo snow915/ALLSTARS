@@ -66,5 +66,8 @@ dependencies {
     implementation 'com.github.douglasjunior:android-simple-tooltip:0.2.3'
     implementation 'com.github.michaelye.easydialog:easydialog:1.4'
 
+    implementation "com.ncorti:slidetoact:0.8.0"
+
+
 }
 apply plugin: 'com.google.gms.google-services'

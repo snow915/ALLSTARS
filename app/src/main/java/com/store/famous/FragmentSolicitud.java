@@ -109,7 +109,7 @@ public class FragmentSolicitud extends Fragment {
             referenceHiring = FirebaseDatabase.getInstance().getReference().child("solicitudes_aceptadas").child("solicitudes_pagadas");
         }
 
-        referenceHiring.addValueEventListener(new ValueEventListener() {
+        referenceHiring.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
                 for(DataSnapshot postSnapshotHiring : dataSnapshot2.getChildren()){
