@@ -65,6 +65,7 @@ public class RegistroArtista extends AppCompatActivity {
                     a.setCategoria(categories);
                     a.setImagen("");
                     a.setPuntaje(0);
+                    a.setCantidadCalificaciones(0);
                     userExist(edtxtUser.getText().toString());
                     results.clear();
                     categories = "";

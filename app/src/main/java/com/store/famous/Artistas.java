@@ -8,6 +8,7 @@ public class Artistas {
     private String pass;
     private int puntaje;
     private String user;
+    private int cantidadCalificaciones;
 
     public void setBiografia(String biografia){
         this.biografia = biografia;
@@ -48,5 +49,13 @@ public class Artistas {
     }
     public String getUser(){
         return this.user;
+    }
+
+    public int getCantidadCalificaciones() {
+        return cantidadCalificaciones;
+    }
+
+    public void setCantidadCalificaciones(int cantidadCalificaciones) {
+        this.cantidadCalificaciones = cantidadCalificaciones;
     }
 }

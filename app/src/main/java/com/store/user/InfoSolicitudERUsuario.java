@@ -166,22 +166,46 @@ public class InfoSolicitudERUsuario extends AppCompatActivity implements View.On
         sendRating.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String starsNumber = String.valueOf(rating.getRating());
+                final String starsNumber = String.valueOf(rating.getRating());
                 initFirebase();
                 databaseReference.child("solicitudes_terminadas")
                         .child(hashMapRequest.get("solicitudID"))
-                        .child("ratingEvent").setValue(Math.round(Float.parseFloat(starsNumber)))
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        .child("ratingEvent").setValue(Math.round(Float.parseFloat(starsNumber)));
+
+                databaseReference.child("data")
+                        .child(hashMapRequest.get("userFamoso"))
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                task.addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        dialog.dismiss();
-                                    }
-                                });
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if(dataSnapshot.exists()){
+                                    float avgRating = Float.parseFloat(dataSnapshot.child("puntaje").getValue().toString());
+                                    int numberOfRatings = Integer.parseInt(dataSnapshot.child("cantidadCalificaciones").getValue().toString());
+                                    numberOfRatings++;
+                                    avgRating = (avgRating + Math.round(Float.parseFloat(starsNumber))) / numberOfRatings;
+                                    databaseReference.child("data")
+                                            .child(hashMapRequest.get("userFamoso"))
+                                            .child("cantidadCalificaciones")
+                                            .setValue(numberOfRatings);
+
+                                    databaseReference.child("data")
+                                            .child(hashMapRequest.get("userFamoso"))
+                                            .child("puntaje")
+                                            .setValue(Math.round(avgRating));
+
+                                    dialog.dismiss();
+                                    new SweetAlertDialog(InfoSolicitudERUsuario.this, SweetAlertDialog.SUCCESS_TYPE)
+                                            .setTitleText("Gracias por tu puntuación")
+                                            .show();
+
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
                             }
                         });
+
             }
         });
 
