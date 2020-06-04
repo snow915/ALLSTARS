@@ -30,22 +30,11 @@ import com.store.R;
 
 import java.util.ArrayList;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link Carrito.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link Carrito#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class Carrito extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     ArrayList<DatosVo> list_datos;
@@ -55,19 +44,8 @@ public class Carrito extends Fragment {
     String userID;
     private OnFragmentInteractionListener mListener;
 
-    public Carrito() {
-        // Required empty public constructor
-    }
+    public Carrito() {}
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Carrito.
-     */
-    // TODO: Rename and change types and number of parameters
     public static Carrito newInstance(String param1, String param2) {
         Carrito fragment = new Carrito();
         Bundle args = new Bundle();
@@ -90,7 +68,6 @@ public class Carrito extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_carrito, container, false);
         SharedPreferencesApp sharedPreferencesApp = new SharedPreferencesApp(getContext());
         sharedPreferencesApp.loadPreferences();
@@ -102,8 +79,6 @@ public class Carrito extends Fragment {
 
     public void llenarDatos(View v){
         final View view = v;
-
-        //////////////////////////////////////////////////////////////////////////////////////////
 
         list_datos = new ArrayList<DatosVo>();
         referenceFavorites = FirebaseDatabase.getInstance().getReference().child("Usuarios").child(userID).child("favoritos");
@@ -137,24 +112,22 @@ public class Carrito extends Fragment {
                             recycler = view.findViewById(R.id.recycler_id_carrito);
                             recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
-                            AdapterDatos adapter = new AdapterDatos(list_datos, getActivity());
+                            AdapterDatos adapter = new AdapterDatos(list_datos, getContext());
                             recycler.setAdapter(adapter);
                             adapter.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    String nombre = list_datos.get(recycler.getChildAdapterPosition(v)).getNombre();
-                                    String precio = list_datos.get(recycler.getChildAdapterPosition(v)).getPrecio();
-                                    String biografia = list_datos.get(recycler.getChildAdapterPosition(v)).getBiografia();
-                                    String imagen = list_datos.get(recycler.getChildAdapterPosition(v)).getRutaImagen();
+                                    String name = list_datos.get(recycler.getChildAdapterPosition(v)).getNombre();
+                                    String biography = list_datos.get(recycler.getChildAdapterPosition(v)).getBiografia();
+                                    String image = list_datos.get(recycler.getChildAdapterPosition(v)).getRutaImagen();
                                     int stars = list_datos.get(recycler.getChildAdapterPosition(v)).getStars();
-                                    String username = list_datos.get(recycler.getChildAdapterPosition(v)).getUsername();
+                                    String artistUsername = list_datos.get(recycler.getChildAdapterPosition(v)).getUsername();
                                     Intent infoProducto = new Intent(getActivity(), InfoProducto.class);
-                                    infoProducto.putExtra("nombre", nombre);
-                                    infoProducto.putExtra("precio", precio);
-                                    infoProducto.putExtra("image",imagen);
+                                    infoProducto.putExtra("name", name);
+                                    infoProducto.putExtra("image",image);
                                     infoProducto.putExtra("stars", stars);
-                                    infoProducto.putExtra("biografia", biografia);
-                                    infoProducto.putExtra("username" , username);
+                                    infoProducto.putExtra("biography", biography);
+                                    infoProducto.putExtra("username" , artistUsername);
                                     startActivity(infoProducto);
                                 }
                             });
@@ -172,18 +145,11 @@ public class Carrito extends Fragment {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
         });
-
-
-       ////////////////////////////////////////////////////////////////////////////////////////
-
 
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -207,18 +173,7 @@ public class Carrito extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 }

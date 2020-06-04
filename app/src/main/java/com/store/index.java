@@ -64,7 +64,7 @@ public class index extends Fragment {
         final View view = v;
         listData = new ArrayList<DatosVo>();
         reference = FirebaseDatabase.getInstance().getReference().child("data");
-        reference.addValueEventListener(new ValueEventListener() {
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){

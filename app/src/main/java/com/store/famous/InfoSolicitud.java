@@ -110,11 +110,20 @@ public class InfoSolicitud extends AppCompatActivity implements View.OnClickList
                                             databaseReference.child("solicitudes_aceptadas")
                                                     .child("solicitudes_pagadas")
                                                     .child(datosObj.getSolicitudID())
-                                                    .setValue(null);
-
-                                            Intent intent = new Intent(InfoSolicitud.this, EventoTerminado.class);
-                                            startActivity(intent);
-                                            finishAffinity();
+                                                    .setValue(null)
+                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            task.addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                @Override
+                                                                public void onSuccess(Void aVoid) {
+                                                                    Intent intent = new Intent(InfoSolicitud.this, EventoTerminado.class);
+                                                                    startActivity(intent);
+                                                                    finishAffinity();
+                                                                }
+                                                            });
+                                                        }
+                                                    });
                                         }
                                     });
                                 }
@@ -248,6 +257,8 @@ public class InfoSolicitud extends AppCompatActivity implements View.OnClickList
                 sta.setVisibility(View.GONE);
                 txtTitleTypeRequest.setText("Evento terminado");
             }
+        } else {
+            sta.setVisibility(View.GONE);
         }
     }
 

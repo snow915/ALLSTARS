@@ -73,7 +73,7 @@ public class FragmentSolicitud extends Fragment {
         final View view = v;
         listData = new ArrayList<DatosSolicitudVo>();
         reference = FirebaseDatabase.getInstance().getReference().child("data").child(artistUser).child("solicitudes");
-        reference.addValueEventListener(new ValueEventListener() {
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){

@@ -400,7 +400,7 @@ public class Login extends AppCompatActivity {
             databaseReference = FirebaseDatabase.getInstance().getReference().child("data").child(userValue);
         }
 
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) { //Here verify if user exist

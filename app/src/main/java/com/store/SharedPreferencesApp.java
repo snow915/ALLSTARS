@@ -54,7 +54,7 @@ public class SharedPreferencesApp extends Application {
                 userFirstName = preferences.getString("userFirstName", null);
                 userLastName = preferences.getString("userLastName", null);
             } else if(userType.equals("artist")){
-                password = preferences.getString("artistPassword",null);
+                //password = preferences.getString("artistPassword",null);
                 artistUsername = preferences.getString("artistUsername", null);
                 artistFirstName = preferences.getString("artistFirstName", null);
             }
@@ -63,7 +63,7 @@ public class SharedPreferencesApp extends Application {
 
     public void cleanPreferences() {
         SharedPreferences preferences = context.getSharedPreferences("credentials", Context.MODE_PRIVATE);
-        preferences.edit().clear().commit();
+        preferences.edit().clear().apply();
     }
 
     public String getUserID(){
