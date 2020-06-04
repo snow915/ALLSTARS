@@ -203,31 +203,28 @@ public class MainActivity extends AppCompatActivity
                 fragmentSelected = true;
             }
         } else if (id == R.id.nav_send) {
-            if (artistUsername != null){
-                sharedPreferencesApp.cleanPreferences();
-                reload();
-            }
-            else if (username != null){
-                FirebaseAuth.getInstance().signOut(); //Close session for Firebase and Google
-                LoginManager.getInstance().logOut(); //Close session for Facebook
-                sharedPreferencesApp.cleanPreferences();
-                reload();
-            }
+            FirebaseAuth.getInstance().signOut(); //Close session for Firebase and Google
+            LoginManager.getInstance().logOut(); //Close session for Facebook
+            sharedPreferencesApp.cleanPreferences();
+            userID = null;
+            username = null;
+            userFirstName = null;
+            artistUsername = null;
+            reload();
         } else if(id == R.id.nav_carrito) {
             if (carousel != null) {
                 carousel = null;
                 getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().findFragmentById(R.id.content_main_carrusel)).commit();
-                myFragment = new Carrito();
-                fragmentSelected = true;
-            } else {
-                myFragment = new Carrito();
-                fragmentSelected = true;
             }
+            myFragment = new Carrito();
+            fragmentSelected = true;
 
         } else if (id == R.id.nav_signin) {
+
             Intent intent = new Intent(this, Login.class);
             startActivity(intent);
-        }   else if (id == R.id.see_profile) {
+
+        }  else if (id == R.id.see_profile) {
             if (carousel != null) {
                 carousel = null;
                 getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().findFragmentById(R.id.content_main_carrusel)).commit();
@@ -394,6 +391,7 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+        finishAffinity();
     }
 
     private void deleteAccount(String username, String userType){

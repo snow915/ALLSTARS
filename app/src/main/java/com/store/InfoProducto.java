@@ -25,6 +25,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -62,6 +64,7 @@ public class InfoProducto extends AppCompatActivity implements
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
     public static Dialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,7 +103,20 @@ public class InfoProducto extends AppCompatActivity implements
         btnFavorites.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addFavorites(v);
+                if(userID != null){
+                    addFavorites(v);
+                } else {
+                    new SweetAlertDialog(InfoProducto.this, SweetAlertDialog.WARNING_TYPE)
+                            .setTitleText("Debes iniciar sesión como usuario normal para poder agregar a favoritos")
+                            .setConfirmText("Entendido!")
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    sDialog.dismissWithAnimation();
+                                }
+                            })
+                            .show();
+                }
             }
         });
 
@@ -204,11 +220,21 @@ public class InfoProducto extends AppCompatActivity implements
 
     public void addFavorites(View v) {
         initFirebase();
-        databaseReference.child("Usuarios").child(userID).child("favoritos").child(artistUsername).setValue(artistUsername);
-
-        new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
-                .setTitleText("¡Agregado a favoritos!")
-                .show();
+        databaseReference.child("Usuarios")
+                .child(userID)
+                .child("favoritos")
+                .child(artistUsername)
+                .setValue(artistUsername)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            new SweetAlertDialog(InfoProducto.this, SweetAlertDialog.SUCCESS_TYPE)
+                                    .setTitleText("¡Agregado a favoritos!")
+                                    .show();
+                        }
+                    }
+                });
     }
 
     private void initFirebase(){

@@ -71,7 +71,7 @@ public class FragmentSolicitudUsuario extends Fragment {
         final View view = v;
         listData = new ArrayList<DatosSolicitudVo>();
         reference = FirebaseDatabase.getInstance().getReference().child("Usuarios").child(userID).child("solicitudes");
-        reference.addValueEventListener(new ValueEventListener() {
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
@@ -187,7 +187,7 @@ public class FragmentSolicitudUsuario extends Fragment {
                             hashMapRequest.put("userID", userID);
                             hashMapRequest.put("imagenFamoso", imagenFamoso);
 
-                            saveLocationData(ubicacion, latitud, longitud);
+                            //saveLocationData(ubicacion, latitud, longitud);
 
                             Intent infoSolicitud = new Intent(getActivity(), InfoSolicitudERUsuario.class);
                             infoSolicitud.putExtra("mapValuesRequest", hashMapRequest);
