@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
@@ -114,38 +115,21 @@ public class AddArtistService extends Fragment {
         this.service.setDetalles(serviceDescription);
         this.service.setPrecio(servicePrice);
         this.service.setTiempoMaximo(serviceMaximumTime);
-        this.databaseReference.push().setValue(service).addOnCompleteListener(new OnCompleteListener<Void>() {
+        this.databaseReference.push().setValue(service).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                task.addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        new SweetAlertDialog(getContext(), SweetAlertDialog.SUCCESS_TYPE)
-                                .setTitleText("Excelente!")
-                                .setContentText("Servicio publicado con éxito!")
-                                .setConfirmText("Ok!")
-                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                    @Override
-                                    public void onClick(SweetAlertDialog sDialog) {
-                                        sDialog.dismissWithAnimation();
-//                        Fragment index = new index();
-//                        Fragment carousel = new Carrusel();
-//                        AddArtistService current = (AddArtistService) getFragmentManager().findFragmentByTag("Current");
-//                        FragmentTransaction ft = getFragmentManager().beginTransaction();
-                                        Intent intent = new Intent(getContext(), MainActivity.class);
-                                        startActivity(intent);
-                                    }
-                                })
-                                .show();
-                    }
-                });
-                task.addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getContext(), "ERROR", Toast.LENGTH_LONG).show();
-                    }
-                });
-
+            public void onSuccess(Void aVoid) {
+                new SweetAlertDialog(getContext(), SweetAlertDialog.SUCCESS_TYPE)
+                        .setTitleText("Excelente!")
+                        .setContentText("Servicio publicado con éxito!")
+                        .setConfirmText("Ok!")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                sDialog.dismissWithAnimation();
+                                getFragmentManager().popBackStack("AddService", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                            }
+                        })
+                        .show();
             }
         });
 

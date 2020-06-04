@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity
     private String username = null;
     private String userFirstName = null;
     private String artistUsername = null;
+    private String ftag;
     private DrawerLayout drawer;
     private NavigationView navigationView;
     private SharedPreferencesApp sharedPreferencesApp;
@@ -244,6 +245,7 @@ public class MainActivity extends AppCompatActivity
             }
             fragmentSelected = true;
         } else if (id == R.id.edit_profile) {
+            ftag = "EditArtistProfile";
             if (carousel != null) {
                 carousel = null;
                 getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().findFragmentById(R.id.content_main_carrusel)).commit();
@@ -343,6 +345,7 @@ public class MainActivity extends AppCompatActivity
             myFragment.setArguments(b);
             fragmentSelected = true;
         } else if(id == R.id.add_service) {
+            ftag = "AddService";
             if (carousel != null) {
                 carousel = null;
                 getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().findFragmentById(R.id.content_main_carrusel)).commit();
@@ -377,7 +380,7 @@ public class MainActivity extends AppCompatActivity
         if (fragmentSelected) {
             //getSupportFragmentManager().popBackStack();
             //getSupportFragmentManager().beginTransaction().replace(R.id.content_main, mi_fragment).addToBackStack(null).commit();
-            getSupportFragmentManager().beginTransaction().replace(R.id.content_main, myFragment, "Current").addToBackStack(null).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_main, myFragment).addToBackStack(ftag).commit();
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -419,5 +422,10 @@ public class MainActivity extends AppCompatActivity
                     }
                 })
                 .show();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        FirebaseDatabase.getInstance().getReference().goOffline();
     }
 }

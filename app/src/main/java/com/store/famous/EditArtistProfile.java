@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.provider.MediaStore;
@@ -177,6 +178,7 @@ public class EditArtistProfile extends Fragment {
         update_artist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                update_artist.setEnabled(false);
                 EditText artist_name = getView().findViewById(R.id.edit_artist_name);
                 EditText artist_password = getView().findViewById(R.id.edit_artist_password);
                 TextInputEditText artist_biography = getView().findViewById(R.id.edit_artist_biography);
@@ -233,9 +235,20 @@ public class EditArtistProfile extends Fragment {
                         ref.child("imagen").setValue(downloadUri.toString());
                         ref.child("nombre").setValue(artist_name_val);
                         ref.child("pass").setValue(artist_password_val);
-                        Toast.makeText(getContext(), "Updated", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getContext(), MainActivity.class);
-                        startActivity(intent);
+                        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                Toast.makeText(getContext(), "Updated bitch", Toast.LENGTH_SHORT).show();
+                                getFragmentManager().popBackStack("EditArtistProfile", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+//                        Intent intent = new Intent(getContext(), MainActivity.class);
+//                        startActivity(intent);
 //                        final Artistas artista = new Artistas();
 //                        artista.setNombre(artist_name_val);
 //                        artista.setPass(artist_password_val);
