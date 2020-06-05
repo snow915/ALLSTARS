@@ -28,6 +28,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.store.Pay;
 import com.store.R;
 import com.store.famous.InfoSolicitud;
 import com.store.famous.SolicitudAceptada;
@@ -278,7 +279,9 @@ public class InfoSolicitudERUsuario extends AppCompatActivity implements View.On
     public void onClick(View v) {
         int i = v.getId();
         if(i == R.id.id_pagar){
-            paymentCompleteFirebase();
+            //paymentCompleteFirebase();
+            Intent intent = new Intent(InfoSolicitudERUsuario.this, Pay.class);
+            startActivity(intent);
         }
     }
 }
