@@ -35,37 +35,37 @@ import java.util.Map;
 
 public class Pay extends AppCompatActivity {
 
-    private static final int REQUEST_CODE = 1234;
+    /*private static final int REQUEST_CODE = 1234;
     String API_GET_TOKEN="http://52.201.229.104/braintree_allstars/main.php";
     String API_CHECKOUT="http://52.201.229.104/braintree_allstars/checkout.php";
 
     String token,amount;
     HashMap<String,String> paramsHash;
     Button btn_pay;
-    EditText edit_amount;
-    LinearLayout group_payment;
+    EditText edit_amount;*/
+    //LinearLayout group_payment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay);
 
-        edit_amount=(EditText)findViewById(R.id.edit_amount);
+        /*edit_amount=(EditText)findViewById(R.id.edit_amount);
         btn_pay=(Button) findViewById(R.id.btn_pay);
-        group_payment=(LinearLayout)findViewById(R.id.payment_group);
+        //group_payment=(LinearLayout)findViewById(R.id.payment_group);
 
-        new Pay.getToken().execute();
+        //new Pay.getToken().execute();
 
         btn_pay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 submitPayment();
             }
-        });
+        });*/
 
     }
 
-    private void submitPayment(){
+    /*private void submitPayment(){
         String payValue=edit_amount.getText().toString();
         if(!payValue.isEmpty()) {
             DropInRequest dropInRequest=new DropInRequest().clientToken("eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9uRmluZ2VycHJpbnQiOiJleUowZVhBaU9pSktWMVFpTENKaGJHY2lPaUpGVXpJMU5pSXNJbXRwWkNJNklqSXdNVGd3TkRJMk1UWXRjMkZ1WkdKdmVDSXNJbWx6Y3lJNklrRjFkR2g1SW4wLmV5SmxlSEFpT2pFMU9URTBOakl4TVRZc0ltcDBhU0k2SW1GbE5tUXdOalF4TFdSaU1tRXROR05tWVMwNU1HTmpMVFF6WldZNE4yVm1ORFZtT0NJc0luTjFZaUk2SWpSNmNYaHlPRGQwYURSdGRucHliamtpTENKcGMzTWlPaUpCZFhSb2VTSXNJbTFsY21Ob1lXNTBJanA3SW5CMVlteHBZMTlwWkNJNklqUjZjWGh5T0RkMGFEUnRkbnB5YmpraUxDSjJaWEpwWm5sZlkyRnlaRjlpZVY5a1pXWmhkV3gwSWpwbVlXeHpaWDBzSW5KcFoyaDBjeUk2V3lKdFlXNWhaMlZmZG1GMWJIUWlYU3dpYjNCMGFXOXVjeUk2ZTMxOS5idkV0SGxjRkFPMl9jWkUzYXZYQkc0X0k4c0VXWWRXY0NjamZMb2QteFBhcWtPWThmajgwd2VlbGVsd2NwNXNsejFUM1plMk9pMUdKMjhvLTNtVjNmdyIsImNvbmZpZ1VybCI6Imh0dHBzOi8vYXBpLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb206NDQzL21lcmNoYW50cy80enF4cjg3dGg0bXZ6cm45L2NsaWVudF9hcGkvdjEvY29uZmlndXJhdGlvbiIsImdyYXBoUUwiOnsidXJsIjoiaHR0cHM6Ly9wYXltZW50cy5zYW5kYm94LmJyYWludHJlZS1hcGkuY29tL2dyYXBocWwiLCJkYXRlIjoiMjAxOC0wNS0wOCIsImZlYXR1cmVzIjpbInRva2VuaXplX2NyZWRpdF9jYXJkcyJdfSwiY2xpZW50QXBpVXJsIjoiaHR0cHM6Ly9hcGkuc2FuZGJveC5icmFpbnRyZWVnYXRld2F5LmNvbTo0NDMvbWVyY2hhbnRzLzR6cXhyODd0aDRtdnpybjkvY2xpZW50X2FwaSIsImVudmlyb25tZW50Ijoic2FuZGJveCIsIm1lcmNoYW50SWQiOiI0enF4cjg3dGg0bXZ6cm45IiwiYXNzZXRzVXJsIjoiaHR0cHM6Ly9hc3NldHMuYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhdXRoVXJsIjoiaHR0cHM6Ly9hdXRoLnZlbm1vLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJ2ZW5tbyI6Im9mZiIsImNoYWxsZW5nZXMiOltdLCJ0aHJlZURTZWN1cmVFbmFibGVkIjp0cnVlLCJhbmFseXRpY3MiOnsidXJsIjoiaHR0cHM6Ly9vcmlnaW4tYW5hbHl0aWNzLXNhbmQuc2FuZGJveC5icmFpbnRyZWUtYXBpLmNvbS80enF4cjg3dGg0bXZ6cm45In0sInBheXBhbEVuYWJsZWQiOnRydWUsInBheXBhbCI6eyJiaWxsaW5nQWdyZWVtZW50c0VuYWJsZWQiOnRydWUsImVudmlyb25tZW50Tm9OZXR3b3JrIjp0cnVlLCJ1bnZldHRlZE1lcmNoYW50IjpmYWxzZSwiYWxsb3dIdHRwIjp0cnVlLCJkaXNwbGF5TmFtZSI6IkFsbFN0YXJzIiwiY2xpZW50SWQiOm51bGwsInByaXZhY3lVcmwiOiJodHRwOi8vZXhhbXBsZS5jb20vcHAiLCJ1c2VyQWdyZWVtZW50VXJsIjoiaHR0cDovL2V4YW1wbGUuY29tL3RvcyIsImJhc2VVcmwiOiJodHRwczovL2Fzc2V0cy5icmFpbnRyZWVnYXRld2F5LmNvbSIsImFzc2V0c1VybCI6Imh0dHBzOi8vY2hlY2tvdXQucGF5cGFsLmNvbSIsImRpcmVjdEJhc2VVcmwiOm51bGwsImVudmlyb25tZW50Ijoib2ZmbGluZSIsImJyYWludHJlZUNsaWVudElkIjoibWFzdGVyY2xpZW50MyIsIm1lcmNoYW50QWNjb3VudElkIjoiYWxsc3RhcnMiLCJjdXJyZW5jeUlzb0NvZGUiOiJVU0QifX0=");
@@ -119,7 +119,7 @@ public class Pay extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-    private class getToken extends AsyncTask {
+    /*private class getToken extends AsyncTask {
         ProgressDialog mDailog;
 
         @Override
@@ -160,8 +160,8 @@ public class Pay extends AppCompatActivity {
         protected void onPostExecute(Object o){
             super.onPostExecute(o);
         }
-    }
-
+    }*/
+    /*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode== REQUEST_CODE){
@@ -193,5 +193,5 @@ public class Pay extends AppCompatActivity {
                 Log.d("Err",error.toString());
             }
         }
-    }
+    }*/
 }
